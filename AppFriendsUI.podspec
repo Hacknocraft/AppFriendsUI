@@ -21,7 +21,7 @@ s.homepage = "http://appfriends.me"
 
 # 6 - framework location
 s.vendored_frameworks = "AppFriendsUI.framework"
-s.source = { :git => "https://github.com/laeroah/AppFriendsCoreFramework.git", :tag => "0.1.53.swift2.3"}
+s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "0.1.53.swift2.3"}
 
 # 7
 s.dependency 'SlackTextViewController', '~> 1.9.5'
