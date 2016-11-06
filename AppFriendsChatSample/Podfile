@@ -1,0 +1,16 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'AppFriendsChatSample' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for AppFriendsChatSample
+  pod 'AppFriendsUI', :path => '../../'
+  pod 'AppFriendsCore', :git => 'https://github.com/laeroah/AppFriendsCoreFramework.git', :branch => 'swift2.3'
+  pod 'AFDateHelper', :git => 'https://github.com/laeroah/DateExtension.git'
+  pod 'EZSwiftExtensions', :git => 'https://github.com/goktugyil/EZSwiftExtensions.git', :branch => 'Swift2.3'
+  pod 'Socket.IO-Client-Swift', :git => 'https://github.com/socketio/socket.io-client-swift.git', :branch => 'swift2.3'
+  pod 'CoreStore', :git => 'https://github.com/AppFriendsMe/CoreStore.git', :branch => 'swift2.3'
+
+end
