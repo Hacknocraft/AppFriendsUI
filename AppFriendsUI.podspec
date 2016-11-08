@@ -8,7 +8,7 @@ s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "1.0.63.swift2.3"
+s.version = "1.0.0"
 
 # 3
 s.license = { :type => "MIT" }
@@ -21,18 +21,16 @@ s.homepage = "http://appfriends.me"
 
 # 6 - framework location
 s.vendored_frameworks = "AppFriendsUI.framework"
-s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "0.1.53.swift2.3"}
+s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "1.0.0"}
 
 # 7
+s.dependency 'AppFriendsCore'
 s.dependency 'SlackTextViewController', '~> 1.9.5'
-s.dependency 'NSDate+TimeAgo', '~> 1.0.6'
 s.dependency 'CLTokenInputView', '~> 2.3.0'
 s.dependency 'JGProgressHUD', '~> 1.4'
 s.dependency 'SESlideTableViewCell', '~> 0.7.1'
-s.dependency 'DZNEmptyDataSet', '~> 1.8.1'
-s.dependency 'AppFriendsCore'
-s.dependency 'AFDateHelper'
-s.dependency 'AlamofireImage', '~> 2.5'
-s.dependency 'EZSwiftExtensions', '1.5'
+s.dependency 'AFDateHelper', '~> 3.5.3'
+s.dependency 'AlamofireImage', '~> 3.1'
+s.dependency 'EZSwiftExtensions', '~> 1.7'
 
 end

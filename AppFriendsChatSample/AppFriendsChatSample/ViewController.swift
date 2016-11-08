@@ -7,12 +7,30 @@
 //
 
 import UIKit
+import AppFriendsUI
+import AppFriendsCore
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        let key = "A5de6lwrkIsnRhraNVsSzgtt"
+        let secret = "D8EFZB2xtGSYd2vDBzWPyQtt"
+        AppFriendsUI.sharedInstance.initialize(key, secret: secret) { (success, error) in
+            
+            if success {
+                let appFriendsCore = HCSDKCore.sharedInstance
+                if appFriendsCore.isLogin() {
+                }
+                else {
+                }
+            }
+            else {
+                print(error?.localizedDescription)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
