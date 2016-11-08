@@ -28,7 +28,7 @@ class ViewController: UIViewController {
                 }
             }
             else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "")
             }
         }
     }
