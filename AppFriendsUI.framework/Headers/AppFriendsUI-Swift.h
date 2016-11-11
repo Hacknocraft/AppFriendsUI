@@ -623,6 +623,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class NSPredicate;
 
 SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 @interface HCDialogsListViewController : HCBaseViewController <SESlideTableViewCellDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource>
@@ -631,6 +632,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
+- (NSPredicate * _Nonnull)dialogsQuery;
 - (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)tableView;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
