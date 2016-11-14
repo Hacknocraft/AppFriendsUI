@@ -116,9 +116,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import ObjectiveC;
+@import UIKit;
 @import AppFriendsCore;
 @import SlackTextViewController;
-@import UIKit;
 @import Foundation;
 @import CoreGraphics;
 @import CoreData;
@@ -159,6 +159,56 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUs
 - (void)updateUserInfo:(NSString * _Nonnull)userID userInfo:(NSDictionary<NSString *, id> * _Nonnull)userInfo completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
 - (void)fetchUserInfo:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI14BlockLongPress")
+@interface BlockLongPress : UILongPressGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didLongPressed:(UILongPressGestureRecognizer * _Nonnull)longPress;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI8BlockPan")
+@interface BlockPan : UIPanGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didPan:(UIPanGestureRecognizer * _Nonnull)pan;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI10BlockPinch")
+@interface BlockPinch : UIPinchGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didPinch:(UIPinchGestureRecognizer * _Nonnull)pinch;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI10BlockSwipe")
+@interface BlockSwipe : UISwipeGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didSwipe:(UISwipeGestureRecognizer * _Nonnull)swipe;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI8BlockTap")
+@interface BlockTap : UITapGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didTap:(UITapGestureRecognizer * _Nonnull)tap;
 @end
 
 
@@ -886,11 +936,27 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 @end
 
 
+@interface NSTimer (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
 @interface UIBarButtonItem (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
 @interface UIButton (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIColor (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIFont (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIImage (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
@@ -902,8 +968,56 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 @end
 
 
+@interface UILabel (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
 @interface UIView (SWIFT_EXTENSION(AppFriendsUI))
 @property (nonatomic, copy) NSString * _Nullable badge;
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIViewController (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
