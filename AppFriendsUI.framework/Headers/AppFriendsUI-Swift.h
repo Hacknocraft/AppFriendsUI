@@ -267,6 +267,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI22DialogsManagerDelegate_")
 @protocol DialogsManagerDelegate
 @optional
 - (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
+- (void)didChangeDialogName:(NSString * _Nonnull)newName;
 @end
 
 enum MessageReceiptStatus : NSInteger;
@@ -287,7 +288,6 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 - (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
 @end
 
-@protocol HCBaseChatViewControllerDelegate;
 @class NSCoder;
 @class HCChatDialog;
 @class UITableView;
@@ -303,7 +303,6 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 @interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate>
-@property (nonatomic, strong) id <HCBaseChatViewControllerDelegate> _Nullable delegate;
 @property (nonatomic) BOOL showUserName;
 @property (nonatomic) BOOL showCurrentUserNamePerMessage;
 @property (nonatomic, copy) NSString * _Nullable currentUserID;
@@ -327,6 +326,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)pickImageToSend;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
 - (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
+- (void)didChangeDialogName:(NSString * _Nonnull)newName;
 - (BOOL)isSentMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (HCChatTableViewCell * _Nonnull)messagingCellAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (NSDictionary<NSString *, id> * _Nonnull)messagingCellAttributes:(UIColor * _Nonnull)messageColor;
@@ -346,6 +346,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)fetchMoreMessages;
 - (void)deleteMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)resendMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)didSendTextMessage;
+- (void)didSendImageMessage;
+- (void)didSendVideoMessage;
 - (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
 - (void)messageImageTapped:(NSString * _Nonnull)imageURL;
 - (void)messageVideoTapped:(NSString * _Nonnull)videoURL;
@@ -369,15 +372,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
-@end
-
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI32HCBaseChatViewControllerDelegate_")
-@protocol HCBaseChatViewControllerDelegate
-@optional
-- (void)didSendTextMessage;
-- (void)didSendImageMessage;
-- (void)didSendVideoMessage;
 @end
 
 
