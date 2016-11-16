@@ -287,6 +287,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 - (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
 @end
 
+@protocol HCBaseChatViewControllerDelegate;
 @class NSCoder;
 @class HCChatDialog;
 @class UITableView;
@@ -302,6 +303,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 @interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate>
+@property (nonatomic, strong) id <HCBaseChatViewControllerDelegate> _Nullable delegate;
 @property (nonatomic) BOOL showUserName;
 @property (nonatomic) BOOL showCurrentUserNamePerMessage;
 @property (nonatomic, copy) NSString * _Nullable currentUserID;
@@ -367,6 +369,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI32HCBaseChatViewControllerDelegate_")
+@protocol HCBaseChatViewControllerDelegate
+@optional
+- (void)didSendTextMessage;
+- (void)didSendImageMessage;
+- (void)didSendVideoMessage;
 @end
 
 
