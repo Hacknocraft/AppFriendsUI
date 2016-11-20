@@ -606,6 +606,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 - (void)usersSelected:(NSArray<NSString *> * _Nonnull)users;
 - (void)closeButtonTapped:(HCGroupCreatorViewController * _Nonnull)selectVC;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 @end
 
 
