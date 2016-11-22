@@ -668,9 +668,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class HCTopAlignedContentLabel;
 
 SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 @interface HCDialogTableViewCell : SESlideTableViewCell
+@property (nonatomic, weak) IBOutlet UIImageView * _Null_unspecified dialogAvatarImageView;
+@property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified userNameLabel;
+@property (nonatomic, weak) IBOutlet HCTopAlignedContentLabel * _Null_unspecified lastMessageLabel;
+@property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified lastMessageTimeLabel;
+@property (nonatomic, weak) IBOutlet UIView * _Null_unspecified badgeView;
 - (void)awakeFromNib;
 - (void)addRightButtonWithText:(NSString * _Null_unspecified)text textColor:(UIColor * _Null_unspecified)textColor backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
 - (void)addRightButtonWithImage:(UIImage * _Null_unspecified)image backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
@@ -802,6 +808,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI25HCSidePanelViewController")
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI24HCTopAlignedContentLabel")
+@interface HCTopAlignedContentLabel : UILabel
+- (void)drawTextInRect:(CGRect)rect;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
