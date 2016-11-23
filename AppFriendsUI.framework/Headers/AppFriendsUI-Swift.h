@@ -121,6 +121,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import SlackTextViewController;
 @import Foundation;
 @import CoreGraphics;
+@import AVFoundation;
 @import CoreData;
 @import CLTokenInputView;
 @import SESlideTableViewCell;
@@ -367,6 +368,10 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 @end
 
 
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <AVAssetResourceLoaderDelegate>
+@end
+
+
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
@@ -598,6 +603,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 @interface HCDialogChatViewController : HCBaseChatViewController <HCGroupCreatorViewControllerDelegate>
 - (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)tableViewStyle OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (UIBarButtonItem * _Nullable)rightNavigationItem;
