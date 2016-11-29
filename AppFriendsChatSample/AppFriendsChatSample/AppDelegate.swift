@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        HCSDKCore.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         styleApp ()
         
@@ -191,6 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // Print full message.
         print("%@", userInfo)
+        HCSDKCore.sharedInstance.application(application, didReceiveRemoteNotification: userInfo)
     }
     
     func connectToFcm() {
