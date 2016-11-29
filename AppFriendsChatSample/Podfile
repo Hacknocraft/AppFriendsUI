@@ -2,13 +2,20 @@
 # platform :ios, '9.0'
 
 target 'AppFriendsChatSample' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
+    use_frameworks!
 
-  # Pods for AppFriendsChatSample
-  #pod 'AppFriendsUI', :path => '../../'
-  pod 'AppFriendsUI', :git => 'https://github.com/Hacknocraft/AppFriendsUI.git', :branch => 'swift3.0'
-  pod 'AppFriendsCore', :git => 'https://github.com/Hacknocraft/AppFriendsCore.git', :branch => 'swift3.0'
-  pod 'CoreStore', :git => 'https://github.com/AppFriendsMe/CoreStore.git', :branch => 'swift3_develop'
+    # Pods for AppFriendsChatSample
+    pod 'AppFriendsUI', :git => 'https://github.com/Hacknocraft/AppFriendsUI.git', :tag => '1.0.25'
+    pod 'AppFriendsCore', :git => 'https://github.com/Hacknocraft/AppFriendsCore.git', :tag => '0.1.66'
+    pod 'CoreStore', :git => 'https://github.com/JohnEstropia/CoreStore.git', :branch => 'swift3_develop'
+
+    # pods for testing distribution
+    pod 'Fabric'
+    pod 'Crashlytics'
+
+    # pods for push notification
+    pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
+    pod 'EZSwiftExtensions', '~> 1.7'
 
 end
