@@ -249,6 +249,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (void)getTotalUnreadMessageCount:(void (^ _Nonnull)(NSInteger))completion;
 - (void)startTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
 - (void)endTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
+- (void)updateDialogCustomData:(NSString * _Nonnull)dialogID customData:(NSString * _Nonnull)customData completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)updateDialogName:(NSString * _Nonnull)dialogID dialogName:(NSString * _Nonnull)dialogName completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)fetchDialogInfo:(NSString * _Nonnull)dialogID completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)addMembersToDialog:(NSString * _Nonnull)dialogID members:(NSArray<NSString *> * _Nonnull)newMembers completion:(void (^ _Nullable)(NSError * _Nullable))completion;
