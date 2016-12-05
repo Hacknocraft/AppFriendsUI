@@ -8,7 +8,7 @@ s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "1.0.2"
+s.version = "1.0.31"
 
 # 3
 s.license = { :type => "MIT" }
@@ -21,7 +21,7 @@ s.homepage = "http://appfriends.me"
 
 # 6 - framework location
 s.vendored_frameworks = "AppFriendsUI.framework"
-s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "1.0.2"}
+s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "1.0.31"}
 
 # 7
 s.dependency 'AppFriendsCore'
@@ -31,6 +31,5 @@ s.dependency 'JGProgressHUD', '~> 1.4'
 s.dependency 'SESlideTableViewCell', '~> 0.7.1'
 s.dependency 'AFDateHelper', '~> 3.5.3'
 s.dependency 'AlamofireImage', '~> 3.1'
-s.dependency 'EZSwiftExtensions', '~> 1.7'
 
 end

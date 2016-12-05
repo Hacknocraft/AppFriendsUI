@@ -116,11 +116,12 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import ObjectiveC;
+@import UIKit;
 @import AppFriendsCore;
 @import SlackTextViewController;
-@import UIKit;
 @import Foundation;
 @import CoreGraphics;
+@import AVFoundation;
 @import CoreData;
 @import CLTokenInputView;
 @import SESlideTableViewCell;
@@ -162,6 +163,56 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUs
 @end
 
 
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI14BlockLongPress")
+@interface BlockLongPress : UILongPressGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didLongPressed:(UILongPressGestureRecognizer * _Nonnull)longPress;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI8BlockPan")
+@interface BlockPan : UIPanGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didPan:(UIPanGestureRecognizer * _Nonnull)pan;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI10BlockPinch")
+@interface BlockPinch : UIPinchGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didPinch:(UIPinchGestureRecognizer * _Nonnull)pinch;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI10BlockSwipe")
+@interface BlockSwipe : UISwipeGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didSwipe:(UISwipeGestureRecognizer * _Nonnull)swipe;
+@end
+
+
+/**
+  Make sure you use  “[weak self] (gesture) in” if you are using the keyword self inside the closure or there might be a memory leak
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI8BlockTap")
+@interface BlockTap : UITapGestureRecognizer
+- (nonnull instancetype)initWithTarget:(id _Nullable)target action:(SEL _Nullable)action SWIFT_UNAVAILABLE;
+- (void)didTap:(UITapGestureRecognizer * _Nonnull)tap;
+@end
+
+
 SWIFT_CLASS("_TtC12AppFriendsUI15ChannelsManager")
 @interface ChannelsManager : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) ChannelsManager * _Nonnull sharedInstance;)
@@ -198,6 +249,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (void)getTotalUnreadMessageCount:(void (^ _Nonnull)(NSInteger))completion;
 - (void)startTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
 - (void)endTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
+- (void)updateDialogCustomData:(NSString * _Nonnull)dialogID customData:(NSString * _Nonnull)customData completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)updateDialogName:(NSString * _Nonnull)dialogID dialogName:(NSString * _Nonnull)dialogName completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)fetchDialogInfo:(NSString * _Nonnull)dialogID completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)addMembersToDialog:(NSString * _Nonnull)dialogID members:(NSArray<NSString *> * _Nonnull)newMembers completion:(void (^ _Nullable)(NSError * _Nullable))completion;
@@ -217,6 +269,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI22DialogsManagerDelegate_")
 @protocol DialogsManagerDelegate
 @optional
 - (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
+- (void)didChangeDialogName:(NSString * _Nonnull)newName;
 @end
 
 enum MessageReceiptStatus : NSInteger;
@@ -275,6 +328,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)pickImageToSend;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
 - (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
+- (void)didChangeDialogName:(NSString * _Nonnull)newName;
 - (BOOL)isSentMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (HCChatTableViewCell * _Nonnull)messagingCellAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (NSDictionary<NSString *, id> * _Nonnull)messagingCellAttributes:(UIColor * _Nonnull)messageColor;
@@ -294,6 +348,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)fetchMoreMessages;
 - (void)deleteMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)resendMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)didSendTextMessage;
+- (void)didSendImageMessage;
+- (void)didSendVideoMessage;
 - (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
 - (void)messageImageTapped:(NSString * _Nonnull)imageURL;
 - (void)messageVideoTapped:(NSString * _Nonnull)videoURL;
@@ -309,6 +366,10 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <AVAssetResourceLoaderDelegate>
 @end
 
 
@@ -543,6 +604,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 @interface HCDialogChatViewController : HCBaseChatViewController <HCGroupCreatorViewControllerDelegate>
 - (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)tableViewStyle OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (UIBarButtonItem * _Nullable)rightNavigationItem;
@@ -551,6 +613,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 - (void)usersSelected:(NSArray<NSString *> * _Nonnull)users;
 - (void)closeButtonTapped:(HCGroupCreatorViewController * _Nonnull)selectVC;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 @end
 
 
@@ -611,9 +675,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class HCTopAlignedContentLabel;
 
 SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 @interface HCDialogTableViewCell : SESlideTableViewCell
+@property (nonatomic, weak) IBOutlet UIImageView * _Null_unspecified dialogAvatarImageView;
+@property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified userNameLabel;
+@property (nonatomic, weak) IBOutlet HCTopAlignedContentLabel * _Null_unspecified lastMessageLabel;
+@property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified lastMessageTimeLabel;
+@property (nonatomic, weak) IBOutlet UIView * _Null_unspecified badgeView;
 - (void)awakeFromNib;
 - (void)addRightButtonWithText:(NSString * _Null_unspecified)text textColor:(UIColor * _Null_unspecified)textColor backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
 - (void)addRightButtonWithImage:(UIImage * _Null_unspecified)image backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
@@ -623,6 +693,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class NSPredicate;
 
 SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 @interface HCDialogsListViewController : HCBaseViewController <SESlideTableViewCellDelegate, UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource>
@@ -631,6 +702,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
+- (NSPredicate * _Nonnull)dialogsQuery;
 - (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)tableView;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
@@ -743,6 +815,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI25HCSidePanelViewController")
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI24HCTopAlignedContentLabel")
+@interface HCTopAlignedContentLabel : UILabel
+- (void)drawTextInRect:(CGRect)rect;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -884,11 +964,27 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 @end
 
 
+@interface NSTimer (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
 @interface UIBarButtonItem (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
 @interface UIButton (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIColor (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIFont (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIImage (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
@@ -900,8 +996,56 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 @end
 
 
+@interface UILabel (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
 @interface UIView (SWIFT_EXTENSION(AppFriendsUI))
 @property (nonatomic, copy) NSString * _Nullable badge;
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIViewController (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
