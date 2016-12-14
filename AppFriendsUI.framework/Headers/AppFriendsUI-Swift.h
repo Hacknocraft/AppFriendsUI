@@ -1050,14 +1050,26 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCSidePanelAnimator")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@protocol HCSidePanelViewControllerDelegate;
 
 SWIFT_CLASS("_TtC12AppFriendsUI25HCSidePanelViewController")
 @interface HCSidePanelViewController : UIViewController
+@property (nonatomic, strong) id <HCSidePanelViewControllerDelegate> _Nullable delegate;
 - (nonnull instancetype)initWithAnimator:(HCSidePanelAnimator * _Nonnull)animator contentVC:(UIViewController * _Nonnull)contentVC OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)viewWillDisappear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI33HCSidePanelViewControllerDelegate_")
+@protocol HCSidePanelViewControllerDelegate
+@optional
+- (void)sidePanelWillAppearWithPanel:(HCSidePanelViewController * _Nonnull)panel;
+- (void)sidePanelWillDisappearWithPanel:(HCSidePanelViewController * _Nonnull)panel;
 @end
 
 
