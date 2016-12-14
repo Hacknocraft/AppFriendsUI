@@ -129,6 +129,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
+@protocol AppFriendsUIDelegate;
 @class NSError;
 
 SWIFT_CLASS("_TtC12AppFriendsUI12AppFriendsUI")
@@ -139,9 +140,16 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 + (NSString * _Nonnull)kDialogUpdateNotification;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kTotalUnreadMessageCountChangedNotification;)
 + (NSString * _Nonnull)kTotalUnreadMessageCountChangedNotification;
+@property (nonatomic, strong) id <AppFriendsUIDelegate> _Nullable delegate;
 - (void)initialize:(NSString * _Nonnull)appKey secret:(NSString * _Nonnull)secret completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion SWIFT_METHOD_FAMILY(none);
 - (void)logout:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI20AppFriendsUIDelegate_")
+@protocol AppFriendsUIDelegate
+- (void)userSelected:(NSString * _Nonnull)userID;
 @end
 
 
@@ -272,6 +280,32 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI22DialogsManagerDelegate_")
 - (void)didChangeDialogName:(NSString * _Nonnull)newName;
 @end
 
+@class HCGifItem;
+
+SWIFT_CLASS("_TtC12AppFriendsUI13GifphyManager")
+@interface GifphyManager : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyAPIKey;)
++ (NSString * _Nonnull)giphyAPIKey;
++ (void)setGiphyAPIKey:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyAPIBaseURL;)
++ (NSString * _Nonnull)giphyAPIBaseURL;
++ (void)setGiphyAPIBaseURL:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyRating;)
++ (NSString * _Nonnull)giphyRating;
++ (void)setGiphyRating:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) GifphyManager * _Nonnull sharedInstance;)
++ (GifphyManager * _Nonnull)sharedInstance;
+- (void)fetchTrendingGiphyStickerWithCompletion:(void (^ _Nullable)(NSArray<HCGifItem *> * _Nullable, NSError * _Nullable))completion;
+- (void)searchGiphyStickerWithSearchQuery:(NSString * _Nonnull)searchQuery completion:(void (^ _Nullable)(NSArray<HCGifItem *> * _Nullable, NSError * _Nullable))completion;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI32HCGifSelectionControllerDelegate_")
+@protocol HCGifSelectionControllerDelegate
+- (void)gifSelected:(HCGifItem * _Nonnull)gif;
+@end
+
 enum MessageReceiptStatus : NSInteger;
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI24MessagingManagerDelegate_")
@@ -304,14 +338,16 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 @class NSBundle;
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
-@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate>
+@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate, HCGifSelectionControllerDelegate>
 @property (nonatomic) BOOL showUserName;
 @property (nonatomic) BOOL showCurrentUserNamePerMessage;
 @property (nonatomic, copy) NSString * _Nullable currentUserID;
 @property (nonatomic, copy) NSString * _Nonnull _dialogType;
 @property (nonatomic, copy) NSString * _Nonnull _dialogID;
+@property (nonatomic) BOOL shouldAllowTagging;
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
+- (void)viewDidAppear:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (HCChatDialog * _Nullable)currentDialog;
@@ -333,7 +369,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (HCChatTableViewCell * _Nonnull)messagingCellAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (NSDictionary<NSString *, id> * _Nonnull)messagingCellAttributes:(UIColor * _Nonnull)messageColor;
 - (NSDictionary<NSString *, id> * _Nonnull)systemMessagingCellAttributes;
-- (NSDictionary<NSString *, id> * _Nonnull)linkTextAttributes;
+- (NSDictionary<NSString *, id> * _Nonnull)linkTextAttributesWithIsOut:(BOOL)isOut;
+- (CGFloat)heightForAutoCompletionView;
+- (void)didChangeAutoCompletionPrefix:(NSString * _Nonnull)prefix andWord:(NSString * _Nonnull)word;
 - (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)tableView:(UITableView * _Nonnull)tableView didEndDisplayingCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
@@ -341,6 +379,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)tableView;
 - (NSIndexPath * _Nullable)tableView:(UITableView * _Nonnull)tableView willSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController * _Nonnull)picker;
 - (void)imagePickerController:(UIImagePickerController * _Nonnull)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> * _Nonnull)info;
 - (void)scrollViewWillBeginDragging:(UIScrollView * _Nonnull)scrollView;
@@ -350,6 +389,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)resendMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)didSendTextMessage;
 - (void)didSendImageMessage;
+- (void)didSendGifMessage;
 - (void)didSendVideoMessage;
 - (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
 - (void)messageImageTapped:(NSString * _Nonnull)imageURL;
@@ -358,11 +398,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)avatarTapped:(HCChatTableViewCell * _Nonnull)cell;
 - (void)attachmentTapped:(HCChatTableViewCell * _Nonnull)cell;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer;
-- (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
-- (void)showLoading:(NSString * _Nullable)message;
-- (void)showErrorWithMessage:(NSString * _Nullable)message;
-- (void)showSuccessWithMessage:(NSString * _Nullable)message;
-- (void)hideHUD;
+- (void)gifSelected:(HCGifItem * _Nonnull)gif;
 - (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
@@ -370,6 +406,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <AVAssetResourceLoaderDelegate>
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+- (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
+- (void)showLoading:(NSString * _Nullable)message;
+- (void)showErrorWithMessage:(NSString * _Nullable)message;
+- (void)showSuccessWithMessage:(NSString * _Nullable)message;
+- (void)hideHUD;
 @end
 
 
@@ -415,12 +460,32 @@ SWIFT_CLASS_NAMED("HCChannel")
 @end
 
 
+SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCOnlineUsersBannerControllerDelegate_")
+@protocol HCOnlineUsersBannerControllerDelegate
+- (void)userSelected:(NSString * _Nonnull)userID;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
+@interface HCChannelChatContainerController : HCBaseViewController <HCOnlineUsersBannerControllerDelegate>
+@property (nonatomic, copy) NSString * _Nonnull _dialogID;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+@property (nonatomic, readonly) BOOL prefersStatusBarHidden;
+- (void)userSelected:(NSString * _Nonnull)userID;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+@class UIBarButtonItem;
+
 SWIFT_CLASS("_TtC12AppFriendsUI27HCChannelChatViewController")
 @interface HCChannelChatViewController : HCBaseChatViewController
-- (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
+- (UIBarButtonItem * _Nullable)rightNavigationItem;
+- (void)settingButtonTapped;
 @end
 
 
@@ -574,6 +639,150 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSys
 
 
 
+SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
+@interface HCColorPalette : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatBackgroundColor;)
++ (UIColor * _Nullable)chatBackgroundColor;
++ (void)setChatBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatOutMessageContentTextColor;)
++ (UIColor * _Nonnull)chatOutMessageContentTextColor;
++ (void)setChatOutMessageContentTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatInMessageContentTextColor;)
++ (UIColor * _Nonnull)chatInMessageContentTextColor;
++ (void)setChatInMessageContentTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatUserNamelTextColor;)
++ (UIColor * _Nonnull)chatUserNamelTextColor;
++ (void)setChatUserNamelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatTimeLabelTextColor;)
++ (UIColor * _Nonnull)chatTimeLabelTextColor;
++ (void)setChatTimeLabelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDateLabelTextColor;)
++ (UIColor * _Nonnull)chatDateLabelTextColor;
++ (void)setChatDateLabelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatSystemMessageColor;)
++ (UIColor * _Nonnull)chatSystemMessageColor;
++ (void)setChatSystemMessageColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatSendButtonColor;)
++ (UIColor * _Nullable)chatSendButtonColor;
++ (void)setChatSendButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatOutMessageBubbleColor;)
++ (UIColor * _Nullable)chatOutMessageBubbleColor;
++ (void)setChatOutMessageBubbleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatInMessageBubbleColor;)
++ (UIColor * _Nullable)chatInMessageBubbleColor;
++ (void)setChatInMessageBubbleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMessageFailedButtonColor;)
++ (UIColor * _Nullable)chatMessageFailedButtonColor;
++ (void)setChatMessageFailedButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatVideoPlayIconColor;)
++ (UIColor * _Nonnull)chatVideoPlayIconColor;
++ (void)setChatVideoPlayIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatLeaveConversationColor;)
++ (UIColor * _Nullable)chatLeaveConversationColor;
++ (void)setChatLeaveConversationColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogListTitleColor;)
++ (UIColor * _Nonnull)chatDialogListTitleColor;
++ (void)setChatDialogListTitleColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogTimeStampPreviewColor;)
++ (UIColor * _Nonnull)chatDialogTimeStampPreviewColor;
++ (void)setChatDialogTimeStampPreviewColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogMessagePreviewColor;)
++ (UIColor * _Nonnull)chatDialogMessagePreviewColor;
++ (void)setChatDialogMessagePreviewColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatNewMessageDividerColor;)
++ (UIColor * _Nullable)chatNewMessageDividerColor;
++ (void)setChatNewMessageDividerColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatInMessageLinkColor;)
++ (UIColor * _Nullable)chatInMessageLinkColor;
++ (void)setChatInMessageLinkColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatOutMessageLinkColor;)
++ (UIColor * _Nullable)chatOutMessageLinkColor;
++ (void)setChatOutMessageLinkColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatAttachmentIconColor;)
++ (UIColor * _Nullable)chatAttachmentIconColor;
++ (void)setChatAttachmentIconColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonColor;
++ (void)setChatMediaMessageButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonBgColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonBgColor;
++ (void)setChatMediaMessageButtonBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonBorderColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonBorderColor;
++ (void)setChatMediaMessageButtonBorderColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageSelectionPanelColor;)
++ (UIColor * _Nullable)chatMediaMessageSelectionPanelColor;
++ (void)setChatMediaMessageSelectionPanelColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable channelChatBannerColor;)
++ (UIColor * _Nullable)channelChatBannerColor;
++ (void)setChannelChatBannerColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull onlineUsersLabelColor;)
++ (UIColor * _Nonnull)onlineUsersLabelColor;
++ (void)setOnlineUsersLabelColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull onlineUserIndicatorColor;)
++ (UIColor * _Nonnull)onlineUserIndicatorColor;
++ (void)setOnlineUserIndicatorColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable avatarBackgroundColor;)
++ (UIColor * _Nullable)avatarBackgroundColor;
++ (void)setAvatarBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull avatarColor;)
++ (UIColor * _Nonnull)avatarColor;
++ (void)setAvatarColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorColor;)
++ (UIColor * _Nonnull)SegmentSelectorColor;
++ (void)setSegmentSelectorColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable SegmentSelectorOnBgColor;)
++ (UIColor * _Nullable)SegmentSelectorOnBgColor;
++ (void)setSegmentSelectorOnBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOffBgColor;)
++ (UIColor * _Nonnull)SegmentSelectorOffBgColor;
++ (void)setSegmentSelectorOffBgColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOnTextColor;)
++ (UIColor * _Nonnull)SegmentSelectorOnTextColor;
++ (void)setSegmentSelectorOnTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOffTextColor;)
++ (UIColor * _Nonnull)SegmentSelectorOffTextColor;
++ (void)setSegmentSelectorOffTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableSeparatorColor;)
++ (UIColor * _Nullable)tableSeparatorColor;
++ (void)setTableSeparatorColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableBackgroundColor;)
++ (UIColor * _Nullable)tableBackgroundColor;
++ (void)setTableBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableSectionSeparatorColor;)
++ (UIColor * _Nullable)tableSectionSeparatorColor;
++ (void)setTableSectionSeparatorColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull navigationBarIconColor;)
++ (UIColor * _Nonnull)navigationBarIconColor;
++ (void)setNavigationBarIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull navigationBarTitleColor;)
++ (UIColor * _Nonnull)navigationBarTitleColor;
++ (void)setNavigationBarTitleColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable badgeBackgroundColor;)
++ (UIColor * _Nullable)badgeBackgroundColor;
++ (void)setBadgeBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull closeButtonBgColor;)
++ (UIColor * _Nonnull)closeButtonBgColor;
++ (void)setCloseButtonBgColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull closeButtonIconColor;)
++ (UIColor * _Nonnull)closeButtonIconColor;
++ (void)setCloseButtonIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable searchBarBgColor;)
++ (UIColor * _Nullable)searchBarBgColor;
++ (void)setSearchBarBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull emptyTableLabelColor;)
++ (UIColor * _Nonnull)emptyTableLabelColor;
++ (void)setEmptyTableLabelColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull normalTextColor;)
++ (UIColor * _Nonnull)normalTextColor;
++ (void)setNormalTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable placeholderTextColor;)
++ (UIColor * _Nullable)placeholderTextColor;
++ (void)setPlaceholderTextColor:(UIColor * _Nullable)value;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 SWIFT_CLASS("_TtC12AppFriendsUI20HCContactSelectField")
 @interface HCContactSelectField : CLTokenInputView
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
@@ -598,7 +807,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCContactsViewController")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class UIBarButtonItem;
 
 SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 @interface HCDialogChatViewController : HCBaseChatViewController <HCGroupCreatorViewControllerDelegate>
@@ -713,6 +921,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+SWIFT_CLASS("_TtC12AppFriendsUI9HCGifItem")
+@interface HCGifItem : NSObject
+@property (nonatomic, copy) NSString * _Nullable smallSizeUrl;
+@property (nonatomic, copy) NSString * _Nullable url;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 @class CLToken;
 
 SWIFT_CLASS("_TtC12AppFriendsUI28HCGroupCreatorViewController")
@@ -786,6 +1003,32 @@ typedef SWIFT_ENUM(NSInteger, HCMessageAttachmentType) {
   HCMessageAttachmentTypeVideo = 1,
   HCMessageAttachmentTypeGif = 2,
 };
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI18HCOnlineUserHeader")
+@interface HCOnlineUserHeader : UICollectionReusableView
+- (void)awakeFromNib;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI29HCOnlineUsersBannerController")
+@interface HCOnlineUsersBannerController : UICollectionViewController
+@property (nonatomic, weak) id <HCOnlineUsersBannerControllerDelegate> _Nullable delegate;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView * _Nonnull)collectionView;
+- (NSInteger)collectionView:(UICollectionView * _Nonnull)collectionView numberOfItemsInSection:(NSInteger)section;
+- (UICollectionViewCell * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView cellForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (UICollectionReusableView * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView viewForSupplementaryElementOfKind:(NSString * _Nonnull)kind atIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)collectionView:(UICollectionView * _Nonnull)collectionView didSelectItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
 
 typedef SWIFT_ENUM(NSInteger, HCSideDirection) {
   HCSideDirectionLeft = 0,
@@ -918,8 +1161,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) MessagingMan
 - (NSDictionary * _Nonnull)createTextMessageJSON:(NSString * _Nonnull)text dialogID:(NSString * _Nonnull)dialogID;
 - (NSDictionary * _Nonnull)createVideoMessageJSON:(NSString * _Nonnull)videoStreamURL thumbnail:(NSString * _Nonnull)thumbnail dialogID:(NSString * _Nonnull)dialogID;
 - (NSDictionary * _Nonnull)createImageMessageJSON:(NSString * _Nonnull)url dialogID:(NSString * _Nonnull)dialogID;
+- (NSDictionary * _Nonnull)createGifMessageJSON:(NSString * _Nonnull)url dialogID:(NSString * _Nonnull)dialogID;
 - (NSDictionary * _Nonnull)createSenderJSON;
 - (NSDictionary * _Nonnull)createImagePayloadJSON:(NSString * _Nonnull)imageURL;
+- (NSDictionary * _Nonnull)createGifPayloadJSON:(NSString * _Nonnull)imageURL;
 - (NSDictionary * _Nonnull)createVideoPayloadJSON:(NSString * _Nonnull)videoStreamURL thumbnail:(NSString * _Nonnull)thumbnail;
 - (void)failMessage:(NSString * _Nonnull)tempID;
 @end
@@ -992,11 +1237,23 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 @end
 
 
+@interface UIImage (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UIImageView (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
 @interface UILabel (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
 @interface UILabel (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface UITextView (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
