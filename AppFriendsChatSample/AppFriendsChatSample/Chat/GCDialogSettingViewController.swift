@@ -28,7 +28,7 @@ class GCDialogSettingViewController: HCDialogSettingViewController {
     
     // MARK: - Navigation bar
     
-    func leftBarButtonItem() -> UIBarButtonItem {
+    override func leftBarButtonItem() -> UIBarButtonItem {
         
         // close
         let icon = UIImage(named: "ic_clear")

@@ -122,7 +122,7 @@ class GCDialogContactsPickerViewController: BaseViewController, UITableViewDeleg
         
         let sectionTitles = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
         
-        sectionKeys.removeAll()
+        sectionKeys = [String]()
         
         for sectionTitle in sectionTitles
         {
