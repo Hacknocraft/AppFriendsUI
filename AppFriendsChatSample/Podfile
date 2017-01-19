@@ -5,9 +5,8 @@ target 'AppFriendsChatSample' do
     use_frameworks!
 
     # Pods for AppFriendsChatSample
-    pod 'AppFriendsUI', :git => 'https://github.com/Hacknocraft/AppFriendsUI.git', :tag => '1.0.27'
-    pod 'AppFriendsCore', :git => 'https://github.com/Hacknocraft/AppFriendsCore.git', :tag => '0.1.67'
-    pod 'CoreStore', :git => 'https://github.com/JohnEstropia/CoreStore.git', :branch => 'swift3_develop'
+    pod 'AppFriendsUI', :git => 'https://github.com/Hacknocraft/AppFriendsUI.git', :tag => '1.1.3'
+    pod 'AppFriendsCore', :git => 'https://github.com/Hacknocraft/AppFriendsCore.git', :tag => '1.0.3'
 
     # pods for testing distribution
     pod 'Fabric'
@@ -16,6 +15,6 @@ target 'AppFriendsChatSample' do
     # pods for push notification
     pod 'Firebase/Core'
     pod 'Firebase/Messaging'
-    pod 'EZSwiftExtensions', '~> 1.7'
+    pod 'EZSwiftExtensions', '~> 1.8'
 
 end
