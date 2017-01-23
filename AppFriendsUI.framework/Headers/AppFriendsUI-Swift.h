@@ -552,14 +552,11 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCChatContainerViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
-@class UITouch;
-@class UIEvent;
 @class NSTextContainer;
 
 SWIFT_CLASS("_TtC12AppFriendsUI17HCChatContentView")
 @interface HCChatContentView : UITextView
 - (void)awakeFromNib;
-- (void)touchesBegan:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
 - (nonnull instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer * _Nullable)textContainer OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -596,6 +593,8 @@ SWIFT_CLASS_NAMED("HCChatDialog")
 @interface HCChatDialog : _HCChatDialog
 - (NSString * _Nonnull)defaultDialogName;
 - (NSArray<NSString *> * _Nonnull)memberIDs;
+- (BOOL)isMuted;
+- (NSInteger)unreadMessageCount;
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -952,6 +951,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer;
 - (void)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell didTriggerRightButton:(NSInteger)buttonIndex;
 - (void)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell didSlideToState:(SESlideTableViewCellSlideState)slideState;
+- (BOOL)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell canSlideToState:(SESlideTableViewCellSlideState)slideState;
 - (null_unspecified instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString * _Null_unspecified)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -997,7 +997,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogsPickerViewController")
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCDialogsPickerViewControllerDelegate_")
 @protocol HCDialogsPickerViewControllerDelegate
-- (void)didChooseDialog:(NSString * _Nonnull)dialogID;
+- (void)didChooseDialog:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)type;
 @end
 
 @class UIFont;
@@ -1367,6 +1367,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) MessagingMan
 - (NSString * _Nonnull)toString;
 @end
 
+@class UITouch;
+@class UIEvent;
 
 SWIFT_CLASS("_TtC12AppFriendsUI9SMSegment")
 @interface SMSegment : UIView
