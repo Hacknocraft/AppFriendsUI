@@ -273,6 +273,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 
 */
 - (void)fetchDialogs:(void (^ _Nullable)(NSError * _Nullable))completion;
+- (void)queryDialogMutedWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
 - (void)muteDialog:(NSString * _Nonnull)dialogID muted:(BOOL)muted completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (void)dialogEventReceived:(NSString * _Nonnull)dialogID eventName:(NSString * _Nonnull)eventName customData:(NSString * _Nonnull)customData;
 @end
@@ -449,6 +450,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI20HCBaseViewController")
 
 @class NSManagedObjectContext;
 @class NSEntityDescription;
+@class NSNumber;
 
 SWIFT_CLASS("_TtC12AppFriendsUI10_HCChannel")
 @interface _HCChannel : NSManagedObject
@@ -458,6 +460,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI10_HCChannel")
 - (nullable instancetype)initWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
 @property (nonatomic, copy) NSString * _Nullable channelID;
 @property (nonatomic, copy) NSString * _Nullable customData;
+@property (nonatomic, strong) NSNumber * _Nullable disabled;
 @property (nonatomic, copy) NSString * _Nullable title;
 @end
 
@@ -561,7 +564,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI17HCChatContentView")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSNumber;
 @class NSSet;
 @class NSMutableSet;
 
@@ -575,6 +577,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI13_HCChatDialog")
 @property (nonatomic, copy) NSDate * _Nullable createTime;
 @property (nonatomic, copy) NSString * _Nullable customData;
 @property (nonatomic, copy) NSString * _Nullable dialogID;
+@property (nonatomic, strong) NSNumber * _Nullable disabled;
 @property (nonatomic, copy) NSDate * _Nullable lastMessageReadTime;
 @property (nonatomic, copy) NSString * _Nullable lastMessageText;
 @property (nonatomic, copy) NSDate * _Nullable lastMessageTime;

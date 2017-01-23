@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>AppFriendsResources</key>
+		<data>
+		Q+m66STnAz+t+djjvvuRBHIVvwg=
+		</data>
 		<key>AppFriendsUIModels.momd/AppFriendsUIModels 2.mom</key>
 		<data>
 		e9OmHIOFkcfVn+aq22GBmU6P4R8=
@@ -16,9 +20,13 @@
 		<data>
 		D39gJ0UbL7KlqkXZHSd+PsUHoXM=
 		</data>
-		<key>AppFriendsUIModels.momd/AppFriendsUIModels 4.omo</key>
+		<key>AppFriendsUIModels.momd/AppFriendsUIModels 5.mom</key>
 		<data>
-		V4RElt1GGaqL5O7dItZgzXZ9Z3w=
+		9yJb/PDf4WqwlwfltLTlHMObhPE=
+		</data>
+		<key>AppFriendsUIModels.momd/AppFriendsUIModels 5.omo</key>
+		<data>
+		mA2tKuODKV/ialULhJqdXVQLnbg=
 		</data>
 		<key>AppFriendsUIModels.momd/AppFriendsUIModels.mom</key>
 		<data>
@@ -26,15 +34,11 @@
 		</data>
 		<key>AppFriendsUIModels.momd/VersionInfo.plist</key>
 		<data>
-		zenz5GBAnsv9CG8HyboijJxLo2k=
+		NASEzIflAG0hoP67jOSJsSzfpQU=
 		</data>
 		<key>GMDIcons.ttf</key>
 		<data>
 		2h2XD3RHbvbCyGmpXkK50ZP4vtQ=
-		</data>
-		<key>Info.plist</key>
-		<data>
-		cDNx3QrktTDcnCSgpz9bxGW3qyc=
 		</data>
 		<key>PoweredBy_200px-Black_HorizText.png</key>
 		<data>
@@ -43,6 +47,17 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>AppFriendsResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Q+m66STnAz+t+djjvvuRBHIVvwg=
+			</data>
+			<key>hash2</key>
+			<data>
+			eYreDh5VtFYiZOV4ICDFv+WGKbZRCvphqAOkv1VDeWU=
+			</data>
+		</dict>
 		<key>AppFriendsUIModels.momd/AppFriendsUIModels 2.mom</key>
 		<dict>
 			<key>hash</key>
@@ -76,15 +91,26 @@
 			tURxDl829Uy3TuiPFC0nv+3nv69q2m+NHmRPBKqFhNQ=
 			</data>
 		</dict>
-		<key>AppFriendsUIModels.momd/AppFriendsUIModels 4.omo</key>
+		<key>AppFriendsUIModels.momd/AppFriendsUIModels 5.mom</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			V4RElt1GGaqL5O7dItZgzXZ9Z3w=
+			9yJb/PDf4WqwlwfltLTlHMObhPE=
 			</data>
 			<key>hash2</key>
 			<data>
-			b16L075if/Z0sMNdVGtlYWKS7Lnjy8h144poBBqiSsw=
+			db/m6m0Ltrfl+7JxT/8Qsrfztw6Xeawiwrb8YkpvLsU=
+			</data>
+		</dict>
+		<key>AppFriendsUIModels.momd/AppFriendsUIModels 5.omo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			mA2tKuODKV/ialULhJqdXVQLnbg=
+			</data>
+			<key>hash2</key>
+			<data>
+			4ZuIZ6AJreUTa3MKNNLRcXY+ReO1/jZfnH32JFEFhAE=
 			</data>
 		</dict>
 		<key>AppFriendsUIModels.momd/AppFriendsUIModels.mom</key>
@@ -102,11 +128,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zenz5GBAnsv9CG8HyboijJxLo2k=
+			NASEzIflAG0hoP67jOSJsSzfpQU=
 			</data>
 			<key>hash2</key>
 			<data>
-			3O0IDed1A8leHfO3ZVYJetHw/QoAv2RrZm8wjb2+GQA=
+			2u024CNRsL7XalYWhpXUeLCo0esmcgrIk+Zy9V6h7O0=
 			</data>
 		</dict>
 		<key>GMDIcons.ttf</key>
