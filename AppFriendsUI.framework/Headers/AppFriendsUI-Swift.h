@@ -476,9 +476,13 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCOnlineUsersBannerControllerDelegate_")
 - (void)userSelected:(NSString * _Nonnull)userID;
 @end
 
+@class HCChannelChatViewController;
+@class HCOnlineUsersBannerController;
 
 SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 @interface HCChannelChatContainerController : HCBaseViewController <HCOnlineUsersBannerControllerDelegate, UIGestureRecognizerDelegate>
+@property (nonatomic, strong) HCChannelChatViewController * _Nullable chatVC;
+@property (nonatomic, strong) HCOnlineUsersBannerController * _Nullable onlineUserHeaderVC;
 @property (nonatomic, copy) NSString * _Nonnull _dialogID;
 - (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
