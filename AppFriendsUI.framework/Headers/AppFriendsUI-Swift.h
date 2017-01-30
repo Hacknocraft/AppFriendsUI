@@ -140,6 +140,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUI
 + (AppFriendsUI * _Nonnull)sharedInstance;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kDialogUpdateNotification;)
 + (NSString * _Nonnull)kDialogUpdateNotification;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kDialogLeaveNotification;)
++ (NSString * _Nonnull)kDialogLeaveNotification;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kTotalUnreadMessageCountChangedNotification;)
 + (NSString * _Nonnull)kTotalUnreadMessageCountChangedNotification;
 @property (nonatomic, strong) id <AppFriendsUIDelegate> _Nullable delegate;
@@ -874,6 +876,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 - (UIBarButtonItem * _Nullable)rightNavigationItem;
 - (void)settingButtonTapped;
 - (void)didUpdateDialog:(NSNotification * _Nonnull)notification;
+- (void)didLeaveDialog:(NSNotification * _Nonnull)notification;
 - (void)usersSelected:(NSArray<NSString *> * _Nonnull)users;
 - (void)closeButtonTapped:(HCGroupCreatorViewController * _Nonnull)selectVC;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
