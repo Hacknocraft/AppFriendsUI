@@ -1,6 +1,6 @@
-# Change login
+# Change log
 ## version 1.2.3 - *Jan 30, 2017*
-1. fixed the issue with dialog name not updating if users in a dialog have left 
+1. fixed the issue with dialog name not updating if users in a dialog have left
 2. added a notification when the user has left the dialog
 
 ## version 1.2.2 - *Jan 29, 2017*
