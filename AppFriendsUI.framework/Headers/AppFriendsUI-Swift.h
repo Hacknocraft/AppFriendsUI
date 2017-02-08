@@ -370,7 +370,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)didPressRightButton:(id _Nullable)sender;
 - (void)didPressLeftButton:(id _Nullable)sender;
 - (UIImage * _Nonnull)avatarImage;
-- (void)pickImageToSend;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
 - (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
 - (void)didChangeDialogName:(NSString * _Nonnull)newName;
