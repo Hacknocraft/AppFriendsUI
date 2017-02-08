@@ -8,12 +8,12 @@
 
 import UIKit
 import AppFriendsCore
-
+import AppFriendsFloatingWidget
 import AppFriendsUI
 
-class LiveGameViewController: UIViewController {
+class LiveGameViewController: UIViewController, HCSidePanelViewControllerDelegate, HCFloatingWidgetDelegate {
     
-    @IBOutlet weak var chatButton: UIButton!
+    var sidePanelVC: HCSidePanelViewController?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -22,25 +22,58 @@ class LiveGameViewController: UIViewController {
         let customTabBarItem:UITabBarItem = UITabBarItem(title: "Game", image: tabBarImage.withRenderingMode(UIImageRenderingMode.alwaysOriginal), selectedImage: tabBarImage)
         self.tabBarItem = customTabBarItem
         
-        self.hidesBottomBarWhenPushed = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Game"
-
+        
+        // present AppFriends Widget
+        presentWidget()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    @IBAction func chatButtonTapped(_ sender: AnyObject) {
+    
+    func presentWidget() {
         
-        let channelID = "456df29e-ff5f-494d-ba9a-f1e4127c9244"
-        let channelChatVC = HCChannelChatViewController(dialog: channelID) // the dialogID has to be a channel you created
-        AppFriendsUI.sharedInstance.presentVCInSidePanel(fromVC: self, showVC: channelChatVC, direction: .left)
+        let floatingWidget =
+            HCFloatingWidget(widgetImage: UIImage(named: "ic_chat_widget"),
+                             screenshotButtonImage: UIImage(named: "ic_camera"),
+                             showScreenshotButton: true)
+        floatingWidget.present(overVC: self, position: CGPoint(x: 295, y: 60))
+        floatingWidget.delegate = self
+    }
+    
+    // MARK: - HCFloatingWidgetDelegate
+    
+    func widgetButtonTapped(widget: HCFloatingWidget) {
+        
+        let chatListVC = HCDialogsListViewController()
+        chatListVC.automaticallyAdjustsScrollViewInsets = false
+        chatListVC.includeChannels = true
+        chatListVC.edgesForExtendedLayout = []
+        let nav = UINavigationController(rootViewController: chatListVC)
+        let sidePanelVC = AppFriendsUI.sharedInstance.presentVCInSidePanel(fromVC: self, showVC: nav, direction: .left)
+        sidePanelVC.delegate = self
+    }
+    
+    func widgetMessagePreviewTapped(dialogID: String, messageID: String, widget: HCFloatingWidget) {
+        
+    }
+
+    // MARK: - HCSidePanelViewControllerDelegate
+    
+    func sidePanelWillAppear(panel: HCSidePanelViewController) {
+        
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    func sidePanelDidDisappear(panel: HCSidePanelViewController) {
+        
+        self.tabBarController?.tabBar.isHidden = false
     }
 }

@@ -56,10 +56,16 @@ class GCChatViewController: HCDialogChatViewController, GCInfoBannerViewDelegate
     
     override func rightNavigationItem() -> UIBarButtonItem? {
         
-        // setting button
-        let moreItem = UIBarButtonItem(image: UIImage(named: "tabbarInfo"), style: .plain, target: self, action: #selector(GCChatViewController.settingButtonTapped))
-        
-        return moreItem
+        if self._dialogType != HCSDKConstants.kMessageTypeChannel {
+            
+            // setting button
+            let moreItem = UIBarButtonItem(image: UIImage(named: "tabbarInfo"), style: .plain, target: self, action: #selector(GCChatViewController.settingButtonTapped))
+            
+            return moreItem
+        }
+        else {
+            return nil
+        }
     }
     
     override func settingButtonTapped()
@@ -82,15 +88,22 @@ class GCChatViewController: HCDialogChatViewController, GCInfoBannerViewDelegate
         
         // only display receipt if it's a message sent by the current user
         
-        if isSentMessage(atIndexPath: indexPath), let message = self.monitor?.objectsInSection(safeSectionIndex: indexPath.section)![indexPath.row]
-        {
-            // no need to check receipt on system message
+        if tableView.isEqual(self.tableView) {
             
-            if message.messageType != HCSDKConstants.kMessageTypeSystem, let requireReceipt = _requireReceipt , requireReceipt == true, let tempID = message.tempID, let messageID = message.messageID, let dialogID = message.dialogID, let senderID = message.senderID
+            if isSentMessage(atIndexPath: indexPath), let message = self.monitor?.objectsInSection(safeSectionIndex: indexPath.section)![indexPath.row]
             {
-                let receiptVC = GCMessageReceiptViewController(messageTempID: tempID, messageID: messageID, senderID: senderID, dialogID: dialogID)
-                self.navigationController?.pushViewController(receiptVC, animated: true)
+                // no need to check receipt on system message
+                
+                if message.messageType != HCSDKConstants.kMessageTypeSystem, let requireReceipt = _requireReceipt , requireReceipt == true, let tempID = message.tempID, let messageID = message.messageID, let dialogID = message.dialogID, let senderID = message.senderID
+                {
+                    let receiptVC = GCMessageReceiptViewController(messageTempID: tempID, messageID: messageID, senderID: senderID, dialogID: dialogID)
+                    self.navigationController?.pushViewController(receiptVC, animated: true)
+                }
             }
+        }
+        else {
+            
+            super.tableView(tableView, didSelectRowAt: indexPath)
         }
     }
     
@@ -114,6 +127,8 @@ class GCChatViewController: HCDialogChatViewController, GCInfoBannerViewDelegate
     
     override func avatarTapped(_ cell: HCChatTableViewCell) {
         
+        super.avatarTapped(cell)
+        
         if let indexPath = self.tableView.indexPath(for: cell)
         {
             let message = self.monitor?.objectsInSection(safeSectionIndex: indexPath.section)![indexPath.row]
@@ -128,6 +143,7 @@ class GCChatViewController: HCDialogChatViewController, GCInfoBannerViewDelegate
     override func linkTapped(_ cell: HCChatTableViewCell, url: URL) {
         
         // respond to link click
+        super.linkTapped(cell, url: url)
     }
     
     // MARK: - override chat UI
@@ -154,12 +170,14 @@ class GCChatViewController: HCDialogChatViewController, GCInfoBannerViewDelegate
                     initialLabel.tag = 999 // a tag
                     initialLabel.textAlignment = .center
                     // replace this to get user initial
-                    let index = senderName.index(senderName.startIndex, offsetBy: 2)
-                    initialLabel.text = senderName.uppercased().substring(to: index)
-                    initialLabel.backgroundColor = UIColor(white: 0, alpha: 0.3)
-                    initialLabel.textColor = UIColor.white
-                    initialLabel.font = UIFont.boldSystemFont(ofSize: 13)
-                    userAvatarImageView.addSubview(initialLabel)
+                    if senderName.length > 4 {
+                        let index = senderName.index(senderName.startIndex, offsetBy: 2)
+                        initialLabel.text = senderName.uppercased().substring(to: index)
+                        initialLabel.backgroundColor = UIColor(white: 0, alpha: 0.3)
+                        initialLabel.textColor = UIColor.white
+                        initialLabel.font = UIFont.boldSystemFont(ofSize: 13)
+                        userAvatarImageView.addSubview(initialLabel)
+                    }
                 }
             }
             

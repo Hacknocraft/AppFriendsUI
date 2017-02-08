@@ -50,13 +50,7 @@ class GCDialogSettingViewController: HCDialogSettingViewController {
     
     override func didLeaveDialog() {
         
-        if let count = self.navigationController?.viewControllers.count, count > 1 {
-            _ = self.navigationController?.popToRootViewController(animated: true)
-        }
-        else {
-            
-            self.dismissVC(completion: nil)
-        }
+        super.didLeaveDialog()
     }
     
     override func membersRowTapped() {

@@ -8,7 +8,7 @@ s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "1.2.3"
+s.version = "1.2.4"
 
 # 3
 s.license = { :type => "MIT" }
@@ -21,10 +21,10 @@ s.homepage = "http://appfriends.me"
 
 # 6 - framework location
 s.vendored_frameworks = "AppFriendsUI.framework"
-s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "1.2.3"}
+s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => "1.2.4"}
 
 # 7
-s.dependency 'AppFriendsCore'
+s.dependency 'AppFriendsCore', '~> 1.1.2'
 s.dependency 'SlackTextViewController', '~> 1.9.5'
 s.dependency 'CLTokenInputView', '~> 2.3.0'
 s.dependency 'JGProgressHUD', '~> 1.4'

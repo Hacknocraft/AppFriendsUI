@@ -28,8 +28,7 @@ class SeedUsersViewController: BaseViewController, UITableViewDelegate, UITableV
         
         self.edgesForExtendedLayout = UIRectEdge()
 
-        self.tableView.tableHeaderView = UIView(x: 0, y: 0, w: 320, h: 40)
-        self.tableView.tableFooterView = createFooterView()
+        self.tableView.tableHeaderView = createHeaderView()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         loadData()
@@ -129,12 +128,12 @@ class SeedUsersViewController: BaseViewController, UITableViewDelegate, UITableV
         return cell
     }
     
-    func createFooterView() -> UIView {
+    func createHeaderView() -> UIView {
         
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 90))
         
         let leaveConversationButton = UIButton(type: .custom)
-        leaveConversationButton.frame = CGRect(x: 30, y: 25, width: 240, height: 40)
+        leaveConversationButton.frame = CGRect(x: 30, y: 40, width: 240, height: 40)
         leaveConversationButton.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         footerView.addSubview(leaveConversationButton)
         

@@ -10,6 +10,7 @@ import UIKit
 import AppFriendsCore
 import AppFriendsUI
 import CLTokenInputView
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):

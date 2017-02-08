@@ -23,11 +23,18 @@ import FirebaseMessaging
 import UserNotifications
 
 
+enum AppFriendsEnvironment {
+    case production, sandbox, testing, staging
+}
+
+struct Environment {
+    static let current: AppFriendsEnvironment = .production
+};
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -37,6 +44,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let appFriendsCore = HCSDKCore.sharedInstance
         appFriendsCore.enableDebug()
+        
+        if Environment.current == .sandbox
+        {
+            appFriendsCore.setValue(true, forKey: "useSandbox")
+        }
+        else if (Environment.current == .staging)
+        {
+            appFriendsCore.setValue(true, forKey: "staging")
+        }
+        else if (Environment.current == .testing)
+        {
+            appFriendsCore.setValue(true, forKey: "stressTest")
+        }
         
         UsersDataBase.sharedInstance.loadUsers()
         
@@ -56,8 +76,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         initializePushNotification(app: application)
         FIRApp.configure()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTabBarBadge), name: NSNotification.Name(rawValue: AppFriendsUI.kTotalUnreadMessageCountChangedNotification), object: nil)
+        
         return true
     }
+    
+    
+    func updateTabBarBadge(_ notification: Notification?)
+    {
+        DispatchQueue.main.async(execute: {
+            
+            if let count = notification?.object as? NSNumber {
+                
+                UIApplication.shared.applicationIconBadgeNumber = count.intValue
+            }
+            else {
+                
+                UIApplication.shared.applicationIconBadgeNumber = DialogsManager.sharedInstance.totalUnreadMessages
+            }
+        })
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -84,10 +123,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     
     // example of handling remote notification
-//    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject])
-//    {
-//        self.processRemoteNotification(userInfo)
-//    }
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        
+        // Print full message.
+        print("%@", userInfo)
+        HCSDKCore.sharedInstance.application(application, didReceiveRemoteNotification: userInfo)
+    }
 
     // MARK: process notification
     
@@ -188,13 +229,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        
-        // Print full message.
-        print("%@", userInfo)
-        HCSDKCore.sharedInstance.application(application, didReceiveRemoteNotification: userInfo)
-    }
-    
     func connectToFcm() {
         FIRMessaging.messaging().connect { (error) in
             if let e = error {
@@ -217,6 +251,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         detailNavController.pushViewController(vc, animated: true)
         return true
+    }
+    
+    // MARK: - UITabBarControllerDelegate
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        fromVC.dismissVC(completion: nil)
+        
+        return nil
     }
     
 }

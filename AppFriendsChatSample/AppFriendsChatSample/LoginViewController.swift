@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import AppFriendsCore
 import AlamofireImage
 import Alamofire
 
 import AppFriendsUI
+import AppFriendsCore
 
 // jeff.cohen+af@gc.com
 // 123456
@@ -56,8 +56,30 @@ class LoginViewController: BaseViewController {
         }
         
         // need to initialize Coredata for AppFriendsUI first
-        let key = "hhslorB0FoBVjYgXcWQ3igtt"
-        let secret = "zxEHjG3Hr2nhPIP3FlFXAwtt"
+        var key = ""
+        var secret = ""
+        
+        if Environment.current == .sandbox
+        {
+            key = "c3ZsINZMGHdGmbY3S6pcVgtt"
+            secret = "FhsajDeh6XXBF143m82sKwtt"
+        }
+        else if (Environment.current == .testing)
+        {
+            key = "A5de6lwrkIsnRhraNVsSzgtt"
+            secret = "D8EFZB2xtGSYd2vDBzWPyQtt"
+        }
+        else if (Environment.current == .staging)
+        {
+            key = "t3i23J6cnFUjtZaupVTGowtt"
+            secret = "FIVeZO8ocQD5XJZ1HAyhYgtt"
+        }
+        else {
+//            key = "QVdG4xshxzgb7EWouxMfowtt"
+//            secret = "Ii5vfrjl98ln7gUhR1hWQgtt"
+            key = "t3i23J6cnFUjtZaupVTGowtt"
+            secret = "FIVeZO8ocQD5XJZ1HAyhYgtt"
+        }
         
         AppFriendsUI.sharedInstance.initialize(key, secret: secret) { (success, error) in
             
@@ -69,6 +91,7 @@ class LoginViewController: BaseViewController {
                 else {
                     self.layoutViews()
                 }
+                
             }
             else {
                 self.showErrorWithMessage(error?.localizedDescription)
@@ -145,6 +168,8 @@ class LoginViewController: BaseViewController {
         profileNav?.setViewControllers([profileVC], animated: true)
         
         if let app = UIApplication.shared.delegate as? AppDelegate, let window = app.window {
+            
+            mainVC?.delegate = app
             
             // ipad ChatSplitViewController
             
@@ -231,6 +256,12 @@ class LoginViewController: BaseViewController {
                 self.currentUserInfo[HCSDKConstants.kUserName] = self.userNameTextField.text
             }
             
+            if (Environment.current == .testing)
+            {
+                self.currentUserInfo[HCSDKConstants.kUserID] = "test"
+                self.currentUserInfo[HCSDKConstants.kUserName] = "test"
+            }
+            
             self.showLoading("logging in ...")
             appFriendsCore.loginWithUserInfo(self.currentUserInfo as [String : AnyObject]?)
             { (response, error) in
@@ -248,16 +279,16 @@ class LoginViewController: BaseViewController {
                             self.hideHUD()
                             self.goToMainView()
                         })
-                        
-                        // register for push notification
-                        if let pushToken = FIRInstanceID.instanceID().token()
-                        {
-                            HCSDKCore.sharedInstance.registerDeviceForPush(currentUserID, pushToken: pushToken)
-                        }
                     }
                     else {
                         self.hideHUD()
                         self.goToMainView()
+                    }
+                    
+                    // register for push notification
+                    if let currentUserID = HCSDKCore.sharedInstance.currentUserID(), let pushToken = FIRInstanceID.instanceID().token()
+                    {
+                        HCSDKCore.sharedInstance.registerDeviceForPush(currentUserID, pushToken: pushToken)
                     }
                 }
             }

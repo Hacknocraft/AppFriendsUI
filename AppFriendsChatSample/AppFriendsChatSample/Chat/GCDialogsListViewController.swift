@@ -28,6 +28,8 @@ class GCDialogsListViewController: HCDialogsListViewController, GCDialogContacts
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.includeChannels = false
+        
         self.navigationItem.rightBarButtonItem = self.rightBarButtonItem()
         self.tableView.separatorInset = UIEdgeInsets(top: 0, left: 75, bottom: 0, right: 0)
         self.automaticallyAdjustsScrollViewInsets = false
@@ -150,7 +152,7 @@ class GCDialogsListViewController: HCDialogsListViewController, GCDialogContacts
     {
         if UIDevice.current.userInterfaceIdiom == .pad
         {
-            let chatView = GCChatViewController(dialog: dialogID, supportedMessageDataTypes: .ImageVideo)
+            let chatView = GCChatViewController(dialog: dialogID, supportedMessageDataTypes: .All)
             if let showKeyboard = show {
                 chatView.showKeyboardWhenDisplayed = showKeyboard
             }
@@ -160,7 +162,7 @@ class GCDialogsListViewController: HCDialogsListViewController, GCDialogContacts
         else {
             
             self.title = ""
-            let chatView = GCChatViewController(dialog: dialogID, supportedMessageDataTypes: .ImageVideo)
+            let chatView = GCChatViewController(dialog: dialogID, supportedMessageDataTypes: .All)
             if let showKeyboard = show {
                 chatView.showKeyboardWhenDisplayed = showKeyboard
             }
