@@ -57,7 +57,7 @@ class LiveGameViewController: UIViewController, HCSidePanelViewControllerDelegat
         chatListVC.includeChannels = true
         chatListVC.edgesForExtendedLayout = []
         let nav = UINavigationController(rootViewController: chatListVC)
-        let sidePanelVC = AppFriendsUI.sharedInstance.presentVCInSidePanel(fromVC: self, showVC: nav, direction: .left)
+        let sidePanelVC = AppFriendsUI.sharedInstance.presentVCInSidePanel(fromVC: self, showVC: nav)
         sidePanelVC.delegate = self
     }
     

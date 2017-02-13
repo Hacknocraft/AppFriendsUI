@@ -127,7 +127,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // Print full message.
         print("%@", userInfo)
-        HCSDKCore.sharedInstance.application(application, didReceiveRemoteNotification: userInfo)
+        
+        processRemoteNotification(userInfo)
     }
 
     // MARK: process notification
@@ -136,7 +137,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     {
         // Received remote notification.
         // You can navigate app or process data here
-        
+        HCSDKCore.sharedInstance.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
+        if HCSDKCore.sharedInstance.isLogin(), let aps = userInfo["aps"] as? [AnyHashable: Any] {
+            if let category = aps["category"] as? String, category == HCSDKConstants.kAppFriendsPushCategory, let dialogID = userInfo["dialog_id"] as? String {
+                
+                let chatVC = GCChatViewController(dialog: dialogID)
+                let nav = UINavigationController(rootViewController: chatVC)
+                window?.rootViewController?.presentVC(nav)
+            }
+        }
     }
     
     // MARK: style the app
@@ -261,27 +270,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return nil
     }
     
-}
-
-@available(iOS 10, *)
-extension AppDelegate : UNUserNotificationCenterDelegate {
-    
-    // Receive displayed notifications for iOS 10 devices.
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        // Print message ID.
-        print("Message ID: \(userInfo["gcm.message_id"]!)")
-        
-        // Print full message.
-        print("%@", userInfo)
-    }
-}
-
-extension AppDelegate : FIRMessagingDelegate {
-    // Receive data message on iOS 10 devices.
-    func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        print("%@", remoteMessage.appData)
-    }
 }

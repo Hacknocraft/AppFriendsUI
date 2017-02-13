@@ -328,7 +328,7 @@ class GCDialogContactsPickerViewController: BaseViewController, UITableViewDeleg
         let loginInfo = userInfo["login"] as! [String: String]
         let userID = loginInfo["md5"]!
         if userSelectedIDs.contains(userID) {
-            userSelectedIDs.removeObject(userID)
+            userSelectedIDs.removeFirst(userID)
         }
         else {
             userSelectedIDs.append(userID)
@@ -343,7 +343,7 @@ class GCDialogContactsPickerViewController: BaseViewController, UITableViewDeleg
             receipientBar.add(token)
         }
         
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
