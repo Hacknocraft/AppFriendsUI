@@ -129,8 +129,65 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
-@protocol AppFriendsUIDelegate;
 @class NSError;
+
+/**
+  Dialog interface provides api to access, create and update dialog
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
+@interface AFDialog : NSObject
++ (void)getDialogWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSDictionary<NSString *, id> * _Nullable, NSError * _Nullable))completion;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+typedef SWIFT_ENUM(NSInteger, AFDialogType) {
+  AFDialogTypeUnknown = -1,
+  AFDialogTypeIndividual = 0,
+  AFDialogTypeGroup = 1,
+  AFDialogTypeChannel = 2,
+};
+
+typedef SWIFT_ENUM(NSInteger, AFError) {
+  AFErrorUnknownError = 90000,
+  AFErrorSdkNotInitialized = 90002,
+  AFErrorDialogNotFound = 20005,
+};
+
+@protocol AFEventSubscriber;
+
+/**
+  Events are used as a way to actively communicate with the hosting app. Inside of our SDK/platform. Developers should be able to add multiple observers to monitor events that the SDK emits
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI7AFEvent")
+@interface AFEvent : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+/**
+  subscribe an object to receive the emitted events
+  \param object the subscriber
+
+*/
++ (void)subscribeWithSubscriber:(id <AFEventSubscriber> _Nonnull)object;
+/**
+  unsubscribe an object to receive the emitted events
+  \param object the subscriber
+
+*/
++ (void)unsubscribeWithSubscriber:(id <AFEventSubscriber> _Nonnull)object;
+@end
+
+typedef SWIFT_ENUM(NSInteger, AFEventName) {
+  AFEventNameEventDialogCreated = 0,
+  AFEventNameEventDialogLeft = 1,
+  AFEventNameEventDialogUpdated = 4,
+};
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI17AFEventSubscriber_")
+@protocol AFEventSubscriber
+- (void)emitEventWithEvent:(enum AFEventName)eventName data:(NSDictionary<NSString *, id> * _Nonnull)dataDictionary;
+@end
+
+@protocol AppFriendsUIDelegate;
 @class UIViewController;
 @class HCSidePanelViewController;
 
@@ -346,7 +403,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 @class NSBundle;
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
-@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate, HCGifSelectionControllerDelegate>
+@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate, HCGifSelectionControllerDelegate, AFEventSubscriber>
 @property (nonatomic) BOOL showUserName;
 @property (nonatomic) BOOL showCurrentUserNamePerMessage;
 @property (nonatomic, copy) NSString * _Nullable currentUserID;
@@ -409,6 +466,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)attachmentTapped:(HCChatTableViewCell * _Nonnull)cell;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer;
 - (void)gifSelected:(HCGifItem * _Nonnull)gif;
+- (void)didFailToLoadDialog:(NSError * _Nullable)error;
+- (void)emitEventWithEvent:(enum AFEventName)eventName data:(NSDictionary<NSString *, id> * _Nonnull)dataDictionary;
 - (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
@@ -420,19 +479,19 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
 - (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
 - (void)showLoading:(NSString * _Nullable)message;
 - (void)showErrorWithMessage:(NSString * _Nullable)message;
 - (void)showSuccessWithMessage:(NSString * _Nullable)message;
 - (void)hideHUD;
-@end
-
-
-@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
-@end
-
-
-@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 
@@ -1374,6 +1433,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) MessagingMan
 
 @interface NSDictionary (SWIFT_EXTENSION(AppFriendsUI))
 - (NSString * _Nonnull)toString;
+@end
+
+
+@interface NSError (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 @class UITouch;
