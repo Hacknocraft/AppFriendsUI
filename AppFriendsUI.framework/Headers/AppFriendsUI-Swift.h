@@ -392,6 +392,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 @class NSCoder;
 @class HCChatDialog;
 @class UITableView;
+@class UIBarButtonItem;
 @class UIImage;
 @class UITextView;
 @class UIColor;
@@ -425,6 +426,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 */
 - (void)didPressRightButton:(id _Nullable)sender;
+- (UIBarButtonItem * _Nullable)leftBarButtonItem;
 - (void)didPressLeftButton:(id _Nullable)sender;
 - (UIImage * _Nonnull)avatarImage;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
@@ -554,7 +556,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
-@class UIBarButtonItem;
 
 SWIFT_CLASS("_TtC12AppFriendsUI27HCChannelChatViewController")
 @interface HCChannelChatViewController : HCBaseChatViewController

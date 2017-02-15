@@ -1,5 +1,5 @@
 # Change log
-## version 1.2.14 - *Feb 14, 2017*
+## version 1.2.15 - *Feb 15, 2017*
 1. handle the issue that dialog title not loading if you enter chat from a push
 2. full screen preview before image is sent to chat
 3. other small UI updates
