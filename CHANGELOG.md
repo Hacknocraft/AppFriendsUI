@@ -1,6 +1,9 @@
 # Change log
-## version 1.2.4 -
-1. 
+## version 1.2.10 - *Feb 14, 2017*
+1. handle the issue that dialog title not loading if you enter chat from a push
+2. full screen preview before image is sent to chat
+3. other small UI updates
+4. changed the SDK installation method. For detail, please see `http://appfriends.me/documentation/ios/quick_start/#2-integrate-appfriends-sdk`
 
 ## version 1.2.3 - *Jan 30, 2017*
 1. fixed the issue with dialog name not updating if users in a dialog have left
