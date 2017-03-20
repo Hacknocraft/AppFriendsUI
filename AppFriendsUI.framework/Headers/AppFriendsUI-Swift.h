@@ -116,19 +116,39 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import ObjectiveC;
-@import UIKit;
-@import AppFriendsCore;
-@import SlackTextViewController;
 @import Foundation;
+@import UIKit;
+@import SlackTextViewController;
 @import CoreGraphics;
 @import AVFoundation;
 @import CoreData;
 @import CLTokenInputView;
 @import SESlideTableViewCell;
+@import AppFriendsCore;
+@import MapKit;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
+enum AFAttachmentType : NSInteger;
+
+SWIFT_CLASS("_TtC12AppFriendsUI12AFAttachment")
+@interface AFAttachment : NSObject
+@property (nonatomic, readonly) enum AFAttachmentType type;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+typedef SWIFT_ENUM(NSInteger, AFAttachmentType) {
+  AFAttachmentTypeImage = 0,
+  AFAttachmentTypeVideo = 1,
+  AFAttachmentTypeGif = 2,
+  AFAttachmentTypeLocation = 3,
+};
+
+enum AFDialogType : NSInteger;
+@class AFUser;
+@class AFMessage;
 @class NSError;
 
 /**
@@ -136,8 +156,155 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 */
 SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 @interface AFDialog : NSObject
-+ (void)getDialogWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSDictionary<NSString *, id> * _Nullable, NSError * _Nullable))completion;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/**
+  dialog id
+*/
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/**
+  dialog type
+*/
+@property (nonatomic, readonly) enum AFDialogType type;
+@property (nonatomic, copy) NSString * _Nullable title;
+/**
+  dialgot creation time
+*/
+@property (nonatomic, readonly, copy) NSDate * _Nullable createTime;
+/**
+  custom data string. You can set this propery when creating a dialog and use it carry extra data
+*/
+@property (nonatomic, copy) NSString * _Nullable customData;
+/**
+  is dialog muted
+*/
+@property (nonatomic) BOOL muted;
+/**
+  is dialog diabled
+*/
+@property (nonatomic) BOOL disabled;
+/**
+  unread message count for the dialog. Use it to display badge
+*/
+@property (nonatomic) NSInteger unreadMessageCount;
+/**
+  a cover image url. only open channel would have this property
+*/
+@property (nonatomic, copy) NSString * _Nullable coverImageURL;
+/**
+  the text preview of the last message the dialog has received
+*/
+@property (nonatomic, copy) NSString * _Nullable lastMessageText;
+/**
+  the time of the last message
+*/
+@property (nonatomic, copy) NSDate * _Nullable lastMessageTime;
+/**
+  the members in the dialog
+*/
+@property (nonatomic, copy) NSArray<AFUser *> * _Nullable members;
+/**
+  send typing started signal
+*/
+- (void)startTyping;
+/**
+  send typing end signal
+*/
+- (void)endTyping;
+/**
+  Resend a failed message
+  \param message message to resend
+
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)resendMessageWithMessage:(AFMessage * _Nonnull)message completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Leave a dialog
+  \param dialog the dialog which the user wants to leave
+
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)leaveDialogWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  mute a dialog
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)muteWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  unmute a dialog
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)unmuteWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Update group dialog name
+  \param name new name of the group dialog
+
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)updateDialogNameWithDialogName:(NSString * _Nonnull)name completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Add members to a group dialog
+  \param members provide user id array containing users to be added to the dialog
+
+  \param completion completion block. Will contain the error if the call failed
+
+*/
+- (void)addMembersWithNewMembers:(NSArray<NSString *> * _Nonnull)members completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Create a group dialog with multiple users
+  \param id Optional, but you can choose to provide an unique id to the dialog yourself. If this value is not provided, we will create an unique id for you. This is a good way for you to bind the dialog with certain feature or part of your app.
+
+  \param members 
+
+  \param customData the custom data string of the user. You can use this to attach additional information of the dialog
+
+  \param pushData additional data you can include to the push notification generated inside this dialog
+
+  \param title dialog title, if not provided, the default dialog title will be used
+
+  \param completion completion block. The id of the newly created dialog will be found here. Will contain the error if the call failed
+
+*/
++ (void)createGroupDialogWithDialogID:(NSString * _Nullable)id members:(NSArray<NSString *> * _Nonnull)members customData:(NSString * _Nullable)customData pushData:(NSString * _Nullable)pushData title:(NSString * _Nullable)title completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/**
+  Create an 1:1 dialog between the current user with another user. If there’s already a dialog exists with the two users, the same dialog will be returned.
+  \param userID id of the other user
+
+  \param completion completion block. Will contain the error if the call failed
+
+*/
++ (void)createIndividualDialogWithUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/**
+  get all channel dialogs that the user is currently in
+  \param completion completion block will contain the list of dialogs or an error if request failed
+
+*/
++ (void)getChannelsWithCompletion:(void (^ _Nullable)(NSArray<AFDialog *> * _Nullable, NSError * _Nullable))completion;
+/**
+  get all private dialogs that the user is currently in
+  \param completion completion block will contain the list of dialogs or an error if request failed
+
+*/
++ (void)getDialogsWithCompletion:(void (^ _Nullable)(NSArray<AFDialog *> * _Nullable, NSError * _Nullable))completion;
+/**
+  Fetch a dialog using dialog id
+  \param id dialog id used to fetch the dialog information
+
+  \param completion completion block will contain the dialog object or an error if request failed
+
+*/
++ (void)getDialogWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFDialog * _Nullable, NSError * _Nullable))completion;
+/**
+  Total unread message count
+
+  returns:
+  return the total unread message count
+*/
++ (NSInteger)totalUnreadMessageCount;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
 typedef SWIFT_ENUM(NSInteger, AFDialogType) {
@@ -147,12 +314,7 @@ typedef SWIFT_ENUM(NSInteger, AFDialogType) {
   AFDialogTypeChannel = 2,
 };
 
-typedef SWIFT_ENUM(NSInteger, AFError) {
-  AFErrorUnknownError = 90000,
-  AFErrorSdkNotInitialized = 90002,
-  AFErrorDialogNotFound = 20005,
-};
-
+enum AFEventName : NSInteger;
 @protocol AFEventSubscriber;
 
 /**
@@ -160,7 +322,14 @@ typedef SWIFT_ENUM(NSInteger, AFError) {
 */
 SWIFT_CLASS("_TtC12AppFriendsUI7AFEvent")
 @interface AFEvent : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+/**
+  Event name
+*/
+@property (nonatomic, readonly) enum AFEventName name;
+/**
+  Event data object
+*/
+@property (nonatomic, readonly) id _Nullable data;
 /**
   subscribe an object to receive the emitted events
   \param object the subscriber
@@ -173,21 +342,331 @@ SWIFT_CLASS("_TtC12AppFriendsUI7AFEvent")
 
 */
 + (void)unsubscribeWithSubscriber:(id <AFEventSubscriber> _Nonnull)object;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
 typedef SWIFT_ENUM(NSInteger, AFEventName) {
   AFEventNameEventDialogCreated = 0,
   AFEventNameEventDialogLeft = 1,
-  AFEventNameEventDialogUpdated = 4,
+  AFEventNameEventDialogUpdated = 2,
+  AFEventNameEventTypingStatusUpdated = 4,
+  AFEventNameEventMessageReceived = 5,
+  AFEventNameEventUserSelected = 6,
+  AFEventNameEventDuplicateSession = 7,
 };
 
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI17AFEventSubscriber_")
 @protocol AFEventSubscriber
-- (void)emitEventWithEvent:(enum AFEventName)eventName data:(NSDictionary<NSString *, id> * _Nonnull)dataDictionary;
+- (void)emitEvent:(AFEvent * _Nonnull)event;
 @end
 
-@protocol AppFriendsUIDelegate;
+
+SWIFT_CLASS("_TtC12AppFriendsUI15AFGifAttachment")
+@interface AFGifAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull url;
+- (nonnull instancetype)initWithUrl:(NSString * _Nonnull)url OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type SWIFT_UNAVAILABLE;
+@end
+
+typedef SWIFT_ENUM(NSInteger, AFGifContentRating) {
+  AFGifContentRatingYouth = 0,
+  AFGifContentRatingGeneral = 1,
+  AFGifContentRatingParentalGuide = 2,
+  AFGifContentRatingParentalGuide13 = 3,
+  AFGifContentRatingRestricted = 4,
+};
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
+@interface AFImageAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull fullSizeURL;
+@property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
+- (nonnull instancetype)initWithFullSizeURL:(NSString * _Nonnull)fullSizeURL thumbnailURL:(NSString * _Nonnull)thumbnailURL OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type SWIFT_UNAVAILABLE;
+@end
+
+@class MKMapItem;
+
+SWIFT_CLASS("_TtC12AppFriendsUI20AFLocationAttachment")
+@interface AFLocationAttachment : AFAttachment
+@property (nonatomic, readonly, strong) MKMapItem * _Nonnull mapItem;
+@property (nonatomic, readonly, copy) NSString * _Nonnull title;
+@property (nonatomic, readonly, copy) NSString * _Nonnull subtitle;
+- (nonnull instancetype)initWithMapItem:(MKMapItem * _Nonnull)mapItem title:(NSString * _Nonnull)title subtitle:(NSString * _Nonnull)subtitle OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI9AFMessage")
+@interface AFMessage : NSObject
+/**
+  message sender ID. It’s nil when the message is a system message
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable senderID;
+/**
+  message sender name. It’s nil when the message is a system message
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable senderName;
+/**
+  message sender avatar.
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable senderAvatar;
+/**
+  id of the dialog which the message is in
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable dialogID;
+/**
+  message unique id
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable id;
+/**
+  the custom data string of the message. You can use this to attach additional information of the message
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable customData;
+/**
+  has the message been read by the user
+*/
+@property (nonatomic) BOOL read;
+/**
+  time when the message was received
+*/
+@property (nonatomic, copy) NSDate * _Nullable receiveTime;
+/**
+  time when the message was sent
+*/
+@property (nonatomic, copy) NSDate * _Nullable sentTime;
+/**
+  text content in the message
+*/
+@property (nonatomic, copy) NSString * _Nullable text;
+/**
+  the attachment in the message, if any
+*/
+@property (nonatomic, readonly, strong) AFAttachment * _Nullable attachment;
+/**
+  check if the message is sent by the current user
+
+  returns:
+  true if the sender is the current user
+*/
+- (BOOL)isOutgoing;
+/**
+  mark the message as read, and also post a read receipt to acknownledge the current user has read the message.
+  Note: this will only work on messages sent by other users
+*/
+- (void)markAsRead;
+/**
+  mark the message as received, and also post a received receipt to acknownledge the current user has received the message on the device, but not necessarily read it.
+  Note: this will only work on messages sent by other users
+*/
+- (void)markAsReceived;
+/**
+  get receipts of the message
+  \param completion completion block will contain the users id’s for those who received the message and the users id’s for those who have read the message
+
+*/
+- (void)getReceiptsWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/**
+  check if the message is a system message
+
+  returns:
+  true if the message is a system message
+*/
+- (BOOL)isSystemMessage;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+typedef SWIFT_ENUM(NSInteger, AFMessageSendingStatus) {
+  AFMessageSendingStatusSending = 0,
+  AFMessageSendingStatusSuccess = 1,
+  AFMessageSendingStatusFailed = 2,
+};
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
+@interface AFPushNotification : NSObject
+/**
+  Registering the current device for push notification
+  \param token the push token to be used
+
+  \param completion callback, which would report error if the call failed
+
+*/
++ (void)registerDeviceForPushNotificationWithPushToken:(NSString * _Nonnull)token completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Unregistering the current device for push notification
+  \param token the push token to be used
+
+  \param completion callback, which would report error if the call failed
+
+*/
++ (void)unregisterDeviceForPushNotificationWithPushToken:(NSString * _Nonnull)token completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Process the remote push notification. Please pass the notification object to us so we can help
+  optimize the user experience. Especially if you are entering the app using the push notification sent by AppFriends. We will only look at push notification coming from AppFriends.
+  \param info user info object inside the push notification
+
+*/
++ (void)processPushNotificationWithNotificationUserInfo:(NSDictionary * _Nonnull)info;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/**
+  Pubic interface for user session related functions
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI9AFSession")
+@interface AFSession : NSObject
+/**
+  Perform login
+  \param name the username
+
+  \param id the id of the user
+
+  \param completion will call back with the user’s token, or if the login failed, it will callback with error
+
+*/
++ (void)loginWithUsername:(NSString * _Nonnull)name userID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/**
+  Logout the current user.
+  <em>warning</em>* Please Note that this call alone does not unregister the device for push notification. If you have previously registered the device for push, we recommand calling AFSession.unregisterDeviceForPushNotification before you call logout.
+  \param completion call back block, which will have an error if the logout has failed
+
+*/
++ (void)logoutWithComplete:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  Check if there’s an user currently logged in
+
+  returns:
+  true if the user is logged in
+*/
++ (BOOL)isLoggedIn;
+/**
+  get the current user id
+
+  returns:
+  the current user id
+*/
++ (NSString * _Nullable)currentUserID;
+/**
+  get the current user name
+
+  returns:
+  the current user name
+*/
++ (NSString * _Nullable)currentUserName;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/**
+  AFUser object which contains information of a user. This class also provides public interface to access user data
+*/
+SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
+@interface AFUser : NSObject
+/**
+  user id
+*/
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/**
+  user name
+*/
+@property (nonatomic, readonly, copy) NSString * _Nonnull username;
+/**
+  avatar url string
+*/
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarURL;
+/**
+  if the user has been blocked by the current user
+*/
+@property (nonatomic, readonly) BOOL blocked;
+/**
+  the custom data string of the user. You can use this to attach additional information of the user
+*/
+@property (nonatomic, copy) NSString * _Nullable customData;
+/**
+  Users are equal if their ids are the same
+  \param object another user to copare
+
+
+  returns:
+  true if the two users have the same id
+*/
+- (BOOL)isEqual:(id _Nullable)object;
+/**
+  fetch a single user from the user id
+  \param id user’s id
+
+  \param completion completion block contains the user object, or the error if the request failed
+
+*/
++ (void)getUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFUser * _Nullable, NSError * _Nullable))completion;
+/**
+  block an user. After blocking, the user will not be able to send message to the current user
+  \param id id of the user to be blocked
+
+  \param completion completion block. If the call fails, it will contain the error
+
+*/
++ (void)blockUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  unblock an user
+  \param id id of the user to be blocked
+
+  \param completion completion block. If the call fails, it will contain the error
+
+*/
++ (void)unblockUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  fetch the list of all blocked users
+  \param completion completion block. If the call is successful, it will return an array of blocked user ids. If it fails, it will contain the error
+
+*/
++ (void)getBlockedUsersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/**
+  update username of the current user
+  \param username new username
+
+  \param completion completion block. Will report error if the call fails
+
+*/
++ (void)updateUserNameWithUsername:(NSString * _Nonnull)username completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  update avatar of the current user
+  \param avatar new avatar url
+
+  \param completion completion block. Will report error if the call fails
+
+*/
++ (void)updateUserAvatarWithAvatar:(NSString * _Nonnull)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  update custom data of the current user
+  \param custom data new custom data
+
+  \param completion completion block. Will report error if the call fails
+
+*/
++ (void)updateUserCustomDataWithCustomData:(NSString * _Nonnull)customData completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/**
+  get the current user
+
+  returns:
+  the current user object or nil if you haven’t logged in yet
+*/
++ (AFUser * _Nullable)currentUser;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI17AFVideoAttachment")
+@interface AFVideoAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull streamingURL;
+@property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
+- (nonnull instancetype)initWithStreamingURL:(NSString * _Nonnull)streamingURL thumbnailURL:(NSString * _Nullable)thumbnailURL OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type SWIFT_UNAVAILABLE;
+@end
+
 @class UIViewController;
 @class HCSidePanelViewController;
 
@@ -195,41 +674,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI12AppFriendsUI")
 @interface AppFriendsUI : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUI * _Nonnull sharedInstance;)
 + (AppFriendsUI * _Nonnull)sharedInstance;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kDialogUpdateNotification;)
-+ (NSString * _Nonnull)kDialogUpdateNotification;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kDialogLeaveNotification;)
 + (NSString * _Nonnull)kDialogLeaveNotification;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kTotalUnreadMessageCountChangedNotification;)
 + (NSString * _Nonnull)kTotalUnreadMessageCountChangedNotification;
-@property (nonatomic, strong) id <AppFriendsUIDelegate> _Nullable delegate;
 - (void)initialize:(NSString * _Nonnull)appKey secret:(NSString * _Nonnull)secret completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion SWIFT_METHOD_FAMILY(none);
+- (BOOL)initialized SWIFT_METHOD_FAMILY(none);
 - (void)logout:(void (^ _Nullable)(NSError * _Nullable))completion;
 - (HCSidePanelViewController * _Nonnull)presentVCInSidePanelFromVC:(UIViewController * _Nonnull)fromVC showVC:(UIViewController * _Nonnull)showVC;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI20AppFriendsUIDelegate_")
-@protocol AppFriendsUIDelegate
-- (void)userSelected:(NSString * _Nonnull)userID;
-@end
-
-
-SWIFT_CLASS("_TtC12AppFriendsUI21AppFriendsUserManager")
-@interface AppFriendsUserManager : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUserManager * _Nonnull sharedInstance;)
-+ (AppFriendsUserManager * _Nonnull)sharedInstance;
-- (BOOL)isBlockedWithUserID:(NSString * _Nonnull)id;
-- (void)followUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)unfollowUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)blockUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)unblockUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)fetchFollowers:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)fetchFollowings:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)searchUser:(NSString * _Nonnull)query completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)fetchUserFriends:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)updateUserInfo:(NSString * _Nonnull)userID userInfo:(NSDictionary<NSString *, id> * _Nonnull)userInfo completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)fetchUserInfo:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -284,16 +736,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI8BlockTap")
 @end
 
 
-SWIFT_CLASS("_TtC12AppFriendsUI15ChannelsManager")
-@interface ChannelsManager : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) ChannelsManager * _Nonnull sharedInstance;)
-+ (ChannelsManager * _Nonnull)sharedInstance;
-- (void)fetchChannelInfo:(NSString * _Nonnull)channelID completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)fetchChannels:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
 SWIFT_CLASS("_TtC12AppFriendsUI16CoreStoreManager")
 @interface CoreStoreManager : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) CoreStoreManager * _Nonnull sharedInstance;)
@@ -302,100 +744,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) CoreStoreMan
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSDictionary;
-@protocol DialogsManagerDelegate;
-
-SWIFT_CLASS("_TtC12AppFriendsUI14DialogsManager")
-@interface DialogsManager : NSObject <HCSDKCoreEventsDelegate>
-@property (nonatomic, weak) id <DialogsManagerDelegate> _Nullable delegate;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) DialogsManager * _Nonnull sharedInstance;)
-+ (DialogsManager * _Nonnull)sharedInstance;
-@property (nonatomic) NSInteger totalUnreadMessages;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kEventStartTyping;)
-+ (NSString * _Nonnull)kEventStartTyping;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kEventStopTyping;)
-+ (NSString * _Nonnull)kEventStopTyping;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-- (void)initializeDialog:(NSArray<NSString *> * _Nonnull)userIDs dialogType:(NSString * _Nonnull)dialogType dialogTitle:(NSString * _Nullable)dialogTitle dialogID:(NSString * _Nullable)dialogID customJSON:(NSDictionary * _Nullable)customJSON pushData:(NSString * _Nullable)pushData completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion SWIFT_METHOD_FAMILY(none);
-- (NSArray<NSString *> * _Nullable)memberIDsInDialog:(NSString * _Nonnull)dialogID;
-- (void)getTotalUnreadMessageCount:(void (^ _Nonnull)(NSInteger))completion;
-- (void)startTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
-- (void)endTyping:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)dialogType;
-- (void)updateDialogCustomData:(NSString * _Nonnull)dialogID customData:(NSString * _Nonnull)customData completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)updateDialogName:(NSString * _Nonnull)dialogID dialogName:(NSString * _Nonnull)dialogName completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)fetchDialogInfo:(NSString * _Nonnull)dialogID completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion;
-- (void)addMembersToDialog:(NSString * _Nonnull)dialogID members:(NSArray<NSString *> * _Nonnull)newMembers completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)leaveGroupDialog:(NSString * _Nonnull)dialogID completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-/**
-  Getting the list of dialogs
-  \param completion complete block, invoked when the request is completed
-
-*/
-- (void)fetchDialogs:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)queryDialogMutedWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
-- (void)muteDialog:(NSString * _Nonnull)dialogID muted:(BOOL)muted completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-- (void)dialogEventReceived:(NSString * _Nonnull)dialogID eventName:(NSString * _Nonnull)eventName customData:(NSString * _Nonnull)customData;
-@end
-
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI22DialogsManagerDelegate_")
-@protocol DialogsManagerDelegate
-@optional
-- (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
-- (void)didChangeDialogName:(NSString * _Nonnull)newName;
-@end
-
-@class HCGifItem;
-
-SWIFT_CLASS("_TtC12AppFriendsUI13GifphyManager")
-@interface GifphyManager : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyAPIKey;)
-+ (NSString * _Nonnull)giphyAPIKey;
-+ (void)setGiphyAPIKey:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyAPIBaseURL;)
-+ (NSString * _Nonnull)giphyAPIBaseURL;
-+ (void)setGiphyAPIBaseURL:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull giphyRating;)
-+ (NSString * _Nonnull)giphyRating;
-+ (void)setGiphyRating:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) GifphyManager * _Nonnull sharedInstance;)
-+ (GifphyManager * _Nonnull)sharedInstance;
-- (void)fetchTrendingGiphyStickerWithCompletion:(void (^ _Nullable)(NSArray<HCGifItem *> * _Nullable, NSError * _Nullable))completion;
-- (void)searchGiphyStickerWithSearchQuery:(NSString * _Nonnull)searchQuery completion:(void (^ _Nullable)(NSArray<HCGifItem *> * _Nullable, NSError * _Nullable))completion;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI32HCGifSelectionControllerDelegate_")
-@protocol HCGifSelectionControllerDelegate
-- (void)gifSelected:(HCGifItem * _Nonnull)gif;
-@end
-
-enum MessageReceiptStatus : NSInteger;
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI24MessagingManagerDelegate_")
-@protocol MessagingManagerDelegate
-@optional
-- (void)didUpdateMessageReceiptStatus:(NSString * _Nonnull)dialogID messageID:(NSString * _Nonnull)messageID byUserID:(NSString * _Nonnull)byUserID status:(enum MessageReceiptStatus)status;
-@end
-
-@class HCChatTableViewCell;
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
-@protocol HCChatTableViewCellDelegate
-- (void)attachmentTapped:(HCChatTableViewCell * _Nonnull)cell;
-- (void)avatarTapped:(HCChatTableViewCell * _Nonnull)cell;
-- (void)failedButtonTapped:(HCChatTableViewCell * _Nonnull)cell;
-- (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
-@end
-
 @class NSCoder;
-@class HCChatDialog;
 @class UITableView;
-@class UIBarButtonItem;
-@class UIImage;
 @class UITextView;
-@class UIColor;
+@class HCChatTableViewCell;
 @class UITableViewCell;
 @class UIImagePickerController;
 @class UIScrollView;
@@ -404,21 +756,13 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 @class NSBundle;
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
-@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, HCChatTableViewCellDelegate, MessagingManagerDelegate, DialogsManagerDelegate, HCGifSelectionControllerDelegate, AFEventSubscriber>
-@property (nonatomic) BOOL showUserName;
-@property (nonatomic) BOOL showCurrentUserNamePerMessage;
-@property (nonatomic, copy) NSString * _Nullable currentUserID;
-@property (nonatomic, copy) NSString * _Nonnull _dialogType;
-@property (nonatomic, copy) NSString * _Nonnull _dialogID;
-@property (nonatomic) BOOL shouldAllowTagging;
+@interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, AFEventSubscriber>
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
-- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
-- (HCChatDialog * _Nullable)currentDialog;
-- (void)updateTitle;
+- (AFDialog * _Nullable)currentDialog;
 @property (nonatomic, readonly, strong) UITableView * _Nonnull tableView;
 /**
   Action when right button, which is the send button, is triggered
@@ -426,17 +770,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 */
 - (void)didPressRightButton:(id _Nullable)sender;
-- (UIBarButtonItem * _Nullable)leftBarButtonItem;
 - (void)didPressLeftButton:(id _Nullable)sender;
-- (UIImage * _Nonnull)avatarImage;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
-- (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
-- (void)didChangeDialogName:(NSString * _Nonnull)newName;
-- (BOOL)isSentMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (HCChatTableViewCell * _Nonnull)messagingCellAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
-- (NSDictionary<NSString *, id> * _Nonnull)messagingCellAttributes:(UIColor * _Nonnull)messageColor;
-- (NSDictionary<NSString *, id> * _Nonnull)systemMessagingCellAttributes;
-- (NSDictionary<NSString *, id> * _Nonnull)linkTextAttributesWithIsOut:(BOOL)isOut;
 - (CGFloat)heightForAutoCompletionView;
 - (void)didChangeAutoCompletionPrefix:(NSString * _Nonnull)prefix andWord:(NSString * _Nonnull)word;
 - (void)showAutoCompletionView:(BOOL)show;
@@ -448,28 +784,18 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (NSIndexPath * _Nullable)tableView:(UITableView * _Nonnull)tableView willSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
-- (void)sendImage:(UIImage * _Nonnull)image;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController * _Nonnull)picker;
 - (void)imagePickerController:(UIImagePickerController * _Nonnull)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> * _Nonnull)info;
 - (void)scrollViewWillBeginDragging:(UIScrollView * _Nonnull)scrollView;
 - (void)scrollViewDidScroll:(UIScrollView * _Nonnull)scrollView;
-- (void)fetchMoreMessages;
-- (void)deleteMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
-- (void)resendMessageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
-- (void)didSendTextMessage;
-- (void)didSendImageMessage;
-- (void)didSendGifMessage;
-- (void)didSendVideoMessage;
-- (void)linkTapped:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
-- (void)messageImageTapped:(NSString * _Nonnull)imageURL;
-- (void)messageVideoTapped:(NSString * _Nonnull)videoURL;
-- (void)failedButtonTapped:(HCChatTableViewCell * _Nonnull)cell;
-- (void)avatarTapped:(HCChatTableViewCell * _Nonnull)cell;
-- (void)attachmentTapped:(HCChatTableViewCell * _Nonnull)cell;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer;
-- (void)gifSelected:(HCGifItem * _Nonnull)gif;
-- (void)didFailToLoadDialog:(NSError * _Nullable)error;
-- (void)emitEventWithEvent:(enum AFEventName)eventName data:(NSDictionary<NSString *, id> * _Nonnull)dataDictionary;
+- (void)emitEvent:(AFEvent * _Nonnull)event;
+- (void)messagesWillChange;
+- (void)messagesDidChange;
+- (void)messagesWillRefresh;
+- (void)messagesDidRefresh;
+- (void)insertMessageWithMessage:(AFMessage * _Nonnull)message indexPath:(NSIndexPath * _Nonnull)indexPath;
+- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
@@ -489,11 +815,268 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
 - (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
 - (void)showLoading:(NSString * _Nullable)message;
 - (void)showErrorWithMessage:(NSString * _Nullable)message;
 - (void)showSuccessWithMessage:(NSString * _Nullable)message;
 - (void)hideHUD;
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
+@protocol HCChatTableViewCellDelegate
+- (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)avatarTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)failedButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)linkTappedInCell:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <HCChatTableViewCellDelegate>
+/**
+  Image attachment on a message is tapped
+  \param imageAttachment the image attachment
+
+*/
+- (void)messageImageTappedWithAttachment:(AFImageAttachment * _Nonnull)imageAttachment;
+/**
+  Video attachment on a message is tapped
+  \param videoAttachment the video attachment
+
+*/
+- (void)messageVideoTappedWithAttachment:(AFVideoAttachment * _Nonnull)videoAttachment;
+/**
+  Location attachment on message is tapped
+  \param locationAttachment the location attachment
+
+*/
+- (void)messageLocationTappedWithAttachment:(AFLocationAttachment * _Nonnull)locationAttachment;
+/**
+  Link inside a chat cell is tapped
+  \param cell cell which contains the link
+
+  \param url the url that is tapped
+
+*/
+- (void)linkTappedInCell:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
+/**
+  Failed button is tapped in chat cell
+  \param cell the cell which contains the fail button
+
+*/
+- (void)failedButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+/**
+  avatar is tapped in chat cell
+  \param cell the cell which contains the avatar
+
+*/
+- (void)avatarTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+/**
+  Triggered when attachment in the cell is tapped
+  \param cell the cell that contains the attachment
+
+*/
+- (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+/**
+  Triggered when attachment is tapped
+  \param attachment the attachment which is tapped
+
+*/
+- (void)didTapAttachment:(AFAttachment * _Nonnull)attachment;
+@end
+
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+@end
+
+@class UIImageView;
+@class UIImage;
+@class UIBarButtonItem;
+
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+/**
+  Fill the sender avatar in the chat message cell at index path
+  \param indexPath indexpath of the cell
+
+  \param cell the cell to fill
+
+*/
+- (void)fillAvatarAtIndexPath:(NSIndexPath * _Nonnull)indexPath avatarImageView:(UIImageView * _Nullable)avatarImageView;
+/**
+  Access message from an indexpath
+  \param indexPath position of the message in the message tableview
+
+
+  returns:
+  the message object
+*/
+- (AFMessage * _Nullable)messageAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+/**
+  Report typing status updated
+  \param dialogID the id of the dialog in which the typing status has updated
+
+  \param userName username of the user in the typing event
+
+  \param typing true if the user is typing, and false if the user has stopped typing
+
+*/
+- (void)didUpdateTypingStatus:(NSString * _Nonnull)dialogID userName:(NSString * _Nonnull)userName typing:(BOOL)typing;
+/**
+  Loading dialog failed
+  \param error the error describes why the loading was failed
+
+*/
+- (void)didFailToLoadDialog:(NSError * _Nullable)error;
+/**
+  this function will open the system photo picker for you the user to pick image or video to send
+*/
+- (void)pickLocalImageOrVideo;
+/**
+  this function will open camera for the user to take new image or record video to send
+*/
+- (void)openCamera;
+/**
+  open the gif selector
+*/
+- (void)pickGif;
+/**
+  user wants to share location. open the location share view
+*/
+- (void)shareLocation;
+/**
+  this function is triggered when the attachment button on the left side of the input bar is tapped
+*/
+- (void)chooseAttachmentButtonTapped;
+/**
+  send a text message
+  \param text the content of the text message
+
+*/
+- (void)sendTextWithText:(NSString * _Nonnull)text;
+/**
+  send an image message
+  \param image the image to be sent
+
+*/
+- (void)sendImage:(UIImage * _Nonnull)image;
+/**
+  send an gif message
+  \param url the url of the gif
+
+*/
+- (void)sendGifWithGifImageURL:(NSString * _Nonnull)url;
+/**
+  send a location
+  \param item Mapkit item which contains all information of the location
+
+*/
+- (void)sendLocationWithMapItem:(MKMapItem * _Nonnull)item;
+/**
+  The left side navigation bar item. You can override this function to have your own navigation bar item
+
+  returns:
+  the navigation bar item
+*/
+- (UIBarButtonItem * _Nullable)leftBarButtonItem;
+/**
+  The right side navigation bar item. You can override this function to have your own navigation bar item
+
+  returns:
+  the navigation bar item
+*/
+- (UIBarButtonItem * _Nullable)rightBarButtonItem;
+/**
+  The placeholder image for avatar image of the chat message cell. You can override this method to provide your own placeholder image
+  \param indexPath the index path of the cell
+
+
+  returns:
+  the placeholder image
+*/
+- (UIImage * _Nonnull)avatarImagePlaceHolderAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+/**
+  update the title of the view by assigning a UILabel to navigationItem.titleView
+*/
+- (void)updateTitle;
+/**
+  callback after sending text message
+*/
+- (void)didSendTextMessage;
+/**
+  callback after sending image message
+*/
+- (void)didSendImageMessage;
+/**
+  callback after a gif is sent
+*/
+- (void)didSendGifMessage;
+/**
+  callback after a video message is sent
+*/
+- (void)didSendVideoMessage;
+/**
+  callback after a location message is sent
+*/
+- (void)didSendLocationMessage;
+/**
+  You can override this method to return false in your class to always hide username
+
+  returns:
+  true by default
+*/
+- (BOOL)showUserNameOnIncomingMessage;
+/**
+  You can override this method to return true in your class to show current user name on outgoing messages
+
+  returns:
+  false by default
+*/
+- (BOOL)showUserNameOnOutgoingMessage;
+/**
+  The text attributes for message text content. You can override this function to style message text attributes
+  \param out true if the message is sent by the current user
+
+
+  returns:
+  message text attributes
+*/
+- (NSDictionary<NSString *, id> * _Nonnull)messagingCellAttributesWithIsOutGoingMessage:(BOOL)out;
+/**
+  The text attributes for system message content. You can override this function to style system message differently
+
+  returns:
+  system text attributes
+*/
+- (NSDictionary<NSString *, id> * _Nonnull)systemMessagingCellAttributes;
+/**
+  The text attributes for links inside the message content. You can override this function to style the text differently
+  \param out true if the message is sent by the current user
+
+
+  returns:
+  link text attributes
+*/
+- (NSDictionary<NSString *, id> * _Nonnull)linkTextAttributesWithIsOutGoingMessage:(BOOL)out;
 @end
 
 
@@ -546,7 +1129,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 @property (nonatomic, strong) HCChannelChatViewController * _Nullable chatVC;
 @property (nonatomic, strong) HCOnlineUsersBannerController * _Nullable onlineUserHeaderVC;
 @property (nonatomic, copy) NSString * _Nonnull _dialogID;
-- (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog;
+- (nonnull instancetype)initWithDialogID:(NSString * _Nonnull)dialogID;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
@@ -559,13 +1142,13 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 
 SWIFT_CLASS("_TtC12AppFriendsUI27HCChannelChatViewController")
 @interface HCChannelChatViewController : HCBaseChatViewController
-- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
-- (UIBarButtonItem * _Nullable)rightNavigationItem;
+- (UIBarButtonItem * _Nullable)rightBarButtonItem;
 - (void)settingButtonTapped;
 - (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)fetchMoreMessages;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -659,46 +1242,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI13_HCChatDialog")
 
 SWIFT_CLASS_NAMED("HCChatDialog")
 @interface HCChatDialog : _HCChatDialog
-- (NSString * _Nonnull)defaultDialogName;
-- (NSArray<NSString *> * _Nonnull)memberIDs;
-- (BOOL)isMuted;
-- (NSInteger)unreadMessageCount;
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 @end
 
 @class NSLayoutConstraint;
 @class UILabel;
-@class UIImageView;
 @class UIButton;
 
 SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 @interface HCChatTableViewCell : UITableViewCell <UIScrollViewDelegate, UITextViewDelegate>
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellTopMargin;)
-+ (CGFloat)kChatCellTopMargin;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellBottomMargin;)
-+ (CGFloat)kChatCellBottomMargin;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellLeftMargin;)
-+ (CGFloat)kChatCellLeftMargin;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellRightMargin;)
-+ (CGFloat)kChatCellRightMargin;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellMinimumHeight;)
-+ (CGFloat)kChatCellMinimumHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellAvatarHeight;)
-+ (CGFloat)kChatCellAvatarHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kImageCellHeight;)
-+ (CGFloat)kImageCellHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kDateLabelHeight;)
-+ (CGFloat)kDateLabelHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kSeenByLabelHeight;)
-+ (CGFloat)kSeenByLabelHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kNewMessageLineHeight;)
-+ (CGFloat)kNewMessageLineHeight;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSystemMessageHorizontalMargin;)
-+ (CGFloat)kChatCellSystemMessageHorizontalMargin;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSystemMessageVerticalMarginTop;)
-+ (CGFloat)kChatCellSystemMessageVerticalMarginTop;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSystemMessageVerticalMarginBottom;)
-+ (CGFloat)kChatCellSystemMessageVerticalMarginBottom;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint * _Nullable messageWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * _Nullable messageLeadingConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * _Nullable messageTrailingConstraint;
@@ -709,7 +1261,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSys
 @property (nonatomic, weak) IBOutlet UILabel * _Nullable dateLabel;
 @property (nonatomic, weak) IBOutlet UILabel * _Nullable timeLabel;
 @property (nonatomic, weak) IBOutlet UIImageView * _Nullable userAvatarImageView;
-@property (nonatomic, weak) IBOutlet UIImageView * _Nullable contentBackgroundBubble;
 @property (nonatomic, weak) IBOutlet UIImageView * _Nullable contentImageView;
 @property (nonatomic, weak) IBOutlet UIButton * _Nullable failedButton;
 @property (nonatomic, weak) IBOutlet UILabel * _Nullable videoPlayIcon;
@@ -725,6 +1276,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) CGFloat kChatCellSys
 @end
 
 
+@class UIColor;
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 @interface HCColorPalette : NSObject
@@ -821,20 +1373,20 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable av
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull avatarColor;)
 + (UIColor * _Nonnull)avatarColor;
 + (void)setAvatarColor:(UIColor * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorColor;)
-+ (UIColor * _Nonnull)SegmentSelectorColor;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorColor;)
++ (UIColor * _Nonnull)segmentSelectorColor;
 + (void)setSegmentSelectorColor:(UIColor * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable SegmentSelectorOnBgColor;)
-+ (UIColor * _Nullable)SegmentSelectorOnBgColor;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable segmentSelectorOnBgColor;)
++ (UIColor * _Nullable)segmentSelectorOnBgColor;
 + (void)setSegmentSelectorOnBgColor:(UIColor * _Nullable)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOffBgColor;)
-+ (UIColor * _Nonnull)SegmentSelectorOffBgColor;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOffBgColor;)
++ (UIColor * _Nonnull)segmentSelectorOffBgColor;
 + (void)setSegmentSelectorOffBgColor:(UIColor * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOnTextColor;)
-+ (UIColor * _Nonnull)SegmentSelectorOnTextColor;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOnTextColor;)
++ (UIColor * _Nonnull)segmentSelectorOnTextColor;
 + (void)setSegmentSelectorOnTextColor:(UIColor * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull SegmentSelectorOffTextColor;)
-+ (UIColor * _Nonnull)SegmentSelectorOffTextColor;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOffTextColor;)
++ (UIColor * _Nonnull)segmentSelectorOffTextColor;
 + (void)setSegmentSelectorOffTextColor:(UIColor * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableSeparatorColor;)
 + (UIColor * _Nullable)tableSeparatorColor;
@@ -860,9 +1412,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull clo
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull closeButtonIconColor;)
 + (UIColor * _Nonnull)closeButtonIconColor;
 + (void)setCloseButtonIconColor:(UIColor * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable searchBarBgColor;)
-+ (UIColor * _Nullable)searchBarBgColor;
-+ (void)setSearchBarBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable searchBarTintColor;)
++ (UIColor * _Nullable)searchBarTintColor;
++ (void)setSearchBarTintColor:(UIColor * _Nullable)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull emptyTableLabelColor;)
 + (UIColor * _Nonnull)emptyTableLabelColor;
 + (void)setEmptyTableLabelColor:(UIColor * _Nonnull)value;
@@ -878,24 +1430,15 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable pl
 
 SWIFT_CLASS("_TtC12AppFriendsUI11HCConstants")
 @interface HCConstants : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSInteger oldestMessageDays;)
-+ (NSInteger)oldestMessageDays;
-+ (void)setOldestMessageDays:(NSInteger)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) double sidePanelSlideAnimationDuration;)
 + (double)sidePanelSlideAnimationDuration;
 + (void)setSidePanelSlideAnimationDuration:(double)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat sidePanelWindowWidth;)
-+ (CGFloat)sidePanelWindowWidth;
-+ (void)setSidePanelWindowWidth:(CGFloat)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSUInteger maxMessageLength;)
 + (NSUInteger)maxMessageLength;
 + (void)setMaxMessageLength:(NSUInteger)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSTimeInterval timeIntervalForMessageDateLabelDisplay;)
 + (NSTimeInterval)timeIntervalForMessageDateLabelDisplay;
 + (void)setTimeIntervalForMessageDateLabelDisplay:(NSTimeInterval)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatDialogListSectionHeight;)
-+ (CGFloat)chatDialogListSectionHeight;
-+ (void)setChatDialogListSectionHeight:(CGFloat)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -927,20 +1470,20 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCContactsViewController")
 
 SWIFT_CLASS("_TtC12AppFriendsUI26HCDialogChatViewController")
 @interface HCDialogChatViewController : HCBaseChatViewController <HCGroupCreatorViewControllerDelegate>
-- (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
-- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
-- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)tableViewStyle OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
-- (UIBarButtonItem * _Nullable)rightNavigationItem;
+- (UIBarButtonItem * _Nullable)rightBarButtonItem;
 - (void)settingButtonTapped;
-- (void)didUpdateDialog:(NSNotification * _Nonnull)notification;
-- (void)didLeaveDialog:(NSNotification * _Nonnull)notification;
+- (void)emitEvent:(AFEvent * _Nonnull)event;
+- (void)didLeaveDialog;
 - (void)usersSelected:(NSArray<NSString *> * _Nonnull)users;
 - (void)closeButtonTapped:(HCGroupCreatorViewController * _Nonnull)selectVC;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)messagesDidChange;
+- (void)insertMessageWithMessage:(AFMessage * _Nonnull)message indexPath:(NSIndexPath * _Nonnull)indexPath;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -958,18 +1501,13 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCDialogMemberCollectionViewCell")
 @class UISwitch;
 
 SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
-@interface HCDialogSettingViewController : HCBaseViewController <UIScrollViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate>
-@property (nonatomic, copy) NSString * _Nullable _dialogID;
-@property (nonatomic, copy) NSString * _Nullable _dialogType;
-@property (nonatomic, copy) NSString * _Nullable _dialogName;
-@property (nonatomic, strong) NSNumber * _Nullable _dialogMembersCount;
+@interface HCDialogSettingViewController : HCBaseViewController <UIScrollViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, AFEventSubscriber, UITableViewDelegate>
 @property (nonatomic, strong) UITableView * _Nullable _tableView;
 @property (nonatomic, strong) UICollectionView * _Nullable _membersCollectionView;
-- (nonnull instancetype)initWithDialog:(NSString * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithDialog:(AFDialog * _Nonnull)dialog OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
-- (void)updateDialogName;
-- (HCChatDialog * _Nullable)currentDialog;
+- (AFDialog * _Nonnull)currentDialog;
 - (UIView * _Nonnull)createMembersListView;
 - (UITableView * _Nonnull)createTableView;
 - (void)registerTableCells;
@@ -998,7 +1536,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
 - (void)didClickOnMemberWithMemberID:(NSString * _Nonnull)userID;
 - (void)fillMemberCell:(HCDialogMemberCollectionViewCell * _Nonnull)cell atIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)reloadMembersRow;
-- (void)didUpdateDialog:(NSNotification * _Nonnull)notification;
+- (void)emitEvent:(AFEvent * _Nonnull)event;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
@@ -1025,12 +1563,10 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSPredicate;
 
 SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
-@interface HCDialogsListViewController : HCBaseViewController <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface HCDialogsListViewController : HCBaseViewController <UIScrollViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet UITableView * _Null_unspecified tableView;
-@property (nonatomic, copy) NSString * _Nullable currentUserID;
 /**
   turn this value to true if you want to include channels in this list
 */
@@ -1038,8 +1574,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
-- (NSPredicate * _Nonnull)dialogsQuery;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer;
+- (AFDialog * _Nullable)dialogAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)tableView;
 - (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
@@ -1047,6 +1583,33 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (UIView * _Nullable)tableView:(UITableView * _Nonnull)tableView viewForHeaderInSection:(NSInteger)section;
 - (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+/**
+  Fill the avatar image view of the chat message cell
+  \param indexPath the indexPath of the message cell
+
+  \param avatarImageView the image view of the avatar inside the message cell
+
+*/
+- (void)fillAvatarAtIndexPath:(NSIndexPath * _Nonnull)indexPath avatarImageView:(UIImageView * _Nonnull)avatarImageView;
+/**
+  Returns a HCDialogTableViewCell
+  \param indexPath the indexpath of the cell
+
+
+  returns:
+  an instance of HCDialogTableViewCell
+*/
+- (HCDialogTableViewCell * _Nonnull)dialogCellAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)dialogsListWillChange;
+- (void)dialogsListDidChange;
+- (void)dialogsListWillRefresh;
+- (void)dialogsListDidRefresh;
+- (void)insertDialogWithDialog:(AFDialog * _Nonnull)dialog indexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)removeDialogWithDialog:(AFDialog * _Nonnull)dialog indexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)updateDialogWithDialog:(AFDialog * _Nonnull)dialog indexPath:(NSIndexPath * _Nonnull)indexPath;
+- (void)reorderDialogWithDialog:(AFDialog * _Nonnull)dialog fromIndexPath:(NSIndexPath * _Nonnull)fromIndexPath toIndexPath:(NSIndexPath * _Nonnull)toIndexPath;
+- (void)insertSectionWithIndexSec:(NSIndexSet * _Nonnull)indexSec;
+- (void)deleteSectionWithIndexSec:(NSIndexSet * _Nonnull)indexSec;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -1066,40 +1629,49 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogsPickerViewController")
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCDialogsPickerViewControllerDelegate_")
 @protocol HCDialogsPickerViewControllerDelegate
-- (void)didChooseDialog:(NSString * _Nonnull)dialogID dialogType:(NSString * _Nonnull)type;
+- (void)didChooseDialog:(AFDialog * _Nonnull)dialog;
 @end
 
 @class UIFont;
 
 SWIFT_CLASS("_TtC12AppFriendsUI6HCFont")
 @interface HCFont : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull SegmentSelectorFont;)
-+ (UIFont * _Nonnull)SegmentSelectorFont;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull segmentSelectorFont;)
++ (UIFont * _Nonnull)segmentSelectorFont;
 + (void)setSegmentSelectorFont:(UIFont * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull EmptyTableViewLabelFont;)
-+ (UIFont * _Nonnull)EmptyTableViewLabelFont;
-+ (void)setEmptyTableViewLabelFont:(UIFont * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull ChatCellContentFontName;)
-+ (NSString * _Nonnull)ChatCellContentFontName;
-+ (void)setChatCellContentFontName:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull BoldButtonFontName;)
-+ (UIFont * _Nonnull)BoldButtonFontName;
-+ (void)setBoldButtonFontName:(UIFont * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull DialogSettingFont;)
-+ (UIFont * _Nonnull)DialogSettingFont;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatCellContentFont;)
++ (UIFont * _Nonnull)chatCellContentFont;
++ (void)setChatCellContentFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatCellSystemMessageFont;)
++ (UIFont * _Nonnull)chatCellSystemMessageFont;
++ (void)setChatCellSystemMessageFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull boldButtonFont;)
++ (UIFont * _Nonnull)boldButtonFont;
++ (void)setBoldButtonFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull dialogSettingFont;)
++ (UIFont * _Nonnull)dialogSettingFont;
 + (void)setDialogSettingFont:(UIFont * _Nonnull)value;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
-SWIFT_CLASS("_TtC12AppFriendsUI7HCFonts")
-@interface HCFonts : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull navigationBarTitleFont;)
 + (UIFont * _Nonnull)navigationBarTitleFont;
 + (void)setNavigationBarTitleFont:(UIFont * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListSectionTitleFont;)
 + (UIFont * _Nonnull)chatDialogListSectionTitleFont;
 + (void)setChatDialogListSectionTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatTimestampFont;)
++ (UIFont * _Nonnull)chatTimestampFont;
++ (void)setChatTimestampFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDateLabelFont;)
++ (UIFont * _Nonnull)chatDateLabelFont;
++ (void)setChatDateLabelFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull locationTitleFont;)
++ (UIFont * _Nonnull)locationTitleFont;
++ (void)setLocationTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull locationSubtitleFont;)
++ (UIFont * _Nonnull)locationSubtitleFont;
++ (void)setLocationSubtitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull emptyTableLabelFont;)
++ (UIFont * _Nonnull)emptyTableLabelFont;
++ (void)setEmptyTableLabelFont:(UIFont * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1110,7 +1682,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI9HCGifItem")
 @property (nonatomic, copy) NSString * _Nullable url;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
-
 
 @class CLToken;
 
@@ -1147,6 +1718,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI10_HCMessage")
 + (NSEntityDescription * _Nullable)entityWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
+@property (nonatomic, copy) NSString * _Nullable attachmentString;
 @property (nonatomic, copy) NSString * _Nullable channelID;
 @property (nonatomic, copy) NSString * _Nullable customData;
 @property (nonatomic, copy) NSString * _Nullable dialogID;
@@ -1169,22 +1741,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI10_HCMessage")
 
 SWIFT_CLASS_NAMED("HCMessage")
 @interface HCMessage : _HCMessage
-+ (NSDictionary * _Nonnull)messageJSONFromMessageWithMessageObject:(HCMessage * _Nonnull)message;
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 @end
-
-
-SWIFT_CLASS("_TtC12AppFriendsUI19HCMessageAttachment")
-@interface HCMessageAttachment : NSObject
-+ (HCMessageAttachment * _Nullable)getAttachmentFromMessageWithDataString:(NSString * _Nonnull)customData;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-typedef SWIFT_ENUM(NSInteger, HCMessageAttachmentType) {
-  HCMessageAttachmentTypeImage = 0,
-  HCMessageAttachmentTypeVideo = 1,
-  HCMessageAttachmentTypeGif = 2,
-};
 
 
 SWIFT_CLASS("_TtC12AppFriendsUI18HCOnlineUserHeader")
@@ -1213,6 +1771,26 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCOnlineUsersBannerController")
 @end
 
 
+@class NSData;
+
+SWIFT_CLASS("_TtC12AppFriendsUI12_HCPlacemark")
+@interface _HCPlacemark : NSManagedObject
++ (NSString * _Nonnull)entityName;
++ (NSEntityDescription * _Nullable)entityWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
+- (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
+@property (nonatomic, copy) NSString * _Nullable locationID;
+@property (nonatomic, strong) NSData * _Nullable placemark;
+@property (nonatomic, copy) NSDate * _Nullable sharedTime;
+@property (nonatomic, copy) NSString * _Nullable userID;
+@end
+
+
+SWIFT_CLASS_NAMED("HCPlacemark")
+@interface HCPlacemark : _HCPlacemark
+- (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
+@end
+
 
 SWIFT_CLASS("_TtC12AppFriendsUI22HCSettingsConfiguation")
 @interface HCSettingsConfiguation : NSObject
@@ -1222,6 +1800,15 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL badgeDisplayIfMuted;)
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showNewMessageLine;)
 + (BOOL)showNewMessageLine;
 + (void)setShowNewMessageLine:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL messagePushNotificationEnabled;)
++ (BOOL)messagePushNotificationEnabled;
++ (void)setMessagePushNotificationEnabled:(BOOL)value;
+/**
+  the content rating of the gifs
+*/
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentRating gifContentRating;)
++ (enum AFGifContentRating)gifContentRating;
++ (void)setGifContentRating:(enum AFGifContentRating)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1249,7 +1836,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCSidePanelAnimator")
 
 SWIFT_CLASS("_TtC12AppFriendsUI25HCSidePanelViewController")
 @interface HCSidePanelViewController : UIViewController
-@property (nonatomic, strong) id <HCSidePanelViewControllerDelegate> _Nullable delegate;
+@property (nonatomic, weak) id <HCSidePanelViewControllerDelegate> _Nullable delegate;
 - (nonnull instancetype)initWithAnimator:(HCSidePanelAnimator * _Nonnull)animator contentVC:(UIViewController * _Nonnull)contentVC OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
@@ -1274,21 +1861,36 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI33HCSidePanelViewControllerDelegate_")
 
 SWIFT_CLASS("_TtC12AppFriendsUI6HCSize")
 @interface HCSize : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat ChatCellContentDefaultPointSize;)
-+ (CGFloat)ChatCellContentDefaultPointSize;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellContentDefaultPointSize;)
++ (CGFloat)chatCellContentDefaultPointSize;
 + (void)setChatCellContentDefaultPointSize:(CGFloat)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat ChatCellContentBubbleCornerRadius;)
-+ (CGFloat)ChatCellContentBubbleCornerRadius;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellContentBubbleCornerRadius;)
++ (CGFloat)chatCellContentBubbleCornerRadius;
 + (void)setChatCellContentBubbleCornerRadius:(CGFloat)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat ChatCellUserNameLabelHeight;)
-+ (CGFloat)ChatCellUserNameLabelHeight;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellUserNameLabelHeight;)
++ (CGFloat)chatCellUserNameLabelHeight;
 + (void)setChatCellUserNameLabelHeight:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatDialogListSectionHeight;)
++ (CGFloat)chatDialogListSectionHeight;
++ (void)setChatDialogListSectionHeight:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat sidePanelWindowWidth;)
++ (CGFloat)sidePanelWindowWidth;
++ (void)setSidePanelWindowWidth:(CGFloat)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCStringValues")
 @interface HCStringValues : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull channelTabTitle;)
++ (NSString * _Nonnull)channelTabTitle;
++ (void)setChannelTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsTabTitle;)
++ (NSString * _Nonnull)dialogsTabTitle;
++ (void)setDialogsTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull contactsTabTitle;)
++ (NSString * _Nonnull)contactsTabTitle;
++ (void)setContactsTabTitle:(NSString * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull videoSizeOverError;)
 + (NSString * _Nonnull)videoSizeOverError;
 + (void)setVideoSizeOverError:(NSString * _Nonnull)value;
@@ -1301,21 +1903,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dial
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsListDialogsSectionTitle;)
 + (NSString * _Nonnull)dialogsListDialogsSectionTitle;
 + (void)setDialogsListDialogsSectionTitle:(NSString * _Nonnull)value;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
-SWIFT_CLASS("_TtC12AppFriendsUI8HCTitles")
-@interface HCTitles : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull channelTabTitle;)
-+ (NSString * _Nonnull)channelTabTitle;
-+ (void)setChannelTabTitle:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsTabTitle;)
-+ (NSString * _Nonnull)dialogsTabTitle;
-+ (void)setDialogsTabTitle:(NSString * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull contactsTabTitle;)
-+ (NSString * _Nonnull)contactsTabTitle;
-+ (void)setContactsTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull recentHistory;)
++ (NSString * _Nonnull)recentHistory;
++ (void)setRecentHistory:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull currentLocation;)
++ (NSString * _Nonnull)currentLocation;
++ (void)setCurrentLocation:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull noSearchHistory;)
++ (NSString * _Nonnull)noSearchHistory;
++ (void)setNoSearchHistory:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull locationTitleDefault;)
++ (NSString * _Nonnull)locationTitleDefault;
++ (void)setLocationTitleDefault:(NSString * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1350,8 +1949,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI7_HCUser")
 
 SWIFT_CLASS_NAMED("HCUser")
 @interface HCUser : _HCUser
-+ (HCUser * _Nullable)currentUser;
-- (BOOL)isBlocked;
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1379,7 +1976,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI26HCUserSearchViewController")
 SWIFT_CLASS("_TtC12AppFriendsUI7HCUtils")
 @interface HCUtils : NSObject
 + (NSString * _Nonnull)createUniqueID;
-+ (NSString * _Nonnull)jsonStringFromDictionary;
 + (NSDictionary<NSString *, id> * _Nullable)dictionaryFromJsonString:(NSString * _Nonnull)text;
 + (UIImage * _Nullable)imageInHCBundle:(NSString * _Nonnull)name;
 + (NSBundle * _Nullable)xibBundle;
@@ -1392,52 +1988,15 @@ SWIFT_CLASS("_TtC12AppFriendsUI7HCUtils")
 @end
 
 
-SWIFT_CLASS("_TtC12AppFriendsUI17HCVideoAttachment")
-@interface HCVideoAttachment : HCMessageAttachment
-+ (HCVideoAttachment * _Nullable)getAttachmentFromMessageWithDataString:(NSString * _Nonnull)customData;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@interface MKMapItem (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
-typedef SWIFT_ENUM(NSInteger, MessageReceiptStatus) {
-  MessageReceiptStatusUnknown = 0,
-  MessageReceiptStatusReceived = 1,
-  MessageReceiptStatusRead = 2,
-};
 
-
-SWIFT_CLASS("_TtC12AppFriendsUI16MessagingManager")
-@interface MessagingManager : NSObject <HCSDKCoreSyncDelegate>
-@property (nonatomic, weak) id <MessagingManagerDelegate> _Nullable delegate;
-@property (nonatomic, readonly, copy) NSString * _Nonnull action_dialog;
-@property (nonatomic, readonly, copy) NSString * _Nonnull action_message;
-@property (nonatomic, readonly, copy) NSString * _Nonnull action_type_receive_receipt;
-@property (nonatomic, readonly, copy) NSString * _Nonnull action_type_read_receipt;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) MessagingManager * _Nonnull sharedInstance;)
-+ (MessagingManager * _Nonnull)sharedInstance;
-+ (void)startReceivingMessage;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-- (void)messagesReceived:(NSArray<NSDictionary<NSString *, id> *> * _Nonnull)messages;
-- (NSString * _Nullable)lastReceivedMessageIDInChannel:(NSString * _Nonnull)channelID;
-- (void)postMessageReceiptWithTempID:(NSString * _Nonnull)messageTempID dialogID:(NSString * _Nonnull)dialogID senderID:(NSString * _Nonnull)senderID receiptStatus:(enum MessageReceiptStatus)receiptStatus;
-- (NSDictionary * _Nonnull)createTextMessageJSON:(NSString * _Nonnull)text dialogID:(NSString * _Nonnull)dialogID mentionedUsers:(NSArray<NSString *> * _Nullable)mentionedUsers;
-- (NSDictionary * _Nonnull)createVideoMessageJSON:(NSString * _Nonnull)videoStreamURL thumbnail:(NSString * _Nonnull)thumbnail dialogID:(NSString * _Nonnull)dialogID;
-- (NSDictionary * _Nonnull)createImageMessageJSON:(NSString * _Nonnull)url dialogID:(NSString * _Nonnull)dialogID;
-- (NSDictionary * _Nonnull)createGifMessageJSON:(NSString * _Nonnull)url dialogID:(NSString * _Nonnull)dialogID;
-- (NSDictionary * _Nonnull)createSenderJSON;
-- (NSDictionary * _Nonnull)createImagePayloadJSON:(NSString * _Nonnull)imageURL;
-- (NSDictionary * _Nonnull)createGifPayloadJSON:(NSString * _Nonnull)imageURL;
-- (NSDictionary * _Nonnull)createVideoPayloadJSON:(NSString * _Nonnull)videoStreamURL thumbnail:(NSString * _Nonnull)thumbnail;
-- (void)failMessage:(NSString * _Nonnull)tempID;
+@interface MKPlacemark (SWIFT_EXTENSION(AppFriendsUI))
 @end
-
 
 
 @interface NSDictionary (SWIFT_EXTENSION(AppFriendsUI))
-- (NSString * _Nonnull)toString;
-@end
-
-
-@interface NSError (SWIFT_EXTENSION(AppFriendsUI))
 @end
 
 @class UITouch;
@@ -1579,6 +2138,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 - (void)addMembersObject:(HCUser * _Nonnull)value;
 - (void)removeMembersObject:(HCUser * _Nonnull)value;
 @end
+
 
 
 
