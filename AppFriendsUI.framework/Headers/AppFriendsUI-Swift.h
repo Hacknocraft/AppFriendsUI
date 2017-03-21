@@ -947,6 +947,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 
 */
 - (void)didFailToLoadDialog:(NSError * _Nullable)error;
+- (void)onDialogLoaded;
 /**
   this function will open the system photo picker for you the user to pick image or video to send
 */
@@ -1132,6 +1133,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 - (nonnull instancetype)initWithDialogID:(NSString * _Nonnull)dialogID;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
 @property (nonatomic, readonly) BOOL prefersStatusBarHidden;
 - (void)userSelected:(NSString * _Nonnull)userID;
