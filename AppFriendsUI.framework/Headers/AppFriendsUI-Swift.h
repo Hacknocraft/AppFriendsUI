@@ -118,10 +118,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import ObjectiveC;
 @import Foundation;
 @import UIKit;
-@import SlackTextViewController;
-@import CoreGraphics;
-@import AVFoundation;
 @import CoreData;
+@import CoreGraphics;
+@import SlackTextViewController;
 @import CLTokenInputView;
 @import SESlideTableViewCell;
 @import AppFriendsCore;
@@ -744,7 +743,72 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) CoreStoreMan
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class NSManagedObjectContext;
+@class NSEntityDescription;
+
+SWIFT_CLASS("_TtC12AppFriendsUI12_HCAlbumItem")
+@interface _HCAlbumItem : NSManagedObject
++ (NSString * _Nonnull)entityName;
++ (NSEntityDescription * _Nullable)entityWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
+- (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithManagedObjectContext:(NSManagedObjectContext * _Nonnull)managedObjectContext;
+@property (nonatomic, copy) NSString * _Nullable dialogID;
+@property (nonatomic, copy) NSString * _Nullable itemID;
+@property (nonatomic, copy) NSString * _Nullable ownerID;
+@property (nonatomic, copy) NSString * _Nullable section;
+@property (nonatomic, copy) NSString * _Nullable thumbnail;
+@property (nonatomic, copy) NSDate * _Nullable time;
+@property (nonatomic, copy) NSString * _Nullable type;
+@property (nonatomic, copy) NSString * _Nullable url;
+@end
+
+
+SWIFT_CLASS_NAMED("HCAlbumItem")
+@interface HCAlbumItem : _HCAlbumItem
+- (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class NSBundle;
 @class NSCoder;
+
+SWIFT_CLASS("_TtC12AppFriendsUI20HCBaseViewController")
+@interface HCBaseViewController : UIViewController
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+- (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
+- (void)showLoading:(NSString * _Nullable)message;
+- (void)showErrorWithMessage:(NSString * _Nullable)message;
+- (void)showSuccessWithMessage:(NSString * _Nullable)message;
+- (void)hideHUD;
+@end
+
+@class UIButton;
+@class UICollectionView;
+@class UIBarButtonItem;
+
+SWIFT_CLASS("_TtC12AppFriendsUI21HCAlbumViewController")
+@interface HCAlbumViewController : HCBaseViewController
+@property (nonatomic, readonly, strong) UIButton * _Nonnull closeButton;
+@property (nonatomic, strong) UICollectionView * _Nullable albumCollectionView;
+- (nonnull instancetype)initWithDialogID:(NSString * _Nonnull)dialogID OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)viewDidLoad;
+@property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
+- (UIBarButtonItem * _Nullable)leftBarButtonItem;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+@class UICollectionViewLayout;
+
+@interface HCAlbumViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
+- (void)collectionView:(UICollectionView * _Nonnull)collectionView didSelectItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (CGSize)collectionView:(UICollectionView * _Nonnull)collectionView layout:(UICollectionViewLayout * _Nonnull)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (CGSize)collectionView:(UICollectionView * _Nonnull)collectionView layout:(UICollectionViewLayout * _Nonnull)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
+- (CGSize)collectionView:(UICollectionView * _Nonnull)collectionView layout:(UICollectionViewLayout * _Nonnull)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
+@end
+
 @class UITableView;
 @class UITextView;
 @class HCChatTableViewCell;
@@ -752,8 +816,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) CoreStoreMan
 @class UIImagePickerController;
 @class UIScrollView;
 @class UIGestureRecognizer;
-@class UICollectionViewLayout;
-@class NSBundle;
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 @interface HCBaseChatViewController : SLKTextViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, AFEventSubscriber>
@@ -799,10 +861,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
-@end
-
-
-@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <AVAssetResourceLoaderDelegate>
 @end
 
 
@@ -911,7 +969,6 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 
 @class UIImageView;
 @class UIImage;
-@class UIBarButtonItem;
 
 @interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
 /**
@@ -1081,21 +1138,6 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 @end
 
 
-SWIFT_CLASS("_TtC12AppFriendsUI20HCBaseViewController")
-@interface HCBaseViewController : UIViewController
-- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
-- (void)viewDidLoad;
-- (void)didReceiveMemoryWarning;
-- (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
-- (void)showLoading:(NSString * _Nullable)message;
-- (void)showErrorWithMessage:(NSString * _Nullable)message;
-- (void)showSuccessWithMessage:(NSString * _Nullable)message;
-- (void)hideHUD;
-@end
-
-@class NSManagedObjectContext;
-@class NSEntityDescription;
 @class NSNumber;
 
 SWIFT_CLASS("_TtC12AppFriendsUI10_HCChannel")
@@ -1249,7 +1291,6 @@ SWIFT_CLASS_NAMED("HCChatDialog")
 
 @class NSLayoutConstraint;
 @class UILabel;
-@class UIButton;
 
 SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 @interface HCChatTableViewCell : UITableViewCell <UIScrollViewDelegate, UITextViewDelegate>
@@ -1426,6 +1467,30 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull nor
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable placeholderTextColor;)
 + (UIColor * _Nullable)placeholderTextColor;
 + (void)setPlaceholderTextColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumBackgroundColor;)
++ (UIColor * _Nullable)albumBackgroundColor;
++ (void)setAlbumBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumSectionBackgroundColor;)
++ (UIColor * _Nullable)albumSectionBackgroundColor;
++ (void)setAlbumSectionBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumSectionTitleColor;)
++ (UIColor * _Nullable)albumSectionTitleColor;
++ (void)setAlbumSectionTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumItemBackgroundColor;)
++ (UIColor * _Nullable)albumItemBackgroundColor;
++ (void)setAlbumItemBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBarIconColor;)
++ (UIColor * _Nullable)albumNavigationBarIconColor;
++ (void)setAlbumNavigationBarIconColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBarTitleColor;)
++ (UIColor * _Nullable)albumNavigationBarTitleColor;
++ (void)setAlbumNavigationBarTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBackgroundColor;)
++ (UIColor * _Nullable)albumNavigationBackgroundColor;
++ (void)setAlbumNavigationBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) UIStatusBarStyle albumStatusBarStyle;)
++ (UIStatusBarStyle)albumStatusBarStyle;
++ (void)setAlbumStatusBarStyle:(UIStatusBarStyle)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1498,7 +1563,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCDialogMemberCollectionViewCell")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class UICollectionView;
 @class UIView;
 @class UISwitch;
 
@@ -1674,6 +1738,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull loca
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull emptyTableLabelFont;)
 + (UIFont * _Nonnull)emptyTableLabelFont;
 + (void)setEmptyTableLabelFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull albumSectionTitleFont;)
++ (UIFont * _Nonnull)albumSectionTitleFont;
++ (void)setAlbumSectionTitleFont:(UIFont * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1704,10 +1771,18 @@ SWIFT_CLASS("_TtC12AppFriendsUI28HCGroupCreatorViewController")
 
 SWIFT_CLASS("_TtC12AppFriendsUI26HCImageModalViewController")
 @interface HCImageModalViewController : HCBaseViewController <UIScrollViewDelegate>
-- (nonnull instancetype)initWithUrl:(NSString * _Nonnull)url OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, weak) IBOutlet UIImageView * _Null_unspecified imageView;
+@property (nonatomic, weak) IBOutlet UIScrollView * _Null_unspecified scrollView;
+@property (nonatomic, readonly, strong) UIButton * _Nonnull closeButton;
+@property (nonatomic, readonly, strong) UIButton * _Nonnull shareButton;
+@property (nonatomic, readonly, strong) UIButton * _Nonnull albumButton;
+- (nonnull instancetype)initWithUrl:(NSString * _Nonnull)url showAlbumButton:(BOOL)show dialog:(AFDialog * _Nullable)dialog OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
+- (void)viewWillAppear:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
+- (UIBarButtonItem * _Nonnull)rightBarButtonItem;
+- (UIBarButtonItem * _Nullable)leftBarButtonItem;
 - (UIView * _Nullable)viewForZoomingInScrollView:(UIScrollView * _Nonnull)scrollView;
 - (void)scrollViewDidEndZooming:(UIScrollView * _Nonnull)scrollView withView:(UIView * _Nullable)view atScale:(CGFloat)scale;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
@@ -1917,6 +1992,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull noSe
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull locationTitleDefault;)
 + (NSString * _Nonnull)locationTitleDefault;
 + (void)setLocationTitleDefault:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull albumViewtitle;)
++ (NSString * _Nonnull)albumViewtitle;
++ (void)setAlbumViewtitle:(NSString * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -2130,6 +2208,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 
 @interface UIViewController (SWIFT_EXTENSION(AppFriendsUI))
 @end
+
 
 
 
