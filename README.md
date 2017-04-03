@@ -89,4 +89,4 @@ import AppFriendsCore
 import AppFriendsUI
 ```
 ## 5. Login
-After initialization, you want to login your user to AppFriends, so he can start chatting with other users. Please see [sessions](sessions.md) for detail
+After initialization, you want to login your user to AppFriends, so he can start chatting with other users. Please see [sessions](http://appfriends.me/documentation/ios/sessions/) for detail
