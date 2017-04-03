@@ -634,6 +634,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCAlbumViewController")
 - (nonnull instancetype)initWithDialogID:(NSString * _Nonnull)dialogID OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)viewWillDisappear:(BOOL)animated;
 @property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
 - (UIBarButtonItem * _Nullable)leftBarButtonItem SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
@@ -1538,6 +1540,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL messagePushNotificationEn
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentRating gifContentRating;)
 + (enum AFGifContentRating)gifContentRating SWIFT_WARN_UNUSED_RESULT;
 + (void)setGifContentRating:(enum AFGifContentRating)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showDialogAlbum;)
++ (BOOL)showDialogAlbum SWIFT_WARN_UNUSED_RESULT;
++ (void)setShowDialogAlbum:(BOOL)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
