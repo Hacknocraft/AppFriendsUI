@@ -1,4 +1,11 @@
 # Change log
+## version 2.0.1 - *April 4, 2017*
+1. hide the CoreData classes and replace them with thread safe object classes
+2. added data model and API classes `AFUser`, `AFSession`, `AFPushNotification`, `AFMessage`, `AFEvent`, `AFDialog` and `AFAttachment`
+3. added location message type. Choose the message types you want to support by using `HCSettingsConfiguation.supportedMessageTypes`
+4. added dialog album feature.
+5. update the dependencies libraries versions
+
 ## version 1.2.15 - *Feb 15, 2017*
 1. handle the issue that dialog title not loading if you enter chat from a push
 2. full screen preview before image is sent to chat
