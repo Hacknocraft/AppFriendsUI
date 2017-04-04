@@ -990,6 +990,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCChatContainerViewController")
 - (void)displayChannelsList;
 - (void)displayDialogsList;
 - (void)displayContactsList;
+- (void)addVC:(UIViewController * _Nonnull)contentVC;
 - (void)removeVC:(UIViewController * _Nullable)contentVC;
 - (void)usersSelected:(NSArray<NSString *> * _Nonnull)users;
 - (void)closeButtonTapped:(HCGroupCreatorViewController * _Nonnull)selectVC;
@@ -1244,6 +1245,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI22HCContactTableViewCell")
 
 SWIFT_CLASS("_TtC12AppFriendsUI24HCContactsViewController")
 @interface HCContactsViewController : HCBaseViewController
+@property (nonatomic, copy) NSArray<NSString *> * _Nonnull hiddenUsers;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
