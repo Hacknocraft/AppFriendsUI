@@ -147,8 +147,10 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
 enum AFAttachmentType : NSInteger;
 
+/// message attachment base class
 SWIFT_CLASS("_TtC12AppFriendsUI12AFAttachment")
 @interface AFAttachment : NSObject
+/// the type of the attachment
 @property (nonatomic, readonly) enum AFAttachmentType type;
 - (nonnull instancetype)initWithType:(enum AFAttachmentType)type OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -315,6 +317,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI17AFEventSubscriber_")
 @end
 
 
+/// gif attachement
 SWIFT_CLASS("_TtC12AppFriendsUI15AFGifAttachment")
 @interface AFGifAttachment : AFAttachment
 @property (nonatomic, readonly, copy) NSString * _Nonnull url;
@@ -331,6 +334,7 @@ typedef SWIFT_ENUM(NSInteger, AFGifContentRating) {
 };
 
 
+/// image attachment
 SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
 @interface AFImageAttachment : AFAttachment
 @property (nonatomic, readonly, copy) NSString * _Nonnull fullSizeURL;
@@ -341,6 +345,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
 
 @class MKMapItem;
 
+/// Location attachment
 SWIFT_CLASS("_TtC12AppFriendsUI20AFLocationAttachment")
 @interface AFLocationAttachment : AFAttachment
 @property (nonatomic, readonly, strong) MKMapItem * _Nonnull mapItem;
@@ -405,6 +410,7 @@ typedef SWIFT_ENUM(NSInteger, AFMessageSendingStatus) {
 };
 
 
+/// Push notification API’s
 SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
 @interface AFPushNotification : NSObject
 /// Registering the current device for push notification
@@ -423,7 +429,10 @@ SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
 /// optimize the user experience. Especially if you are entering the app using the push notification sent by AppFriends. We will only look at push notification coming from AppFriends.
 /// \param info user info object inside the push notification
 ///
-+ (void)processPushNotificationWithNotificationUserInfo:(NSDictionary * _Nonnull)info;
+///
+/// returns:
+/// true if AppFriends SDK used the push notification
++ (BOOL)processPushNotificationWithNotificationUserInfo:(NSDictionary * _Nonnull)info SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -532,6 +541,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 @end
 
 
+/// video attachement
 SWIFT_CLASS("_TtC12AppFriendsUI17AFVideoAttachment")
 @interface AFVideoAttachment : AFAttachment
 @property (nonatomic, readonly, copy) NSString * _Nonnull streamingURL;
