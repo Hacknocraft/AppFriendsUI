@@ -24,11 +24,10 @@ s.vendored_frameworks = "AppFriendsUI.framework"
 s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => s.version.to_s}
 
 # 7
-s.dependency 'AppFriendsCore', '~> 1.1.3'
 s.dependency 'SlackTextViewController', '~> 1.9.5'
 s.dependency 'CLTokenInputView', '~> 2.3.0'
 s.dependency 'JGProgressHUD', '~> 1.4'
-s.dependency 'AppFriendsCore'
+s.dependency 'AppFriendsCore', '~> 2.0.1'
 s.dependency 'SESlideTableViewCell', '~> 0.7.1'
 s.dependency 'AFDateHelper', '~> 3.5.3'
 s.dependency 'AlamofireImage', '~> 3.1'

@@ -5,6 +5,7 @@
 3. added location message type. Choose the message types you want to support by using `HCSettingsConfiguation.supportedMessageTypes`
 4. added dialog album feature.
 5. update the dependencies libraries versions
+6. various bug fixes
 
 ## version 1.2.15 - *Feb 15, 2017*
 1. handle the issue that dialog title not loading if you enter chat from a push
