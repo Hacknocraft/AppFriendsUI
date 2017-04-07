@@ -5,7 +5,11 @@
 3. added location message type. Choose the message types you want to support by using `HCSettingsConfiguation.supportedMessageTypes`
 4. added dialog album feature.
 5. update the dependencies libraries versions
-6. various bug fixes
+6. various bug fixes:
+  - image viewer background issue
+  - make the online user report return faster
+  - fixed the problem with 1 on 1 push is clicked before dialog was created by fetching/create dialog when user gets to the chat view
+  - fixed a problem with uploading video progress overlay not disappearing sometimes 
 
 ## version 1.2.15 - *Feb 15, 2017*
 1. handle the issue that dialog title not loading if you enter chat from a push
