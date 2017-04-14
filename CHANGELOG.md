@@ -2,6 +2,9 @@
 ## version 2.0.1 - *April 4, 2017*
 1. hide the CoreData classes and replace them with thread safe object classes
 2. added data model and API classes `AFUser`, `AFSession`, `AFPushNotification`, `AFMessage`, `AFEvent`, `AFDialog` and `AFAttachment`
+  *note*
+   - Please use AFSession for login and logout. Eg. AFSession.login
+   - We separated logout and unregister device for push. Please call AFPushNotification.unregisterDeviceForPushNotification before calling AFSession.logout.
 3. added location message type. Choose the message types you want to support by using `HCSettingsConfiguation.supportedMessageTypes`
 4. added dialog album feature.
 5. update the dependencies libraries versions
