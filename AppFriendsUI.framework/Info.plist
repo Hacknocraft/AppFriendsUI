@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.1</string>
+	<string>2.0.2</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>DTCompiler</key>
@@ -29,9 +29,9 @@
 	<key>DTSDKBuild</key>
 	<string>14E269</string>
 	<key>DTXcode</key>
-	<string>0830</string>
+	<string>0831</string>
 	<key>DTXcodeBuild</key>
-	<string>8E162</string>
+	<string>8E1000a</string>
 	<key>MinimumOSVersion</key>
 	<string>9.0</string>
 	<key>UIDeviceFamily</key>
