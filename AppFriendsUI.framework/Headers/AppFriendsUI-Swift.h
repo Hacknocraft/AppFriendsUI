@@ -551,6 +551,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI17AFVideoAttachment")
 @end
 
 @class UIViewController;
+enum HCSidePanelBackgroundMode : NSInteger;
 @class HCSidePanelViewController;
 
 SWIFT_CLASS("_TtC12AppFriendsUI12AppFriendsUI")
@@ -564,7 +565,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (void)initialize:(NSString * _Nonnull)appKey secret:(NSString * _Nonnull)secret completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
 - (BOOL)initialized SWIFT_WARN_UNUSED_RESULT;
 - (void)logout:(void (^ _Nullable)(NSError * _Nullable))completion SWIFT_DEPRECATED_MSG("deprecated. will be removed in release version: 2.1. Use <AFSession> instead.");
-- (HCSidePanelViewController * _Nonnull)presentVCInSidePanelFromVC:(UIViewController * _Nonnull)fromVC showVC:(UIViewController * _Nonnull)showVC SWIFT_WARN_UNUSED_RESULT;
+- (HCSidePanelViewController * _Nonnull)presentVCInSidePanelFromVC:(UIViewController * _Nonnull)fromVC showVC:(UIViewController * _Nonnull)showVC backgroundMode:(enum HCSidePanelBackgroundMode)backgroundMode SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1486,9 +1487,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull dial
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull navigationBarTitleFont;)
 + (UIFont * _Nonnull)navigationBarTitleFont SWIFT_WARN_UNUSED_RESULT;
 + (void)setNavigationBarTitleFont:(UIFont * _Nonnull)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListSectionTitleFont;)
-+ (UIFont * _Nonnull)chatDialogListSectionTitleFont SWIFT_WARN_UNUSED_RESULT;
-+ (void)setChatDialogListSectionTitleFont:(UIFont * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatTimestampFont;)
 + (UIFont * _Nonnull)chatTimestampFont SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatTimestampFont:(UIFont * _Nonnull)value;
@@ -1507,6 +1505,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull empt
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull albumSectionTitleFont;)
 + (UIFont * _Nonnull)albumSectionTitleFont SWIFT_WARN_UNUSED_RESULT;
 + (void)setAlbumSectionTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListSectionTitleFont;)
++ (UIFont * _Nonnull)chatDialogListSectionTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListSectionTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellTitleFont;)
++ (UIFont * _Nonnull)chatDialogListCellTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellTimestampFont;)
++ (UIFont * _Nonnull)chatDialogListCellTimestampFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellTimestampFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellLastMessageFont;)
++ (UIFont * _Nonnull)chatDialogListCellLastMessageFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellLastMessageFont:(UIFont * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1622,10 +1632,22 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCSidePanelAnimator")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+typedef SWIFT_ENUM(NSInteger, HCSidePanelBackgroundMode) {
+/// transparent, and see the background view without any mask
+  HCSidePanelBackgroundModeNormal = 0,
+/// darkens the background view
+  HCSidePanelBackgroundModeDarken = 1,
+/// blurs the background view
+  HCSidePanelBackgroundModeBlur = 2,
+/// blurs and darkens the background view
+  HCSidePanelBackgroundModeDarkBlur = 3,
+};
+
 @protocol HCSidePanelViewControllerDelegate;
 
 SWIFT_CLASS("_TtC12AppFriendsUI25HCSidePanelViewController")
 @interface HCSidePanelViewController : UIViewController
+@property (nonatomic) enum HCSidePanelBackgroundMode backgroundMode;
 @property (nonatomic, weak) id <HCSidePanelViewControllerDelegate> _Nullable delegate;
 - (nonnull instancetype)initWithAnimator:(HCSidePanelAnimator * _Nonnull)animator contentVC:(UIViewController * _Nonnull)contentVC OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
