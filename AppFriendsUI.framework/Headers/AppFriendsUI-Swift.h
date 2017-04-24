@@ -138,7 +138,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import SlackTextViewController;
 @import CLTokenInputView;
-@import SESlideTableViewCell;
 @import AppFriendsCore;
 @import MapKit;
 #endif
@@ -1339,7 +1338,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
 @class HCTopAlignedContentLabel;
 
 SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
-@interface HCDialogTableViewCell : SESlideTableViewCell <SESlideTableViewCellDelegate>
+@interface HCDialogTableViewCell : UITableViewCell
 @property (nonatomic, weak) IBOutlet UIImageView * _Null_unspecified dialogAvatarImageView;
 @property (nonatomic, weak) IBOutlet UIImageView * _Nullable backgroundImageView;
 @property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified userNameLabel;
@@ -1347,18 +1346,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 @property (nonatomic, weak) IBOutlet UILabel * _Null_unspecified lastMessageTimeLabel;
 @property (nonatomic, weak) IBOutlet UIView * _Null_unspecified badgeView;
 - (void)awakeFromNib;
-- (void)addRightButtonWithText:(NSString * _Null_unspecified)text textColor:(UIColor * _Null_unspecified)textColor backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
-- (void)addRightButtonWithImage:(UIImage * _Null_unspecified)image backgroundColor:(UIColor * _Null_unspecified)backgroundColor;
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)hideBadge:(BOOL)hide;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
-- (void)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell didTriggerRightButton:(NSInteger)buttonIndex;
-- (void)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell didSlideToState:(SESlideTableViewCellSlideState)slideState;
-- (BOOL)slideTableViewCell:(SESlideTableViewCell * _Null_unspecified)cell canSlideToState:(SESlideTableViewCellSlideState)slideState SWIFT_WARN_UNUSED_RESULT;
-- (null_unspecified instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString * _Null_unspecified)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString * _Nullable)reuseIdentifier OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=3.0);
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class UITableViewRowAction;
 
 /// This view controller will display a list of previous dialogs.
 /// You can subclass this class to customize the behavior.
@@ -1385,6 +1380,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 - (UIView * _Nullable)tableView:(UITableView * _Nonnull)tableView viewForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
 - (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)tableView:(UITableView * _Nonnull)tableView canEditRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+- (NSArray<UITableViewRowAction *> * _Nullable)tableView:(UITableView * _Nonnull)tableView editActionsForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
 /// Fill the avatar image view of the chat message cell
 /// \param indexPath the indexPath of the message cell
 ///
