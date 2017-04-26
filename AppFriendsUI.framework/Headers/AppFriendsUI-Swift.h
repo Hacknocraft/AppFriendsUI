@@ -137,7 +137,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import UIKit;
 @import CoreGraphics;
 @import SlackTextViewController;
-@import CLTokenInputView;
 @import AppFriendsCore;
 @import MapKit;
 #endif
@@ -471,6 +470,61 @@ SWIFT_CLASS("_TtC12AppFriendsUI9AFSession")
 @end
 
 
+SWIFT_CLASS("_TtC12AppFriendsUI7AFToken")
+@interface AFToken : NSObject
+@property (nonatomic, copy) NSString * _Nonnull displayText;
+@property (nonatomic, strong) id _Nullable context;
+- (nonnull instancetype)initWithDisplayText:(NSString * _Nonnull)displayText context:(id _Nullable)context OBJC_DESIGNATED_INITIALIZER;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, readonly) NSUInteger hash;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+@protocol AFTokenInputViewDelegate;
+@class UIColor;
+@class NSCoder;
+@class UITextField;
+
+SWIFT_CLASS("_TtC12AppFriendsUI16AFTokenInputView")
+@interface AFTokenInputView : UIView <UITextFieldDelegate>
+@property (nonatomic, weak) id <AFTokenInputViewDelegate> _Nullable delegate;
+@property (nonatomic, copy) NSString * _Nullable fieldName;
+@property (nonatomic, strong) UIColor * _Nonnull fieldColor;
+@property (nonatomic, copy) NSArray<NSString *> * _Nonnull tokenizationCharacters;
+@property (nonatomic, readonly, copy) NSArray<AFToken *> * _Nonnull allTokens;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+- (void)tintColorDidChange;
+- (void)textFieldDidBeginEditing:(UITextField * _Nonnull)textField;
+- (void)textFieldDidEndEditing:(UITextField * _Nonnull)textField;
+- (BOOL)textFieldShouldReturn:(UITextField * _Nonnull)textField SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)textField:(UITextField * _Nonnull)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString * _Nonnull)string SWIFT_WARN_UNUSED_RESULT;
+- (void)drawRect:(CGRect)rect;
+@end
+
+
+@interface AFTokenInputView (SWIFT_EXTENSION(AppFriendsUI))
+- (void)add:(AFToken * _Nonnull)token;
+- (void)remove:(AFToken * _Nonnull)token;
+- (void)removeAtIndex:(NSInteger)index;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI24AFTokenInputViewDelegate_")
+@protocol AFTokenInputViewDelegate
+@optional
+- (void)tokenInputViewDidEndEditing:(AFTokenInputView * _Nonnull)view;
+- (void)tokenInputViewDidBeginEditing:(AFTokenInputView * _Nonnull)view;
+- (BOOL)tokenInputViewShouldReturn:(AFTokenInputView * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
+- (void)tokenInputView:(AFTokenInputView * _Nonnull)view didChangeText:(NSString * _Nullable)text;
+- (void)tokenInputView:(AFTokenInputView * _Nonnull)view didAdd:(AFToken * _Nonnull)token;
+- (void)tokenInputView:(AFTokenInputView * _Nonnull)view didRemove:(AFToken * _Nonnull)token;
+- (AFToken * _Nullable)tokenInputView:(AFTokenInputView * _Nonnull)view tokenForText:(NSString * _Nonnull)text SWIFT_WARN_UNUSED_RESULT;
+- (void)tokenInputView:(AFTokenInputView * _Nonnull)view didChangeHeightTo:(CGFloat)height;
+@end
+
+
 /// AFUser object which contains information of a user. This class also provides public interface to access user data
 SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 @interface AFUser : NSObject
@@ -618,7 +672,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) CoreStoreMan
 @end
 
 @class NSBundle;
-@class NSCoder;
 
 SWIFT_CLASS("_TtC12AppFriendsUI20HCBaseViewController")
 @interface HCBaseViewController : UIViewController
@@ -1047,7 +1100,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 @end
 
 
-@class UIColor;
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 @interface HCColorPalette : NSObject
@@ -1239,8 +1291,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSTimeInterval timeIntervalFor
 
 
 SWIFT_CLASS("_TtC12AppFriendsUI20HCContactSelectField")
-@interface HCContactSelectField : CLTokenInputView
-- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+@interface HCContactSelectField : AFTokenInputView
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1292,7 +1343,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCDialogMemberCollectionViewCell")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class UIView;
 @class UISwitch;
 
 SWIFT_CLASS("_TtC12AppFriendsUI29HCDialogSettingViewController")
@@ -1525,17 +1575,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI9HCGifItem")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class CLToken;
 
 SWIFT_CLASS("_TtC12AppFriendsUI28HCGroupCreatorViewController")
-@interface HCGroupCreatorViewController : HCContactsViewController <CLTokenInputViewDelegate>
+@interface HCGroupCreatorViewController : HCContactsViewController <AFTokenInputViewDelegate>
 @property (nonatomic, weak) id <HCGroupCreatorViewControllerDelegate> _Nullable delegate;
 @property (nonatomic, copy) NSString * _Nullable dialogID;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
-- (void)tokenInputView:(CLTokenInputView * _Nonnull)view didAddToken:(CLToken * _Nonnull)token;
-- (void)tokenInputView:(CLTokenInputView * _Nonnull)view didRemoveToken:(CLToken * _Nonnull)token;
-- (void)tokenInputView:(CLTokenInputView * _Nonnull)view didChangeHeightTo:(CGFloat)height;
+- (void)tokenInputView:(AFTokenInputView * _Nonnull)view didChangeTo:(float)height;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
