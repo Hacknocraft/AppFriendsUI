@@ -27,7 +27,6 @@ s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => 
 s.dependency 'SlackTextViewController', '~> 1.9.5'
 s.dependency 'JGProgressHUD', '~> 1.4'
 s.dependency 'AppFriendsCore', '~> 2.0.1'
-s.dependency 'AFDateHelper', '~> 3.5.3'
 s.dependency 'AlamofireImage', '~> 3.1'
 
 end
