@@ -1,3 +1,18 @@
+<p align="center">
+<img alt="AppFriends" src="http://res.cloudinary.com/hacknocraft-appfriends/image/upload/v1492110660/AppFriends_logo_cinxuq.png" width=614 />
+<br />
+<br />
+MAKE YOUR APP SOCIAL
+<br />
+Engage users with our turnkey social layer
+<br />
+<br />
+<a href="https://www.bitrise.io/app/b64fc32389e5c132#/builds"><img alt="Build Status" src="https://www.bitrise.io/app/b64fc32389e5c132.svg?token=LK2n0BLiCini3bDGIGO_pg" /></a>
+<a href="https://cocoapods.org/pods/CoreStore"><img alt="Cocoapods compatible" src="https://img.shields.io/cocoapods/v/CoreStore.svg?style=flat&label=Cocoapods" /></a>
+</a>
+<a href="https://github.com/Carthage/Carthage"><img alt="Carthage compatible" src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" /></a>
+</p>
+
 # Quick Start
 ## 1. Create an AppFriends Application
 Before start using AppFriends, you need to create an application on the [dashboard](http://appfriends.hacknocraft.com/landing/index) Users in the same application can talk to each other and you only need one application for all the platforms you want to support.
@@ -6,8 +21,8 @@ Before start using AppFriends, you need to create an application on the [dashboa
 ### Using Cocoapods
 To integrate AppFriends iOS SDK to your Xcode iOS project, add this line in your `Podfile`
 ``` ruby
-pod 'AppFriendsUI', '~> 2.0.1'
-pod 'AppFriendsCore', '~> 2.0.1'
+pod 'AppFriendsUI', '~> 2.0.4'
+pod 'AppFriendsCore', '~> 2.0.2'
 ```
 Also, add `use_frameworks!` to the top of file. eg.
 ``` ruby
@@ -89,4 +104,4 @@ import AppFriendsCore
 import AppFriendsUI
 ```
 ## 5. Login
-After initialization, you want to login your user to AppFriends, so he can start chatting with other users. Please see [sessions](http://appfriends.me/documentation/ios/sessions/) for detail
+After initialization, you want to login your user to AppFriends, so he can start chatting with other users. Please see [sessions](sessions.md) for detail
