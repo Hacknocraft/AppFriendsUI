@@ -331,6 +331,11 @@ typedef SWIFT_ENUM(NSInteger, AFGifContentRating) {
   AFGifContentRatingRestricted = 4,
 };
 
+typedef SWIFT_ENUM(NSInteger, AFGifContentType) {
+  AFGifContentTypeSticker = 0,
+  AFGifContentTypeNormal = 1,
+};
+
 
 /// image attachment
 SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
@@ -1650,6 +1655,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL messagePushNotificationEn
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentRating gifContentRating;)
 + (enum AFGifContentRating)gifContentRating SWIFT_WARN_UNUSED_RESULT;
 + (void)setGifContentRating:(enum AFGifContentRating)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentType gifContentType;)
++ (enum AFGifContentType)gifContentType SWIFT_WARN_UNUSED_RESULT;
++ (void)setGifContentType:(enum AFGifContentType)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showDialogAlbum;)
 + (BOOL)showDialogAlbum SWIFT_WARN_UNUSED_RESULT;
 + (void)setShowDialogAlbum:(BOOL)value;
