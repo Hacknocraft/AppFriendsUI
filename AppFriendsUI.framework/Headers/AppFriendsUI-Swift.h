@@ -1111,9 +1111,12 @@ SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatBackgroundColor;)
 + (UIColor * _Nullable)chatBackgroundColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatBackgroundColor:(UIColor * _Nullable)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatDialogCellBackgroundColor;)
-+ (UIColor * _Nullable)chatDialogCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
-+ (void)setChatDialogCellBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogCellBackgroundColor;)
++ (UIColor * _Nonnull)chatDialogCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogCellBackgroundColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatMessageCellBackgroundColor;)
++ (UIColor * _Nonnull)chatMessageCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMessageCellBackgroundColor:(UIColor * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatOutMessageContentTextColor;)
 + (UIColor * _Nonnull)chatOutMessageContentTextColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatOutMessageContentTextColor:(UIColor * _Nonnull)value;
