@@ -8,7 +8,7 @@ s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "2.0.5"
+s.version = "2.0.6"
 
 # 3
 s.license = { :type => "MIT" }
@@ -26,7 +26,7 @@ s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => 
 # 7
 s.dependency 'SlackTextViewController', '~> 1.9.5'
 s.dependency 'JGProgressHUD', '~> 1.4'
-s.dependency 'AppFriendsCore', '~> 2.0.1'
+s.dependency 'AppFriendsCore', '~> 2.0.5'
 s.dependency 'AlamofireImage', '~> 3.1'
 
 end

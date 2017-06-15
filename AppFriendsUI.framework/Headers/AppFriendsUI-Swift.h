@@ -996,7 +996,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI32HCChannelChatContainerController")
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
-@property (nonatomic, readonly) BOOL prefersStatusBarHidden;
 - (void)userSelected:(NSString * _Nonnull)userID;
 - (void)updateTitle;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
