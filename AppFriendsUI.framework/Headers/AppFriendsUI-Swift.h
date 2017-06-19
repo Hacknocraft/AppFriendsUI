@@ -306,6 +306,7 @@ typedef SWIFT_ENUM(NSInteger, AFEventName) {
   AFEventNameEventMessageReceived = 5,
   AFEventNameEventUserSelected = 6,
   AFEventNameEventDuplicateSession = 7,
+  AFEventNameEventTotalUnreadCountChange = 8,
 };
 
 
@@ -617,10 +618,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI12AppFriendsUI")
 @interface AppFriendsUI : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) AppFriendsUI * _Nonnull sharedInstance;)
 + (AppFriendsUI * _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kDialogLeaveNotification;)
-+ (NSString * _Nonnull)kDialogLeaveNotification SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull kTotalUnreadMessageCountChangedNotification;)
-+ (NSString * _Nonnull)kTotalUnreadMessageCountChangedNotification SWIFT_WARN_UNUSED_RESULT;
 - (void)initialize:(NSString * _Nonnull)appKey secret:(NSString * _Nonnull)secret completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
 - (BOOL)initialized SWIFT_WARN_UNUSED_RESULT;
 - (void)logout:(void (^ _Nullable)(NSError * _Nullable))completion SWIFT_DEPRECATED_MSG("deprecated. will be removed in release version: 2.1. Use <AFSession> instead.");
