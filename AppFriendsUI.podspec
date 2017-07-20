@@ -8,7 +8,7 @@ s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "2.1.0"
+s.version = "2.1.1"
 
 # 3
 s.license = { :type => "MIT" }

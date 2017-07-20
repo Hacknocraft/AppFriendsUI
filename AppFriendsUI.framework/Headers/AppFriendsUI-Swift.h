@@ -139,6 +139,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import SlackTextViewController;
 @import AppFriendsCore;
 @import MapKit;
+@import ImageIO;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -159,6 +160,7 @@ typedef SWIFT_ENUM(NSInteger, AFAttachmentType) {
   AFAttachmentTypeVideo = 1,
   AFAttachmentTypeGif = 2,
   AFAttachmentTypeLocation = 3,
+  AFAttachmentTypeGameScore = 4,
 };
 
 enum AFDialogType : NSInteger;
@@ -307,12 +309,30 @@ typedef SWIFT_ENUM(NSInteger, AFEventName) {
   AFEventNameEventUserSelected = 6,
   AFEventNameEventDuplicateSession = 7,
   AFEventNameEventTotalUnreadCountChange = 8,
+  AFEventNameEventChannelCreated = 9,
+  AFEventNameEventChannelDestroyed = 10,
+  AFEventNameEventChannelUpdated = 11,
 };
 
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI17AFEventSubscriber_")
 @protocol AFEventSubscriber
 - (void)emitEvent:(AFEvent * _Nonnull)event;
+@end
+
+
+/// game score attachment
+SWIFT_CLASS("_TtC12AppFriendsUI21AFGameScoreAttachment")
+@interface AFGameScoreAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull gameId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamScore;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamScore;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamLogo;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamLogo;
+- (nonnull instancetype)initWithGameId:(NSString * _Nonnull)gameId homeTeamId:(NSString * _Nonnull)homeTeamId awayTeamId:(NSString * _Nonnull)awayTeamId homeTeamScore:(NSString * _Nonnull)homeTeamScore awayTeamScore:(NSString * _Nonnull)awayTeamScore homeTeamLogo:(NSString * _Nonnull)homeTeamLogo awayTeamLogo:(NSString * _Nonnull)awayTeamLogo OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithType:(enum AFAttachmentType)type SWIFT_UNAVAILABLE;
 @end
 
 
@@ -1906,6 +1926,53 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 
 
 @interface UIImage (SWIFT_EXTENSION(AppFriendsUI))
+/// Convenience initializer. Creates a gif with its backing data. Defaulted level of integrity.
+/// \param gifData The actual gif data
+///
+- (nonnull instancetype)initWithGifData:(NSData * _Nonnull)gifData;
+/// Convenience initializer. Creates a gif with its backing data.
+/// \param gifData The actual gif data
+///
+/// \param levelOfIntegrity 0 to 1, 1 meaning no frame skipping
+///
+- (nonnull instancetype)initWithGifData:(NSData * _Nonnull)gifData levelOfIntegrity:(float)levelOfIntegrity;
+/// Convenience initializer. Creates a gif with its backing data. Defaulted level of integrity.
+/// \param gifName Filename
+///
+- (nonnull instancetype)initWithGifName:(NSString * _Nonnull)gifName;
+/// Convenience initializer. Creates a gif with its backing data.
+/// \param gifName Filename
+///
+/// \param levelOfIntegrity 0 to 1, 1 meaning no frame skipping
+///
+- (nonnull instancetype)initWithGifName:(NSString * _Nonnull)gifName levelOfIntegrity:(float)levelOfIntegrity;
+/// Set backing data for this gif. Overwrites any existing data.
+/// \param data The actual gif data
+///
+/// \param levelOfIntegrity 0 to 1, 1 meaning no frame skipping
+///
+- (void)setGifFromData:(NSData * _Nonnull)data levelOfIntegrity:(float)levelOfIntegrity;
+/// Set backing data for this gif. Overwrites any existing data.
+/// \param name Filename
+///
+- (void)setGif:(NSString * _Nonnull)name;
+/// Check the number of frame for this gif
+/// <ul>
+///   <li>
+///     Return number of frames
+///   </li>
+/// </ul>
+- (NSInteger)framesCount SWIFT_WARN_UNUSED_RESULT;
+/// Set backing data for this gif. Overwrites any existing data.
+/// \param name Filename
+///
+/// \param levelOfIntegrity 0 to 1, 1 meaning no frame skipping
+///
+- (void)setGif:(NSString * _Nonnull)name levelOfIntegrity:(float)levelOfIntegrity;
+- (void)clear;
+@property (nonatomic) CGImageSourceRef _Nullable imageSource;
+@property (nonatomic, copy) NSArray<NSNumber *> * _Nullable displayOrder;
+@property (nonatomic, copy) NSData * _Nullable imageData;
 @end
 
 
