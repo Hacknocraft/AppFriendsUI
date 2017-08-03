@@ -230,6 +230,11 @@ SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 /// \param completion completion block. Will contain the error if the call failed
 ///
 - (void)addMembersWithNewMembers:(NSArray<NSString *> * _Nonnull)members completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Get all the IDs of the members in the dialog
+///
+/// returns:
+/// the IDs of all the members of the dialog
+- (NSArray<NSString *> * _Nonnull)memberIDs SWIFT_WARN_UNUSED_RESULT;
 /// Create a group dialog with multiple users
 /// \param id Optional, but you can choose to provide an unique id to the dialog yourself. If this value is not provided, we will create an unique id for you. This is a good way for you to bind the dialog with certain feature or part of your app.
 ///
@@ -309,9 +314,6 @@ typedef SWIFT_ENUM(NSInteger, AFEventName) {
   AFEventNameEventUserSelected = 6,
   AFEventNameEventDuplicateSession = 7,
   AFEventNameEventTotalUnreadCountChange = 8,
-  AFEventNameEventChannelCreated = 9,
-  AFEventNameEventChannelDestroyed = 10,
-  AFEventNameEventChannelUpdated = 11,
 };
 
 
@@ -833,6 +835,7 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 - (void)avatarTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 - (void)failedButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 - (void)linkTappedInCell:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
+- (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 @end
 
 
@@ -871,6 +874,8 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 /// \param attachment the attachment which is tapped
 ///
 - (void)didTapAttachment:(AFAttachment * _Nonnull)attachment indexPath:(NSIndexPath * _Nullable)indexPath;
+- (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)showThankYouReportingAlert;
 @end
 
 
@@ -1224,6 +1229,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable av
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull avatarColor;)
 + (UIColor * _Nonnull)avatarColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setAvatarColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable reportButtonTitleColor;)
++ (UIColor * _Nullable)reportButtonTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable reportButtonBorderColor;)
++ (UIColor * _Nullable)reportButtonBorderColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonBorderColor:(UIColor * _Nullable)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorColor;)
 + (UIColor * _Nonnull)segmentSelectorColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setSegmentSelectorColor:(UIColor * _Nonnull)value;
@@ -1684,6 +1695,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentType gifConte
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showDialogAlbum;)
 + (BOOL)showDialogAlbum SWIFT_WARN_UNUSED_RESULT;
 + (void)setShowDialogAlbum:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL enableContentFlagging;)
++ (BOOL)enableContentFlagging SWIFT_WARN_UNUSED_RESULT;
++ (void)setEnableContentFlagging:(BOOL)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1805,6 +1819,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull loca
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull albumViewtitle;)
 + (NSString * _Nonnull)albumViewtitle SWIFT_WARN_UNUSED_RESULT;
 + (void)setAlbumViewtitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull reportButtonTitle;)
++ (NSString * _Nonnull)reportButtonTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonTitle:(NSString * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
