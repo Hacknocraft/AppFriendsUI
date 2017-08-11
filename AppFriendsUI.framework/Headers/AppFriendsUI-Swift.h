@@ -832,9 +832,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)messagesWillRefresh;
 - (void)messagesDidRefresh;
 - (void)insertMessageWithMessage:(AFMessage * _Nonnull)message indexPath:(NSIndexPath * _Nonnull)indexPath;
-- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
-- (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
-- (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
