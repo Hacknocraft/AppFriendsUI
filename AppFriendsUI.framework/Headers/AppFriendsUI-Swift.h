@@ -607,7 +607,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// \param completion completion block. Will report error if the call fails
 ///
 + (void)updateUserAvatarWithAvatar:(NSString * _Nonnull)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
-+ (void)updateUserWithUsername:(NSString * _Nonnull)username avatar:(NSString * _Nonnull)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
++ (void)updateUserWithUsername:(NSString * _Nullable)username avatar:(NSString * _Nullable)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 /// update custom data of the current user
 /// \param custom data new custom data
 ///
