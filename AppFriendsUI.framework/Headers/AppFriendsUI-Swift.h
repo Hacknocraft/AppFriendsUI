@@ -573,12 +573,42 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// returns:
 /// true if the two users have the same id
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+/// Search for user using username
+/// \param query search text
+///
+/// \param completion completion block which will return an array of result AFUser. It reports error if it fails
+///
++ (void)searchWithQuery:(NSString * _Nonnull)query completion:(void (^ _Nullable)(NSArray<AFUser *> * _Nullable, NSError * _Nullable))completion;
 /// fetch a single user from the user id
 /// \param id user’s id
 ///
 /// \param completion completion block contains the user object, or the error if the request failed
 ///
 + (void)getUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFUser * _Nullable, NSError * _Nullable))completion;
+/// fetch the friends of the current user (user who are followed and followed back)
+/// \param completion completion block which contains the a list of user ids of the followers, or error if the request failed
+///
++ (void)getFriendsWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// get the users who are following the current user
+/// \param completion completion block which contains the a list of user ids of the followers, or error if the request failed
+///
++ (void)getFollowersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// get the users who the current user is following
+/// \param completion completion block which contains the a list of user ids, or error if the request failed
+///
++ (void)getFollowingCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// make the current user follow another user
+/// \param id the id of the user who you are going to follow
+///
+/// \param completion completion block, reports an error if the call failed
+///
++ (void)followUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// make the current user unfollow another user
+/// \param id the id of the user who you are going to unfollow
+///
+/// \param completion completion block, reports an error if the call failed
+///
++ (void)unfollowUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 /// block an user. After blocking, the user will not be able to send message to the current user
 /// \param id id of the user to be blocked
 ///
@@ -607,6 +637,13 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// \param completion completion block. Will report error if the call fails
 ///
 + (void)updateUserAvatarWithAvatar:(NSString * _Nonnull)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// update avatar and username of the current user
+/// \param username the new username
+///
+/// \param avatar the new avatar url
+///
+/// \param completion completion block. Will report error if the call fails
+///
 + (void)updateUserWithUsername:(NSString * _Nullable)username avatar:(NSString * _Nullable)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 /// update custom data of the current user
 /// \param custom data new custom data
