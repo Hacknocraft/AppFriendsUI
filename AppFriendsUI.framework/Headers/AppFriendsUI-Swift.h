@@ -513,7 +513,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
 /// Pubic interface for user session related functions
 SWIFT_CLASS("_TtC12AppFriendsUI9AFSession")
 @interface AFSession : NSObject
-/// Perform login
+/// Perform login with a username and user id
 /// \param name the username
 ///
 /// \param id the id of the user
