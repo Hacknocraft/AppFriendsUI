@@ -205,10 +205,92 @@ typedef SWIFT_ENUM(NSInteger, AFAttachmentType) {
   AFAttachmentTypeGameScore = 4,
 };
 
+@class AFMessage;
+@class NSError;
 
 /// Dialog interface provides api to access, create and update dialog
 SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 @interface AFDialog : NSObject
+/// send typing started signal
+- (void)startTyping;
+/// send typing end signal
+- (void)endTyping;
+/// Resend a failed message
+/// \param message message to resend
+///
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)resendMessageWithMessage:(AFMessage * _Nonnull)message completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Leave a dialog
+/// \param dialog the dialog which the user wants to leave
+///
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)leaveDialogWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// mute a dialog
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)muteWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// unmute a dialog
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)unmuteWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Update group dialog name
+/// \param name new name of the group dialog
+///
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)updateDialogNameWithDialogName:(NSString * _Nonnull)name completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Add members to a group dialog
+/// \param members provide user id array containing users to be added to the dialog
+///
+/// \param completion completion block. Will contain the error if the call failed
+///
+- (void)addMembersWithNewMembers:(NSArray<NSString *> * _Nonnull)members completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Get all the IDs of the members in the dialog
+///
+/// returns:
+/// the IDs of all the members of the dialog
+- (NSArray<NSString *> * _Nonnull)memberIDs SWIFT_WARN_UNUSED_RESULT;
+/// Create a group dialog with multiple users
+/// \param id Optional, but you can choose to provide an unique id to the dialog yourself. If this value is not provided, we will create an unique id for you. This is a good way for you to bind the dialog with certain feature or part of your app.
+///
+/// \param members 
+///
+/// \param customData the custom data string of the user. You can use this to attach additional information of the dialog
+///
+/// \param pushData additional data you can include to the push notification generated inside this dialog
+///
+/// \param title dialog title, if not provided, the default dialog title will be used
+///
+/// \param completion completion block. The id of the newly created dialog will be found here. Will contain the error if the call failed
+///
++ (void)createGroupDialogWithDialogID:(NSString * _Nullable)id members:(NSArray<NSString *> * _Nonnull)members customData:(NSString * _Nullable)customData pushData:(NSString * _Nullable)pushData title:(NSString * _Nullable)title completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/// Create an 1:1 dialog between the current user with another user. If there’s already a dialog exists with the two users, the same dialog will be returned.
+/// \param userID id of the other user
+///
+/// \param completion completion block. Will contain the error if the call failed
+///
++ (void)createIndividualDialogWithUser:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/// get all channel dialogs that the user is currently in
+/// \param completion completion block will contain the list of dialogs or an error if request failed
+///
++ (void)getChannelsWithCompletion:(void (^ _Nullable)(NSArray<AFDialog *> * _Nullable, NSError * _Nullable))completion;
+/// get all private dialogs that the user is currently in
+/// \param completion completion block will contain the list of dialogs or an error if request failed
+///
++ (void)getDialogsWithCompletion:(void (^ _Nullable)(NSArray<AFDialog *> * _Nullable, NSError * _Nullable))completion;
+/// Fetch a dialog using dialog id
+/// \param id dialog id used to fetch the dialog information
+///
+/// \param completion completion block will contain the dialog object or an error if request failed
+///
++ (void)getDialogWithDialogID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFDialog * _Nullable, NSError * _Nullable))completion;
+/// Total unread message count
+///
+/// returns:
+/// return the total unread message count
++ (NSInteger)totalUnreadMessageCount SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -219,10 +301,19 @@ typedef SWIFT_ENUM(NSInteger, AFDialogType) {
   AFDialogTypeChannel = 2,
 };
 
+@protocol AFEventSubscriber;
 
 /// Events are used as a way to actively communicate with the hosting app. Inside of our SDK/platform. Developers should be able to add multiple observers to monitor events that the SDK emits
 SWIFT_CLASS("_TtC12AppFriendsUI7AFEvent")
 @interface AFEvent : NSObject
+/// subscribe an object to receive the emitted events
+/// \param object the subscriber
+///
++ (void)subscribeWithSubscriber:(id <AFEventSubscriber> _Nonnull)object;
+/// unsubscribe an object to receive the emitted events
+/// \param object the subscriber
+///
++ (void)unsubscribeWithSubscriber:(id <AFEventSubscriber> _Nonnull)object;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -283,6 +374,26 @@ SWIFT_CLASS("_TtC12AppFriendsUI20AFLocationAttachment")
 
 SWIFT_CLASS("_TtC12AppFriendsUI9AFMessage")
 @interface AFMessage : NSObject
+/// check if the message is sent by the current user
+///
+/// returns:
+/// true if the sender is the current user
+- (BOOL)isOutgoing SWIFT_WARN_UNUSED_RESULT;
+/// mark the message as read, and also post a read receipt to acknownledge the current user has read the message.
+/// Note: this will only work on messages sent by other users
+- (void)markAsRead;
+/// mark the message as received, and also post a received receipt to acknownledge the current user has received the message on the device, but not necessarily read it.
+/// Note: this will only work on messages sent by other users
+- (void)markAsReceived;
+/// get receipts of the message
+/// \param completion completion block will contain the users id’s for those who received the message and the users id’s for those who have read the message
+///
+- (void)getReceiptsWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// check if the message is a system message
+///
+/// returns:
+/// true if the message is a system message
+- (BOOL)isSystemMessage SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -296,6 +407,26 @@ typedef SWIFT_ENUM(NSInteger, AFMessageSendingStatus) {
 /// Push notification API’s
 SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
 @interface AFPushNotification : NSObject
+/// Registering the current device for push notification
+/// \param token the push token to be used
+///
+/// \param completion callback, which would report error if the call failed
+///
++ (void)registerDeviceForPushNotificationWithPushToken:(NSString * _Nonnull)token completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Unregistering the current device for push notification
+/// \param token the push token to be used
+///
+/// \param completion callback, which would report error if the call failed
+///
++ (void)unregisterDeviceForPushNotificationWithCompletion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Process the remote push notification. Please pass the notification object to us so we can help
+/// optimize the user experience. Especially if you are entering the app using the push notification sent by AppFriends. We will only look at push notification coming from AppFriends.
+/// \param info user info object inside the push notification
+///
+///
+/// returns:
+/// true if AppFriends SDK used the push notification
++ (BOOL)processPushNotificationWithNotificationUserInfo:(NSDictionary * _Nonnull)info SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -303,6 +434,34 @@ SWIFT_CLASS("_TtC12AppFriendsUI18AFPushNotification")
 /// Pubic interface for user session related functions
 SWIFT_CLASS("_TtC12AppFriendsUI9AFSession")
 @interface AFSession : NSObject
+/// Perform login with a username and user id
+/// \param name the username
+///
+/// \param id the id of the user
+///
+/// \param completion will call back with the user’s token, or if the login failed, it will callback with error
+///
++ (void)loginWithUsername:(NSString * _Nonnull)name userID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSString * _Nullable, NSError * _Nullable))completion;
+/// Logout the current user.
+/// <em>warning</em>* Please Note that this call alone does not unregister the device for push notification. If you have previously registered the device for push, we recommand calling AFSession.unregisterDeviceForPushNotification before you call logout.
+/// \param completion call back block, which will have an error if the logout has failed
+///
++ (void)logoutWithComplete:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Check if there’s an user currently logged in
+///
+/// returns:
+/// true if the user is logged in
++ (BOOL)isLoggedIn SWIFT_WARN_UNUSED_RESULT;
+/// get the current user id
+///
+/// returns:
+/// the current user id
++ (NSString * _Nullable)currentUserID SWIFT_WARN_UNUSED_RESULT;
+/// get the current user name
+///
+/// returns:
+/// the current user name
++ (NSString * _Nullable)currentUserName SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -357,6 +516,85 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// returns:
 /// true if the two users have the same id
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+/// Search for user using username
+/// \param query search text
+///
+/// \param completion completion block which will return an array of result AFUser. It reports error if it fails
+///
++ (void)searchWithQuery:(NSString * _Nonnull)query completion:(void (^ _Nullable)(NSArray<AFUser *> * _Nullable, NSError * _Nullable))completion;
+/// fetch a single user from the user id
+/// \param id user’s id
+///
+/// \param completion completion block contains the user object, or the error if the request failed
+///
++ (void)getUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFUser * _Nullable, NSError * _Nullable))completion;
+/// fetch the friends of the current user (user who are followed and followed back)
+/// \param completion completion block which contains the a list of user ids of the followers, or error if the request failed
+///
++ (void)getFriendsWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// get the users who are following the current user
+/// \param completion completion block which contains the a list of user ids of the followers, or error if the request failed
+///
++ (void)getFollowersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// make the current user follow another user
+/// \param id the id of the user who you are going to follow
+///
+/// \param completion completion block, reports an error if the call failed
+///
++ (void)followUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// make the current user unfollow another user
+/// \param id the id of the user who you are going to unfollow
+///
+/// \param completion completion block, reports an error if the call failed
+///
++ (void)unfollowUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// block an user. After blocking, the user will not be able to send message to the current user
+/// \param id id of the user to be blocked
+///
+/// \param completion completion block. If the call fails, it will contain the error
+///
++ (void)blockUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// unblock an user
+/// \param id id of the user to be blocked
+///
+/// \param completion completion block. If the call fails, it will contain the error
+///
++ (void)unblockUserWithUserID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// fetch the list of all blocked users
+/// \param completion completion block. If the call is successful, it will return an array of blocked user ids. If it fails, it will contain the error
+///
++ (void)getBlockedUsersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// update username of the current user
+/// \param username new username
+///
+/// \param completion completion block. Will report error if the call fails
+///
++ (void)updateUserNameWithUsername:(NSString * _Nonnull)username completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// update avatar of the current user
+/// \param avatar new avatar url
+///
+/// \param completion completion block. Will report error if the call fails
+///
++ (void)updateUserAvatarWithAvatar:(NSString * _Nonnull)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// update avatar and username of the current user
+/// \param username the new username
+///
+/// \param avatar the new avatar url
+///
+/// \param completion completion block. Will report error if the call fails
+///
++ (void)updateUserWithUsername:(NSString * _Nullable)username avatar:(NSString * _Nullable)avatar completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// update custom data of the current user
+/// \param custom data new custom data
+///
+/// \param completion completion block. Will report error if the call fails
+///
++ (void)updateUserCustomDataWithCustomData:(NSString * _Nonnull)customData completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// get the current user
+///
+/// returns:
+/// the current user object or nil if you haven’t logged in yet
++ (AFUser * _Nullable)currentUser SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
