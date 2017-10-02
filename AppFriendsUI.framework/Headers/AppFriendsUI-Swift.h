@@ -910,15 +910,205 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 @end
 
 
+@class UIColor;
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 @interface HCColorPalette : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatBackgroundColor;)
++ (UIColor * _Nullable)chatBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogCellBackgroundColor;)
++ (UIColor * _Nonnull)chatDialogCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogCellBackgroundColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatMessageCellBackgroundColor;)
++ (UIColor * _Nonnull)chatMessageCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMessageCellBackgroundColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatOutMessageContentTextColor;)
++ (UIColor * _Nonnull)chatOutMessageContentTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatOutMessageContentTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatInMessageContentTextColor;)
++ (UIColor * _Nonnull)chatInMessageContentTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatInMessageContentTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatUserNamelTextColor;)
++ (UIColor * _Nonnull)chatUserNamelTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatUserNamelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatTimeLabelTextColor;)
++ (UIColor * _Nonnull)chatTimeLabelTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatTimeLabelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDateLabelTextColor;)
++ (UIColor * _Nonnull)chatDateLabelTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDateLabelTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatSystemMessageColor;)
++ (UIColor * _Nonnull)chatSystemMessageColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatSystemMessageColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatSendButtonColor;)
++ (UIColor * _Nullable)chatSendButtonColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatSendButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatOutMessageBubbleColor;)
++ (UIColor * _Nullable)chatOutMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatOutMessageBubbleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatInMessageBubbleColor;)
++ (UIColor * _Nullable)chatInMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatInMessageBubbleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMessageFailedButtonColor;)
++ (UIColor * _Nullable)chatMessageFailedButtonColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMessageFailedButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatVideoPlayIconColor;)
++ (UIColor * _Nonnull)chatVideoPlayIconColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatVideoPlayIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatLeaveConversationColor;)
++ (UIColor * _Nullable)chatLeaveConversationColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatLeaveConversationColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatDialogListSectionTitleColor;)
++ (UIColor * _Nullable)chatDialogListSectionTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListSectionTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatDialogListSectionBgColor;)
++ (UIColor * _Nullable)chatDialogListSectionBgColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListSectionBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogListTitleColor;)
++ (UIColor * _Nonnull)chatDialogListTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListTitleColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogTimeStampPreviewColor;)
++ (UIColor * _Nonnull)chatDialogTimeStampPreviewColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogTimeStampPreviewColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogMessagePreviewColor;)
++ (UIColor * _Nonnull)chatDialogMessagePreviewColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogMessagePreviewColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatNewMessageDividerColor;)
++ (UIColor * _Nullable)chatNewMessageDividerColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatNewMessageDividerColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatInMessageLinkColor;)
++ (UIColor * _Nullable)chatInMessageLinkColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatInMessageLinkColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatOutMessageLinkColor;)
++ (UIColor * _Nullable)chatOutMessageLinkColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatOutMessageLinkColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatAttachmentIconColor;)
++ (UIColor * _Nullable)chatAttachmentIconColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatAttachmentIconColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMediaMessageButtonColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonBgColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonBgColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMediaMessageButtonBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageButtonBorderColor;)
++ (UIColor * _Nullable)chatMediaMessageButtonBorderColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMediaMessageButtonBorderColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMediaMessageSelectionPanelColor;)
++ (UIColor * _Nullable)chatMediaMessageSelectionPanelColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatMediaMessageSelectionPanelColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable channelChatBannerColor;)
++ (UIColor * _Nullable)channelChatBannerColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChannelChatBannerColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull onlineUsersLabelColor;)
++ (UIColor * _Nonnull)onlineUsersLabelColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setOnlineUsersLabelColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull onlineUserIndicatorColor;)
++ (UIColor * _Nonnull)onlineUserIndicatorColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setOnlineUserIndicatorColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable avatarBackgroundColor;)
++ (UIColor * _Nullable)avatarBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAvatarBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull avatarColor;)
++ (UIColor * _Nonnull)avatarColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAvatarColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable reportButtonTitleColor;)
++ (UIColor * _Nullable)reportButtonTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable reportButtonBorderColor;)
++ (UIColor * _Nullable)reportButtonBorderColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonBorderColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorColor;)
++ (UIColor * _Nonnull)segmentSelectorColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable segmentSelectorOnBgColor;)
++ (UIColor * _Nullable)segmentSelectorOnBgColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorOnBgColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOffBgColor;)
++ (UIColor * _Nonnull)segmentSelectorOffBgColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorOffBgColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOnTextColor;)
++ (UIColor * _Nonnull)segmentSelectorOnTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorOnTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull segmentSelectorOffTextColor;)
++ (UIColor * _Nonnull)segmentSelectorOffTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorOffTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableSeparatorColor;)
++ (UIColor * _Nullable)tableSeparatorColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setTableSeparatorColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableBackgroundColor;)
++ (UIColor * _Nullable)tableBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setTableBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable tableSectionSeparatorColor;)
++ (UIColor * _Nullable)tableSectionSeparatorColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setTableSectionSeparatorColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull navigationBarIconColor;)
++ (UIColor * _Nonnull)navigationBarIconColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setNavigationBarIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull navigationBarTitleColor;)
++ (UIColor * _Nonnull)navigationBarTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setNavigationBarTitleColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable badgeBackgroundColor;)
++ (UIColor * _Nullable)badgeBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setBadgeBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull closeButtonBgColor;)
++ (UIColor * _Nonnull)closeButtonBgColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setCloseButtonBgColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull closeButtonIconColor;)
++ (UIColor * _Nonnull)closeButtonIconColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setCloseButtonIconColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable searchBarTintColor;)
++ (UIColor * _Nullable)searchBarTintColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setSearchBarTintColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull emptyTableLabelColor;)
++ (UIColor * _Nonnull)emptyTableLabelColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setEmptyTableLabelColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull normalTextColor;)
++ (UIColor * _Nonnull)normalTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setNormalTextColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable placeholderTextColor;)
++ (UIColor * _Nullable)placeholderTextColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setPlaceholderTextColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumBackgroundColor;)
++ (UIColor * _Nullable)albumBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumSectionBackgroundColor;)
++ (UIColor * _Nullable)albumSectionBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumSectionBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumSectionTitleColor;)
++ (UIColor * _Nullable)albumSectionTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumSectionTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumItemBackgroundColor;)
++ (UIColor * _Nullable)albumItemBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumItemBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBarIconColor;)
++ (UIColor * _Nullable)albumNavigationBarIconColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumNavigationBarIconColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBarTitleColor;)
++ (UIColor * _Nullable)albumNavigationBarTitleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumNavigationBarTitleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable albumNavigationBackgroundColor;)
++ (UIColor * _Nullable)albumNavigationBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumNavigationBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) UIStatusBarStyle albumStatusBarStyle;)
++ (UIStatusBarStyle)albumStatusBarStyle SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumStatusBarStyle:(UIStatusBarStyle)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
 SWIFT_CLASS("_TtC12AppFriendsUI11HCConstants")
 @interface HCConstants : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) double sidePanelSlideAnimationDuration;)
++ (double)sidePanelSlideAnimationDuration SWIFT_WARN_UNUSED_RESULT;
++ (void)setSidePanelSlideAnimationDuration:(double)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSUInteger maxMessageLength;)
++ (NSUInteger)maxMessageLength SWIFT_WARN_UNUSED_RESULT;
++ (void)setMaxMessageLength:(NSUInteger)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) NSTimeInterval timeIntervalForMessageDateLabelDisplay;)
++ (NSTimeInterval)timeIntervalForMessageDateLabelDisplay SWIFT_WARN_UNUSED_RESULT;
++ (void)setTimeIntervalForMessageDateLabelDisplay:(NSTimeInterval)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1052,9 +1242,58 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCDialogsPickerViewControllerDelegate_")
 - (void)didChooseDialog:(AFDialog * _Nonnull)dialog;
 @end
 
+@class UIFont;
 
 SWIFT_CLASS("_TtC12AppFriendsUI6HCFont")
 @interface HCFont : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull segmentSelectorFont;)
++ (UIFont * _Nonnull)segmentSelectorFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setSegmentSelectorFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatCellContentFont;)
++ (UIFont * _Nonnull)chatCellContentFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatCellContentFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatCellSystemMessageFont;)
++ (UIFont * _Nonnull)chatCellSystemMessageFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatCellSystemMessageFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull boldButtonFont;)
++ (UIFont * _Nonnull)boldButtonFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setBoldButtonFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull dialogSettingFont;)
++ (UIFont * _Nonnull)dialogSettingFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setDialogSettingFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull navigationBarTitleFont;)
++ (UIFont * _Nonnull)navigationBarTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setNavigationBarTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatTimestampFont;)
++ (UIFont * _Nonnull)chatTimestampFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatTimestampFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDateLabelFont;)
++ (UIFont * _Nonnull)chatDateLabelFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDateLabelFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull locationTitleFont;)
++ (UIFont * _Nonnull)locationTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setLocationTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull locationSubtitleFont;)
++ (UIFont * _Nonnull)locationSubtitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setLocationSubtitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull emptyTableLabelFont;)
++ (UIFont * _Nonnull)emptyTableLabelFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setEmptyTableLabelFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull albumSectionTitleFont;)
++ (UIFont * _Nonnull)albumSectionTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumSectionTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListSectionTitleFont;)
++ (UIFont * _Nonnull)chatDialogListSectionTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListSectionTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellTitleFont;)
++ (UIFont * _Nonnull)chatDialogListCellTitleFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellTitleFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellTimestampFont;)
++ (UIFont * _Nonnull)chatDialogListCellTimestampFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellTimestampFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDialogListCellLastMessageFont;)
++ (UIFont * _Nonnull)chatDialogListCellLastMessageFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListCellLastMessageFont:(UIFont * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1117,6 +1356,28 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCOnlineUsersBannerController")
 
 SWIFT_CLASS("_TtC12AppFriendsUI22HCSettingsConfiguation")
 @interface HCSettingsConfiguation : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL badgeDisplayIfMuted;)
++ (BOOL)badgeDisplayIfMuted SWIFT_WARN_UNUSED_RESULT;
++ (void)setBadgeDisplayIfMuted:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showNewMessageLine;)
++ (BOOL)showNewMessageLine SWIFT_WARN_UNUSED_RESULT;
++ (void)setShowNewMessageLine:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL messagePushNotificationEnabled;)
++ (BOOL)messagePushNotificationEnabled SWIFT_WARN_UNUSED_RESULT;
++ (void)setMessagePushNotificationEnabled:(BOOL)value;
+/// the content rating of the gifs
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentRating gifContentRating;)
++ (enum AFGifContentRating)gifContentRating SWIFT_WARN_UNUSED_RESULT;
++ (void)setGifContentRating:(enum AFGifContentRating)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) enum AFGifContentType gifContentType;)
++ (enum AFGifContentType)gifContentType SWIFT_WARN_UNUSED_RESULT;
++ (void)setGifContentType:(enum AFGifContentType)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showDialogAlbum;)
++ (BOOL)showDialogAlbum SWIFT_WARN_UNUSED_RESULT;
++ (void)setShowDialogAlbum:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL enableContentFlagging;)
++ (BOOL)enableContentFlagging SWIFT_WARN_UNUSED_RESULT;
++ (void)setEnableContentFlagging:(BOOL)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1175,12 +1436,66 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI33HCSidePanelViewControllerDelegate_")
 
 SWIFT_CLASS("_TtC12AppFriendsUI6HCSize")
 @interface HCSize : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellContentDefaultPointSize;)
++ (CGFloat)chatCellContentDefaultPointSize SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatCellContentDefaultPointSize:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellContentBubbleCornerRadius;)
++ (CGFloat)chatCellContentBubbleCornerRadius SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatCellContentBubbleCornerRadius:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellUserNameLabelHeight;)
++ (CGFloat)chatCellUserNameLabelHeight SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatCellUserNameLabelHeight:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatDialogListSectionHeight;)
++ (CGFloat)chatDialogListSectionHeight SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatDialogListSectionHeight:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat sidePanelWindowWidth;)
++ (CGFloat)sidePanelWindowWidth SWIFT_WARN_UNUSED_RESULT;
++ (void)setSidePanelWindowWidth:(CGFloat)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCStringValues")
 @interface HCStringValues : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull channelTabTitle;)
++ (NSString * _Nonnull)channelTabTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setChannelTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsTabTitle;)
++ (NSString * _Nonnull)dialogsTabTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setDialogsTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull contactsTabTitle;)
++ (NSString * _Nonnull)contactsTabTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setContactsTabTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull videoSizeOverError;)
++ (NSString * _Nonnull)videoSizeOverError SWIFT_WARN_UNUSED_RESULT;
++ (void)setVideoSizeOverError:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull seenByLabelText;)
++ (NSString * _Nonnull)seenByLabelText SWIFT_WARN_UNUSED_RESULT;
++ (void)setSeenByLabelText:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsListChannelsSectionTitle;)
++ (NSString * _Nonnull)dialogsListChannelsSectionTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setDialogsListChannelsSectionTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull dialogsListDialogsSectionTitle;)
++ (NSString * _Nonnull)dialogsListDialogsSectionTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setDialogsListDialogsSectionTitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull recentHistory;)
++ (NSString * _Nonnull)recentHistory SWIFT_WARN_UNUSED_RESULT;
++ (void)setRecentHistory:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull currentLocation;)
++ (NSString * _Nonnull)currentLocation SWIFT_WARN_UNUSED_RESULT;
++ (void)setCurrentLocation:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull noSearchHistory;)
++ (NSString * _Nonnull)noSearchHistory SWIFT_WARN_UNUSED_RESULT;
++ (void)setNoSearchHistory:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull locationTitleDefault;)
++ (NSString * _Nonnull)locationTitleDefault SWIFT_WARN_UNUSED_RESULT;
++ (void)setLocationTitleDefault:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull albumViewtitle;)
++ (NSString * _Nonnull)albumViewtitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumViewtitle:(NSString * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull reportButtonTitle;)
++ (NSString * _Nonnull)reportButtonTitle SWIFT_WARN_UNUSED_RESULT;
++ (void)setReportButtonTitle:(NSString * _Nonnull)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
