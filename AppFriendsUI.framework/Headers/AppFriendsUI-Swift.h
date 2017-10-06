@@ -610,6 +610,8 @@ enum HCSidePanelBackgroundMode : NSInteger;
 
 SWIFT_CLASS("_TtC12AppFriendsUI12AppFriendsUI")
 @interface AppFriendsUI : NSObject
+- (void)initialize:(NSString * _Nonnull)appKey secret:(NSString * _Nonnull)secret completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
+- (BOOL)initialized SWIFT_WARN_UNUSED_RESULT;
 - (HCSidePanelViewController * _Nonnull)presentVCInSidePanelFromVC:(UIViewController * _Nonnull)fromVC showVC:(UIViewController * _Nonnull)showVC backgroundMode:(enum HCSidePanelBackgroundMode)backgroundMode SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
