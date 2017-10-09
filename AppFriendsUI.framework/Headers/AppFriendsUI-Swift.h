@@ -695,16 +695,28 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCAlbumViewController")
 - (CGSize)collectionView:(UICollectionView * _Nonnull)collectionView layout:(UICollectionViewLayout * _Nonnull)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
 @end
 
+@class HCChatTableViewCell;
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
+@protocol HCChatTableViewCellDelegate
+- (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)avatarTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)failedButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)linkTappedInCell:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
+- (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+@end
+
 @class UITableView;
 @class UITextView;
 @class UITableViewCell;
 @class UIImagePickerController;
 @class UIScrollView;
 @class UIGestureRecognizer;
+@class UIBarButtonItem;
 
 /// This is the base chat view controller, which display the conversation (chat view)
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
-@interface HCBaseChatViewController : SLKTextViewController <AFEventSubscriber, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HCBaseChatViewController : SLKTextViewController <AFEventSubscriber, HCChatTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)viewDidLoad;
@@ -734,41 +746,11 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)scrollViewDidScroll:(UIScrollView * _Nonnull)scrollView;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
 - (void)emitEvent:(AFEvent * _Nonnull)event;
-- (nonnull instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
-- (nonnull instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
-- (nonnull instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
-- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
-@end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@class HCChatTableViewCell;
-
-SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
-@protocol HCChatTableViewCellDelegate
-- (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
-- (void)avatarTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
-- (void)failedButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
-- (void)linkTappedInCell:(HCChatTableViewCell * _Nonnull)cell url:(NSURL * _Nonnull)url;
-- (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
-@end
-
-
-@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI)) <HCChatTableViewCellDelegate>
+/// The right side navigation bar item. You can override this function to have your own navigation bar item
+///
+/// returns:
+/// the navigation bar item
+- (UIBarButtonItem * _Nullable)rightBarButtonItem SWIFT_WARN_UNUSED_RESULT;
 /// Link inside a chat cell is tapped
 /// \param cell cell which contains the link
 ///
@@ -788,19 +770,29 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 ///
 - (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 - (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (nullable instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
 
 
-@class UIBarButtonItem;
 
-@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
-/// The right side navigation bar item. You can override this function to have your own navigation bar item
-///
-/// returns:
-/// the navigation bar item
-- (UIBarButtonItem * _Nullable)rightBarButtonItem SWIFT_WARN_UNUSED_RESULT;
-@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
