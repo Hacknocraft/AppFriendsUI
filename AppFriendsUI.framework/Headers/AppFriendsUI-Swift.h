@@ -910,9 +910,9 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 @interface HCColorPalette : NSObject
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatBackgroundColor;)
-+ (UIColor * _Nullable)chatBackgroundColor SWIFT_WARN_UNUSED_RESULT;
-+ (void)setChatBackgroundColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatBackgroundColor;)
++ (UIColor * _Nonnull)chatBackgroundColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatBackgroundColor:(UIColor * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatDialogCellBackgroundColor;)
 + (UIColor * _Nonnull)chatDialogCellBackgroundColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatDialogCellBackgroundColor:(UIColor * _Nonnull)value;
