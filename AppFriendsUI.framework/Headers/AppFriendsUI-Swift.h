@@ -1205,6 +1205,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCDialogTableViewCell")
 SWIFT_CLASS("_TtC12AppFriendsUI27HCDialogsListViewController")
 @interface HCDialogsListViewController : HCBaseViewController <UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet UITableView * _Null_unspecified tableView;
+/// turn this value to true if you want to include channels in this list
+@property (nonatomic) BOOL includeChannels;
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
