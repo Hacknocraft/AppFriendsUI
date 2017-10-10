@@ -509,6 +509,16 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI24AFTokenInputViewDelegate_")
 /// AFUser object which contains information of a user. This class also provides public interface to access user data
 SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 @interface AFUser : NSObject
+/// user id
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/// user name
+@property (nonatomic, readonly, copy) NSString * _Nonnull username;
+/// avatar url string
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarURL;
+/// if the user has been blocked by the current user
+@property (nonatomic, readonly) BOOL blocked;
+/// the custom data string of the user. You can use this to attach additional information of the user
+@property (nonatomic, copy) NSString * _Nullable customData;
 /// Users are equal if their ids are the same
 /// \param object another user to copare
 ///
@@ -536,6 +546,10 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// \param completion completion block which contains the a list of user ids of the followers, or error if the request failed
 ///
 + (void)getFollowersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// get the users who the current user is following
+/// \param completion completion block which contains the a list of user ids, or error if the request failed
+///
++ (void)getFollowingCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
 /// make the current user follow another user
 /// \param id the id of the user who you are going to follow
 ///
@@ -564,6 +578,12 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// \param completion completion block. If the call is successful, it will return an array of blocked user ids. If it fails, it will contain the error
 ///
 + (void)getBlockedUsersWithCompletion:(void (^ _Nullable)(NSArray<NSString *> * _Nullable, NSError * _Nullable))completion;
+/// Using an user id to check if the user is blocked
+/// \param userID id of the user to be checked on
+///
+/// \param completion completion block. If the call is successful, it will return result. If it fails, it will contain the error
+///
++ (void)checkIfUserIsBlocked:(NSString * _Nonnull)userID completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
 /// update username of the current user
 /// \param username new username
 ///
