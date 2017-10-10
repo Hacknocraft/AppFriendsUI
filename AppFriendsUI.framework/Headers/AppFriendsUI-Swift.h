@@ -301,11 +301,16 @@ typedef SWIFT_ENUM(NSInteger, AFDialogType) {
   AFDialogTypeChannel = 2,
 };
 
+enum AFEventName : NSInteger;
 @protocol AFEventSubscriber;
 
 /// Events are used as a way to actively communicate with the hosting app. Inside of our SDK/platform. Developers should be able to add multiple observers to monitor events that the SDK emits
 SWIFT_CLASS("_TtC12AppFriendsUI7AFEvent")
 @interface AFEvent : NSObject
+/// Event name
+@property (nonatomic, readonly) enum AFEventName name;
+/// Event data object
+@property (nonatomic, readonly) id _Nullable data;
 /// subscribe an object to receive the emitted events
 /// \param object the subscriber
 ///
