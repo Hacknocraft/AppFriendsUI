@@ -173,9 +173,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if __has_feature(modules)
 @import ObjectiveC;
+@import Foundation;
 @import UIKit;
 @import CoreGraphics;
-@import Foundation;
 @import SlackTextViewController;
 @import AppFriendsCore;
 @import MapKit;
@@ -205,16 +205,98 @@ typedef SWIFT_ENUM(NSInteger, AFAttachmentType) {
   AFAttachmentTypeGameScore = 4,
 };
 
-@class AFMessage;
+enum AFDialogType : NSInteger;
+@class AFUser;
 @class NSError;
+@class UIImage;
+@class MKMapItem;
+@class AFMessage;
 
 /// Dialog interface provides api to access, create and update dialog
 SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 @interface AFDialog : NSObject
+/// dialog id
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/// dialog type
+@property (nonatomic, readonly) enum AFDialogType type;
+@property (nonatomic, copy) NSString * _Nullable title;
+/// dialgot creation time
+@property (nonatomic, readonly, copy) NSDate * _Nullable createTime;
+/// custom data string. You can set this propery when creating a dialog and use it carry extra data
+@property (nonatomic, copy) NSString * _Nullable customData;
+/// is dialog muted
+@property (nonatomic) BOOL muted;
+/// is dialog diabled
+@property (nonatomic) BOOL disabled;
+/// unread message count for the dialog. Use it to display badge
+@property (nonatomic) NSInteger unreadMessageCount;
+/// a cover image url. only open channel would have this property
+@property (nonatomic, copy) NSString * _Nullable coverImageURL;
+/// the text preview of the last message the dialog has received
+@property (nonatomic, copy) NSString * _Nullable lastMessageText;
+/// the time of the last message
+@property (nonatomic, copy) NSDate * _Nullable lastMessageTime;
+/// the members in the dialog
+@property (nonatomic, copy) NSArray<AFUser *> * _Nullable members;
 /// send typing started signal
 - (void)startTyping;
 /// send typing end signal
 - (void)endTyping;
+/// Sending text in the dialog
+/// \param text the text to be sent
+///
+/// \param requireReceipt require receipts for this messaeg. default is false
+///
+/// \param mentionedUsers the ids of the users mentioned in the message
+///
+/// \param customData custom data you want to attach to the message
+///
+/// \param sendPush whether or not send push notification for this message
+///
+/// \param completion completion block which contains the error if the sending failed
+///
+- (void)sendTextWithText:(NSString * _Nonnull)text requireReceipt:(BOOL)requireReceipt mentionedUsers:(NSArray<NSString *> * _Nullable)mentionedUsers customData:(NSString * _Nullable)customData sendPush:(BOOL)sendPush completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Sending a gif
+/// \param url the url of the gif
+///
+/// \param customData custom data you want to attach to the message
+///
+/// \param requireReceipt require receipts for this messaeg. default is false
+///
+/// \param sendPush whether or not send push notification for this message
+///
+/// \param completion completion block which contains the error if the sending failed
+///
+- (void)sendGifWithUrl:(NSString * _Nonnull)url customData:(NSString * _Nullable)customData requireReceipt:(BOOL)requireReceipt sendPush:(BOOL)sendPush completion:(void (^ _Nullable)(NSError * _Nullable))completion;
+/// Sending image message in the dialog
+/// \param image the image to be sent
+///
+/// \param customData custom data you want to attach to the message
+///
+/// \param requireReceipt require receipts for this messaeg. default is false
+///
+/// \param sendPush whether or not send push notification for this message
+///
+/// \param completion completion block which contains the error if the sending failed
+///
+/// \param progress update the progress of the image sending
+///
+- (void)sendImageWithImage:(UIImage * _Nonnull)image customData:(NSString * _Nullable)customData requireReceipt:(BOOL)requireReceipt sendPush:(BOOL)sendPush completion:(void (^ _Nullable)(NSError * _Nullable))completion progress:(void (^ _Nonnull)(NSInteger))progress;
+/// Sending a video message in the dialog
+/// \param videoData the video data to be sent
+///
+/// \param customData custom data you want to attach to the message
+///
+/// \param requireReceipt require receipts for this messaeg. default is false
+///
+/// \param sendPush whether or not send push notification for this message
+///
+/// \param completion completion block which contains the error if the sending failed
+///
+/// \param progress update the progress of the video sending
+///
+- (void)sendVideoWithVideoData:(NSData * _Nonnull)videoData customData:(NSString * _Nullable)customData requireReceipt:(BOOL)requireReceipt sendPush:(BOOL)sendPush completion:(void (^ _Nullable)(NSError * _Nullable))completion progress:(void (^ _Nonnull)(NSInteger))progress;
+- (void)sendLocationWithMapItem:(MKMapItem * _Nonnull)item customData:(NSString * _Nullable)customData requireReceipt:(BOOL)requireReceipt sendPush:(BOOL)sendPush completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 /// Resend a failed message
 /// \param message message to resend
 ///
