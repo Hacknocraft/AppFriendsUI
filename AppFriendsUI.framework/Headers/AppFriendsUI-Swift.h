@@ -190,10 +190,13 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Wnullability"
 
 SWIFT_MODULE_NAMESPACE_PUSH("AppFriendsUI")
+enum AFAttachmentType : NSInteger;
 
 /// message attachment base class
 SWIFT_CLASS("_TtC12AppFriendsUI12AFAttachment")
 @interface AFAttachment : NSObject
+/// the type of the attachment
+@property (nonatomic, readonly) enum AFAttachmentType type;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -425,12 +428,20 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI17AFEventSubscriber_")
 /// game score attachment
 SWIFT_CLASS("_TtC12AppFriendsUI21AFGameScoreAttachment")
 @interface AFGameScoreAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull gameId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamScore;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamScore;
+@property (nonatomic, readonly, copy) NSString * _Nonnull homeTeamLogo;
+@property (nonatomic, readonly, copy) NSString * _Nonnull awayTeamLogo;
 @end
 
 
 /// gif attachement
 SWIFT_CLASS("_TtC12AppFriendsUI15AFGifAttachment")
 @interface AFGifAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull url;
 @end
 
 typedef SWIFT_ENUM(NSInteger, AFGifContentRating) {
@@ -450,17 +461,51 @@ typedef SWIFT_ENUM(NSInteger, AFGifContentType) {
 /// image attachment
 SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
 @interface AFImageAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull fullSizeURL;
+@property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
 @end
 
 
 /// Location attachment
 SWIFT_CLASS("_TtC12AppFriendsUI20AFLocationAttachment")
 @interface AFLocationAttachment : AFAttachment
+@property (nonatomic, readonly, strong) MKMapItem * _Nonnull mapItem;
+@property (nonatomic, readonly, copy) NSString * _Nonnull title;
+@property (nonatomic, readonly, copy) NSString * _Nonnull subtitle;
 @end
 
+enum AFMessageSendingStatus : NSInteger;
 
 SWIFT_CLASS("_TtC12AppFriendsUI9AFMessage")
 @interface AFMessage : NSObject
+/// message sender ID. It’s nil when the message is a system message
+@property (nonatomic, readonly, copy) NSString * _Nullable senderID;
+/// message sender name. It’s nil when the message is a system message
+@property (nonatomic, readonly, copy) NSString * _Nullable senderName;
+/// message sender avatar.
+@property (nonatomic, readonly, copy) NSString * _Nullable senderAvatar;
+/// id of the dialog which the message is in
+@property (nonatomic, readonly, copy) NSString * _Nullable dialogID;
+/// message unique id
+@property (nonatomic, readonly, copy) NSString * _Nullable id;
+/// whether or not the message is a system message
+@property (nonatomic) BOOL isSystem;
+/// the custom data string of the message. You can use this to attach additional information of the message
+@property (nonatomic, readonly, copy) NSString * _Nullable customData;
+/// the send status of the message
+@property (nonatomic) enum AFMessageSendingStatus sendingStatus;
+/// has the message been read by the user
+@property (nonatomic) BOOL read;
+/// time when the message was received
+@property (nonatomic, copy) NSDate * _Nullable receiveTime;
+/// time when the message was sent
+@property (nonatomic, copy) NSDate * _Nullable sentTime;
+/// text content in the message
+@property (nonatomic, copy) NSString * _Nullable text;
+/// the attachment in the message, if any
+@property (nonatomic, readonly, strong) AFAttachment * _Nullable attachment;
+/// if the message requires receipt
+@property (nonatomic) BOOL receiptRequired;
 /// check if the message is sent by the current user
 ///
 /// returns:
@@ -709,6 +754,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI6AFUser")
 /// video attachement
 SWIFT_CLASS("_TtC12AppFriendsUI17AFVideoAttachment")
 @interface AFVideoAttachment : AFAttachment
+@property (nonatomic, readonly, copy) NSString * _Nonnull streamingURL;
+@property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
 @end
 
 @class UIViewController;
