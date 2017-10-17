@@ -526,6 +526,12 @@ SWIFT_CLASS("_TtC12AppFriendsUI9AFMessage")
 /// returns:
 /// true if the message is a system message
 - (BOOL)isSystemMessage SWIFT_WARN_UNUSED_RESULT;
+/// get a saved message object from a message id
+/// \param id message id
+///
+/// \param completion finish callback block
+///
++ (void)getMessageWithMessageID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFMessage * _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
