@@ -1100,12 +1100,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull cha
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatSendButtonColor;)
 + (UIColor * _Nullable)chatSendButtonColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatSendButtonColor:(UIColor * _Nullable)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatOutMessageBubbleColor;)
-+ (UIColor * _Nullable)chatOutMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
-+ (void)setChatOutMessageBubbleColor:(UIColor * _Nullable)value;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatInMessageBubbleColor;)
-+ (UIColor * _Nullable)chatInMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
-+ (void)setChatInMessageBubbleColor:(UIColor * _Nullable)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatOutMessageBubbleColor;)
++ (UIColor * _Nonnull)chatOutMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatOutMessageBubbleColor:(UIColor * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nonnull chatInMessageBubbleColor;)
++ (UIColor * _Nonnull)chatInMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatInMessageBubbleColor:(UIColor * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIColor * _Nullable chatMessageFailedButtonColor;)
 + (UIColor * _Nullable)chatMessageFailedButtonColor SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatMessageFailedButtonColor:(UIColor * _Nullable)value;
@@ -1606,9 +1606,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatCellUserNameLabelH
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatDialogListSectionHeight;)
 + (CGFloat)chatDialogListSectionHeight SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatDialogListSectionHeight:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat chatUserNameLeftMargin;)
++ (CGFloat)chatUserNameLeftMargin SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatUserNameLeftMargin:(CGFloat)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat sidePanelWindowWidth;)
 + (CGFloat)sidePanelWindowWidth SWIFT_WARN_UNUSED_RESULT;
 + (void)setSidePanelWindowWidth:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat albumDividerWidth;)
++ (CGFloat)albumDividerWidth SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumDividerWidth:(CGFloat)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) CGFloat albumSectionHeight;)
++ (CGFloat)albumSectionHeight SWIFT_WARN_UNUSED_RESULT;
++ (void)setAlbumSectionHeight:(CGFloat)value;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
