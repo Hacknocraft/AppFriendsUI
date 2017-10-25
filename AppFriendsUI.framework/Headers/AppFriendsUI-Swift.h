@@ -1428,6 +1428,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chat
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatDateLabelFont;)
 + (UIFont * _Nonnull)chatDateLabelFont SWIFT_WARN_UNUSED_RESULT;
 + (void)setChatDateLabelFont:(UIFont * _Nonnull)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull chatUserNameFont;)
++ (UIFont * _Nonnull)chatUserNameFont SWIFT_WARN_UNUSED_RESULT;
++ (void)setChatUserNameFont:(UIFont * _Nonnull)value;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, strong) UIFont * _Nonnull locationTitleFont;)
 + (UIFont * _Nonnull)locationTitleFont SWIFT_WARN_UNUSED_RESULT;
 + (void)setLocationTitleFont:(UIFont * _Nonnull)value;
