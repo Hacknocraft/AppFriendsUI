@@ -413,9 +413,10 @@ typedef SWIFT_ENUM(NSInteger, AFEventName) {
   AFEventNameEventDialogUpdated = 2,
   AFEventNameEventTypingStatusUpdated = 4,
   AFEventNameEventMessageReceived = 5,
-  AFEventNameEventUserSelected = 6,
-  AFEventNameEventDuplicateSession = 7,
-  AFEventNameEventTotalUnreadCountChange = 8,
+  AFEventNameEventMessageupdated = 6,
+  AFEventNameEventUserSelected = 7,
+  AFEventNameEventDuplicateSession = 8,
+  AFEventNameEventTotalUnreadCountChange = 9,
 };
 
 
