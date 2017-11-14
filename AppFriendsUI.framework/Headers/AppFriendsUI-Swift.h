@@ -533,6 +533,18 @@ SWIFT_CLASS("_TtC12AppFriendsUI9AFMessage")
 /// \param completion finish callback block
 ///
 + (void)getMessageWithMessageID:(NSString * _Nonnull)id completion:(void (^ _Nullable)(AFMessage * _Nullable, NSError * _Nullable))completion;
+/// Get messages from a dialog
+/// \param id ID of the dialog
+///
+/// \param messageID the ID of the first message. If pass nil, it will fetch the latest messages
+///
+/// \param backward if true, it will fetch messages earlier than the message ID provided. Else, it will fetch messages after the message ID provided.
+///
+/// \param count the number of messages to include in this query.
+///
+/// \param completion completion block will contain an array of messages or an error if request failed
+///
++ (void)getMessagesWithDialogID:(NSString * _Nonnull)id startingFrom:(NSString * _Nullable)messageID backward:(BOOL)backward count:(NSInteger)count completion:(void (^ _Nullable)(NSArray<AFMessage *> * _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
