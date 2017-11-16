@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>16G29</string>
+	<string>16G1036</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleExecutable</key>
-	<string>AppFriendsUI</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.hacknocraft.AppFriendsUI</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -17,27 +15,18 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.2.0</string>
+	<string>2.2.1</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
 	<string></string>
-	<key>DTPlatformVersion</key>
-	<string>11.0</string>
 	<key>DTSDKBuild</key>
-	<string>15A372</string>
+	<string>15B87</string>
 	<key>DTXcode</key>
-	<string>0900</string>
+	<string>0910</string>
 	<key>DTXcodeBuild</key>
-	<string>9A235</string>
-	<key>MinimumOSVersion</key>
-	<string>9.0</string>
-	<key>UIDeviceFamily</key>
-	<array>
-		<integer>1</integer>
-		<integer>2</integer>
-	</array>
+	<string>9B55</string>
 </dict>
 </plist>
