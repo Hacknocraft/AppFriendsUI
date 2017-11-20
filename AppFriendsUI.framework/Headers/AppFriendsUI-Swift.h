@@ -264,7 +264,7 @@ SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 ///
 /// \param customData custom data you want to attach to the message
 ///
-/// \param requireReceipt require receipts for this messaeg. default is false
+/// \param requireReceipt require receipts for this message. default is false
 ///
 /// \param sendPush whether or not send push notification for this message
 ///
@@ -376,6 +376,8 @@ SWIFT_CLASS("_TtC12AppFriendsUI8AFDialog")
 /// returns:
 /// return the total unread message count
 + (NSInteger)totalUnreadMessageCount SWIFT_WARN_UNUSED_RESULT;
+/// Mark all messages in the dialog as read
++ (void)readAllMessagesWithDialogID:(NSString * _Nonnull)id;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
