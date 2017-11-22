@@ -173,10 +173,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if __has_feature(modules)
 @import ObjectiveC;
-@import Foundation;
 @import UIKit;
 @import CoreGraphics;
-@import SlackTextViewController;
+@import Foundation;
 @import AppFriendsCore;
 @import MapKit;
 #endif
@@ -207,6 +206,21 @@ typedef SWIFT_ENUM(NSInteger, AFAttachmentType) {
   AFAttachmentTypeLocation = 3,
   AFAttachmentTypeGameScore = 4,
 };
+
+@class NSCoder;
+
+/// A base class which conform to <code>AFTypingIndicatorProtocol</code> for typing indicator view. To use a custom typing indicator view, subclass from the class.
+SWIFT_CLASS("_TtC12AppFriendsUI25AFBaseTypingIndicatorView")
+@interface AFBaseTypingIndicatorView : UIView
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+@interface AFBaseTypingIndicatorView (SWIFT_EXTENSION(AppFriendsUI))
+- (void)dismissIndicator;
+@property (nonatomic) BOOL isVisible;
+@end
 
 enum AFDialogType : NSInteger;
 @class AFUser;
@@ -469,6 +483,14 @@ SWIFT_CLASS("_TtC12AppFriendsUI17AFImageAttachment")
 @end
 
 
+SWIFT_CLASS("_TtC12AppFriendsUI20AFInputAccessoryView")
+@interface AFInputAccessoryView : UIView
+- (void)willMoveToSuperview:(UIView * _Nullable)newSuperview;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// Location attachment
 SWIFT_CLASS("_TtC12AppFriendsUI20AFLocationAttachment")
 @interface AFLocationAttachment : AFAttachment
@@ -618,6 +640,189 @@ SWIFT_CLASS("_TtC12AppFriendsUI9AFSession")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class UIColor;
+
+/// A custom tool bar encapsulating messaging controls
+SWIFT_CLASS("_TtC12AppFriendsUI14AFTextInputbar")
+@interface AFTextInputbar : UIToolbar
+/// The custom input accessory view, used as empty achor view to detect the keyboard frame
+@property (nonatomic, readonly, strong) AFInputAccessoryView * _Nullable inputAccessoryView;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)layoutIfNeeded;
+- (void)layoutSubviews;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL requiresConstraintBasedLayout;)
++ (BOOL)requiresConstraintBasedLayout SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, strong) UIColor * _Nullable backgroundColor;
+@property (nonatomic, getter=isHidden) BOOL hidden;
+- (void)observeValueForKeyPath:(NSString * _Nullable)keyPath ofObject:(id _Nullable)object change:(NSDictionary<NSKeyValueChangeKey, id> * _Nullable)change context:(void * _Nullable)context;
+@end
+
+@class NSTextContainer;
+@class UITextRange;
+@class NSAttributedString;
+@class UIFont;
+@class UIEvent;
+@class UIKeyCommand;
+
+SWIFT_CLASS("_TtC12AppFriendsUI10AFTextView")
+@interface AFTextView : UITextView
+- (nonnull instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer * _Nullable)textContainer OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL requiresConstraintBasedLayout;)
++ (BOOL)requiresConstraintBasedLayout SWIFT_WARN_UNUSED_RESULT;
+- (void)layoutIfNeeded;
+- (void)layoutSubviews;
+@property (nonatomic) NSRange selectedRange;
+@property (nonatomic, strong) UITextRange * _Nullable selectedTextRange;
+@property (nonatomic, copy) NSString * _Null_unspecified text;
+@property (nonatomic, strong) NSAttributedString * _Null_unspecified attributedText;
+@property (nonatomic, strong) UIFont * _Nullable font;
+@property (nonatomic) NSTextAlignment textAlignment;
+@property (nonatomic) CGPoint contentOffset;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point SWIFT_AVAILABILITY(ios,introduced=9.0);
+- (void)endFloatingCursor SWIFT_AVAILABILITY(ios,introduced=9.0);
+@property (nonatomic, readonly) BOOL canBecomeFirstResponder;
+@property (nonatomic, readonly) BOOL canResignFirstResponder;
+- (BOOL)canPerformAction:(SEL _Nonnull)action withSender:(id _Nullable)sender SWIFT_WARN_UNUSED_RESULT;
+- (void)paste:(id _Nullable)sender;
+- (void)observeValueForKeyPath:(NSString * _Nullable)keyPath ofObject:(id _Nullable)object change:(NSDictionary<NSKeyValueChangeKey, id> * _Nullable)change context:(void * _Nullable)context;
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent * _Nullable)event;
+@property (nonatomic, readonly, copy) NSArray<UIKeyCommand *> * _Nullable keyCommands;
+@end
+
+
+@interface AFTextView (SWIFT_EXTENSION(AppFriendsUI))
+- (void)af_scrollToBottomWithAnimated:(BOOL)animated;
+@end
+
+@class NSBundle;
+@class UITraitCollection;
+@protocol UIViewControllerTransitionCoordinator;
+
+SWIFT_CLASS("_TtC12AppFriendsUI20AFTextViewController")
+@interface AFTextViewController : UIViewController
+/// Notifies the view controller when the left button’s action has been triggered, manually.
+/// You can override this method to perform additional tasks associated with the left button.
+/// You don’t need call super since this method doesn’t do anything.
+/// \param sender The object calling this method.
+///
+- (void)didPressLeftButton:(id _Nullable)sender;
+/// Notifies the view controller when the right button’s action has been triggered, manually or by using the keyboard return key.
+/// You can override this method to perform additional tasks associated with the right button.
+/// You MUST call super at some point in your implementation.
+/// \param sender The object calling this method.
+///
+- (void)didPressRightButton:(id _Nullable)sender;
+/// Notifies the view controller when the editing bar’s right button’s action has been triggered, manually or by using the external keyboard’s Return key.
+/// You can override this method to perform additional tasks associated with accepting changes.
+/// You MUST call super at some point in your implementation.
+/// \param sender The object calling this method.
+///
+- (void)didCommitTextEditingWithSender:(id _Nonnull)sender;
+/// Notifies the view controller when the editing bar’s right button’s action has been triggered, manually or by using the external keyboard’s Esc key.
+/// You can override this method to perform additional tasks associated with accepting changes.
+/// You MUST call super at some point in your implementation.
+/// \param sender The object calling this method.
+///
+- (void)didCancelTextEditingWithSender:(id _Nonnull)sender;
+/// Caches text to disk.
+- (void)cacheTextView;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)animated;
+- (void)viewWillLayoutSubviews;
+- (void)viewDidLayoutSubviews;
+@property (nonatomic) UIModalPresentationStyle modalPresentationStyle;
+@property (nonatomic) UIRectEdge edgesForExtendedLayout;
+- (void)observeValueForKeyPath:(NSString * _Nullable)keyPath ofObject:(id _Nullable)object change:(NSDictionary<NSKeyValueChangeKey, id> * _Nullable)change context:(void * _Nullable)context;
+@property (nonatomic, readonly, copy) NSArray<UIKeyCommand *> * _Nullable keyCommands;
+- (void)willTransitionToTraitCollection:(UITraitCollection * _Nonnull)newCollection withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator SWIFT_AVAILABILITY(ios,introduced=8);
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator SWIFT_AVAILABILITY(ios,introduced=8);
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+@property (nonatomic, readonly) UIInterfaceOrientationMask supportedInterfaceOrientations;
+@property (nonatomic, readonly) BOOL shouldAutorotate;
+- (void)didReceiveMemoryWarning;
+@end
+
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDelegate>
+@end
+
+@class UIGestureRecognizer;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UIGestureRecognizerDelegate>
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UITableView;
+@class UITableViewCell;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITableViewDataSource>
+- (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12AppFriendsUI18AFTextViewDelegate_")
+@protocol AFTextViewDelegate <UITextViewDelegate>
+@optional
+/// Asks the delegate whether the specified formatting symbol should be displayed in the tooltip. This is useful to remove some tooltip options when they no longer apply in some context. For example, Blockquotes formatting requires the symbol to be prefixed at the begining of a paragraph
+/// \param textView The text view containing the changes
+///
+/// \param symbol The formatting symbol to be verified
+///
+///
+/// returns:
+///
+/// YES if the formatting symbol should be displayed in the tooltip. Default is YES.
+- (BOOL)textView:(AFTextView * _Nonnull)textView shouldOfferFormattingFor:(NSString * _Nonnull)symbol SWIFT_WARN_UNUSED_RESULT;
+/// Asks the delegate whether the specified formatting symbol should be suffixed, to close the formatting wrap
+/// \param prefixRange The prefix range
+///
+- (BOOL)textView:(AFTextView * _Nonnull)textView shouldInsertSuffixForFormattingWith:(NSString * _Nonnull)symbol prefixRange:(NSRange)prefixRange SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <AFTextViewDelegate>
+- (BOOL)textView:(AFTextView * _Nonnull)textView shouldOfferFormattingFor:(NSString * _Nonnull)symbol SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)textView:(AFTextView * _Nonnull)textView shouldInsertSuffixForFormattingWith:(NSString * _Nonnull)symbol prefixRange:(NSRange)prefixRange SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UICollectionView;
+@class UICollectionViewCell;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDataSource>
+- (NSInteger)collectionView:(UICollectionView * _Nonnull)collectionView numberOfItemsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UICollectionViewCell * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView cellForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UIScrollView;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITableViewDelegate>
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView * _Nonnull)scrollView SWIFT_WARN_UNUSED_RESULT;
+- (void)scrollViewDidEndDragging:(UIScrollView * _Nonnull)scrollView willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndDecelerating:(UIScrollView * _Nonnull)scrollView;
+- (void)scrollViewDidScroll:(UIScrollView * _Nonnull)scrollView;
+@end
+
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITextViewDelegate>
+- (BOOL)textView:(UITextView * _Nonnull)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString * _Nonnull)text SWIFT_WARN_UNUSED_RESULT;
+- (void)textViewDidChange:(UITextView * _Nonnull)textView;
+- (void)textViewDidChangeSelection:(UITextView * _Nonnull)textView;
+- (BOOL)textViewShouldBeginEditing:(UITextView * _Nonnull)textView SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)textViewShouldEndEditing:(UITextView * _Nonnull)textView SWIFT_WARN_UNUSED_RESULT;
+- (void)textViewDidBeginEditing:(UITextView * _Nonnull)textView;
+- (void)textViewDidEndEditing:(UITextView * _Nonnull)textView;
+@end
+
+
 
 SWIFT_CLASS("_TtC12AppFriendsUI7AFToken")
 @interface AFToken : NSObject
@@ -626,7 +831,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI7AFToken")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
-@class NSCoder;
 @class UITextField;
 
 SWIFT_CLASS("_TtC12AppFriendsUI16AFTokenInputView")
@@ -656,6 +860,20 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI24AFTokenInputViewDelegate_")
 - (void)tokenInputView:(AFTokenInputView * _Nonnull)view didRemove:(AFToken * _Nonnull)token;
 - (AFToken * _Nullable)tokenInputView:(AFTokenInputView * _Nonnull)view tokenForText:(NSString * _Nonnull)text SWIFT_WARN_UNUSED_RESULT;
 - (void)tokenInputView:(AFTokenInputView * _Nonnull)view didChangeHeightTo:(CGFloat)height;
+@end
+
+@class UITouch;
+
+SWIFT_CLASS("_TtC12AppFriendsUI21AFTypingIndicatorView")
+@interface AFTypingIndicatorView : AFBaseTypingIndicatorView
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic) BOOL isVisible;
+- (void)dismissIndicator;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+@property (nonatomic, getter=isHidden) BOOL hidden;
+- (void)touchesBegan:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
+- (void)touchesEnded:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
 @end
 
 
@@ -779,7 +997,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI17AFVideoAttachment")
 @property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
 @end
 
-@class UIViewController;
 enum HCSidePanelBackgroundMode : NSInteger;
 @class HCSidePanelViewController;
 
@@ -839,7 +1056,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI16CoreStoreManager")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSBundle;
 
 SWIFT_CLASS("_TtC12AppFriendsUI20HCBaseViewController")
 @interface HCBaseViewController : UIViewController
@@ -860,7 +1076,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI21HCAlbumViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
-@class UICollectionView;
 @class UICollectionViewLayout;
 
 @interface HCAlbumViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDelegateFlowLayout>
@@ -881,32 +1096,23 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI27HCChatTableViewCellDelegate_")
 - (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 @end
 
-@class UITableView;
-@class UITextView;
-@class UITableViewCell;
 @class UIImagePickerController;
-@class UIScrollView;
-@class UIGestureRecognizer;
 @class UIBarButtonItem;
 
 /// This is the base chat view controller, which display the conversation (chat view)
 SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
-@interface HCBaseChatViewController : SLKTextViewController <AFEventSubscriber, HCChatTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HCBaseChatViewController : AFTextViewController <AFEventSubscriber, HCChatTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 - (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)decoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)didReceiveMemoryWarning;
-@property (nonatomic, readonly, strong) UITableView * _Nonnull tableView;
 /// Action when right button, which is the send button, is triggered
 /// \param sender the send button
 ///
 - (void)didPressRightButton:(id _Nullable)sender;
 - (void)didPressLeftButton:(id _Nullable)sender;
 - (void)textViewDidChange:(UITextView * _Nonnull)textView;
-- (CGFloat)heightForAutoCompletionView SWIFT_WARN_UNUSED_RESULT;
-- (void)didChangeAutoCompletionPrefix:(NSString * _Nonnull)prefix andWord:(NSString * _Nonnull)word;
-- (void)showAutoCompletionView:(BOOL)show;
 - (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
 - (void)tableView:(UITableView * _Nonnull)tableView willDisplayCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 - (void)tableView:(UITableView * _Nonnull)tableView didEndDisplayingCell:(UITableViewCell * _Nonnull)cell forRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
@@ -945,9 +1151,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 ///
 - (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
 - (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
-- (nullable instancetype)initWithTableViewStyle:(UITableViewStyle)style SWIFT_UNAVAILABLE;
-- (nullable instancetype)initWithCollectionViewLayout:(UICollectionViewLayout * _Nonnull)layout SWIFT_UNAVAILABLE;
-- (nullable instancetype)initWithScrollView:(UIScrollView * _Nonnull)scrollView SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
@@ -1044,7 +1247,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI29HCChatContainerViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
-@class NSTextContainer;
 
 SWIFT_CLASS("_TtC12AppFriendsUI17HCChatContentView")
 @interface HCChatContentView : UITextView
@@ -1081,7 +1283,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI19HCChatTableViewCell")
 @end
 
 
-@class UIColor;
 
 SWIFT_CLASS("_TtC12AppFriendsUI14HCColorPalette")
 @interface HCColorPalette : NSObject
@@ -1415,7 +1616,6 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI37HCDialogsPickerViewControllerDelegate_")
 - (void)didChooseDialog:(AFDialog * _Nonnull)dialog;
 @end
 
-@class UIFont;
 
 SWIFT_CLASS("_TtC12AppFriendsUI6HCFont")
 @interface HCFont : NSObject
@@ -1723,8 +1923,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI7HCUtils")
 
 
 
-@class UITouch;
-@class UIEvent;
 
 SWIFT_CLASS("_TtC12AppFriendsUI9SMSegment")
 @interface SMSegment : UIView
@@ -1743,6 +1941,12 @@ SWIFT_CLASS("_TtC12AppFriendsUI13SMSegmentView")
 - (void)layoutSubviews;
 - (void)drawRect:(CGRect)rect;
 @end
+
+
+
+
+
+
 
 
 
