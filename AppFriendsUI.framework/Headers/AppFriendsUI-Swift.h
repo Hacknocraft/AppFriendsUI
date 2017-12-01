@@ -173,9 +173,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if __has_feature(modules)
 @import ObjectiveC;
+@import Foundation;
 @import UIKit;
 @import CoreGraphics;
-@import Foundation;
 @import AppFriendsCore;
 @import MapKit;
 #endif
@@ -189,6 +189,34 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Wnullability"
 
 SWIFT_MODULE_NAMESPACE_PUSH("AppFriendsUI")
+@class AFAlbumItem;
+@class NSError;
+
+SWIFT_CLASS("_TtC12AppFriendsUI7AFAlbum")
+@interface AFAlbum : NSObject
+/// fetch all album items
+/// \param id the id of the dialog containing the album items you are fetching
+///
+/// \param time the earliest time that you want to fetch from
+///
+/// \param completion completion block. Returns an array of album items if the request is successful
+///
++ (void)getAllAlbumItemsFromDialog:(NSString * _Nonnull)id startingFrom:(NSDate * _Nullable)time completion:(void (^ _Nullable)(NSArray<AFAlbumItem *> * _Nullable, NSError * _Nullable))completion;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC12AppFriendsUI11AFAlbumItem")
+@interface AFAlbumItem : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+@property (nonatomic, readonly, copy) NSString * _Nonnull dialogID;
+@property (nonatomic, readonly, copy) NSDate * _Nonnull time;
+@property (nonatomic, readonly, copy) NSString * _Nonnull type;
+@property (nonatomic, readonly, copy) NSString * _Nonnull thumbnailURL;
+@property (nonatomic, readonly, copy) NSString * _Nonnull url;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
 enum AFAttachmentType : NSInteger;
 
 /// message attachment base class
@@ -224,7 +252,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI25AFBaseTypingIndicatorView")
 
 enum AFDialogType : NSInteger;
 @class AFUser;
-@class NSError;
 @class UIImage;
 @class MKMapItem;
 @class AFMessage;
@@ -760,14 +787,6 @@ SWIFT_CLASS("_TtC12AppFriendsUI20AFTextViewController")
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
 @end
 
-@class UITableView;
-@class UITableViewCell;
-
-@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITableViewDataSource>
-- (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
-- (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
-@end
-
 
 SWIFT_PROTOCOL("_TtP12AppFriendsUI18AFTextViewDelegate_")
 @protocol AFTextViewDelegate <UITextViewDelegate>
@@ -800,6 +819,14 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI18AFTextViewDelegate_")
 @interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDataSource>
 - (NSInteger)collectionView:(UICollectionView * _Nonnull)collectionView numberOfItemsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
 - (UICollectionViewCell * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView cellForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UITableView;
+@class UITableViewCell;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITableViewDataSource>
+- (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
 @end
 
 @class UIScrollView;
