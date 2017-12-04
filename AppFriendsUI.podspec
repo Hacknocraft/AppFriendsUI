@@ -24,7 +24,6 @@ s.vendored_frameworks = "AppFriendsUI.framework"
 s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => s.version.to_s}
 
 # 7
-s.dependency 'SlackTextViewController', '~> 1.9.5'
 s.dependency 'JGProgressHUD', '~> 1.4'
 s.dependency 'AppFriendsCore'
 s.dependency 'AlamofireImage', '~> 3.3'
