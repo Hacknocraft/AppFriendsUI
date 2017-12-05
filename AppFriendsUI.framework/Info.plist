@@ -30,5 +30,7 @@
 	<string>0910</string>
 	<key>DTXcodeBuild</key>
 	<string>9B55</string>
+	<key>MinimumOSVersion</key>
+	<string>9.0</string>
 </dict>
 </plist>
