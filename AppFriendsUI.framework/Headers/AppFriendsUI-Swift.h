@@ -813,20 +813,20 @@ SWIFT_PROTOCOL("_TtP12AppFriendsUI18AFTextViewDelegate_")
 - (BOOL)textView:(AFTextView * _Nonnull)textView shouldInsertSuffixForFormattingWith:(NSString * _Nonnull)symbol prefixRange:(NSRange)prefixRange SWIFT_WARN_UNUSED_RESULT;
 @end
 
-@class UICollectionView;
-@class UICollectionViewCell;
-
-@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDataSource>
-- (NSInteger)collectionView:(UICollectionView * _Nonnull)collectionView numberOfItemsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
-- (UICollectionViewCell * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView cellForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
-@end
-
 @class UITableView;
 @class UITableViewCell;
 
 @interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UITableViewDataSource>
 - (NSInteger)tableView:(UITableView * _Nonnull)tableView numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
 - (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UICollectionView;
+@class UICollectionViewCell;
+
+@interface AFTextViewController (SWIFT_EXTENSION(AppFriendsUI)) <UICollectionViewDataSource>
+- (NSInteger)collectionView:(UICollectionView * _Nonnull)collectionView numberOfItemsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UICollectionViewCell * _Nonnull)collectionView:(UICollectionView * _Nonnull)collectionView cellForItemAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
 @end
 
 @class UIScrollView;
