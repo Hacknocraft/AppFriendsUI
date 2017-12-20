@@ -1154,11 +1154,115 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 - (void)scrollViewDidScroll:(UIScrollView * _Nonnull)scrollView;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
 - (void)emitEvent:(AFEvent * _Nonnull)event;
+/// send an image message
+/// \param image the image to be sent
+///
+- (void)sendImage:(UIImage * _Nonnull)image;
 /// The right side navigation bar item. You can override this function to have your own navigation bar item
 ///
 /// returns:
 /// the navigation bar item
 - (UIBarButtonItem * _Nullable)rightBarButtonItem SWIFT_WARN_UNUSED_RESULT;
+/// The placeholder image for avatar image of the chat message cell. You can override this method to provide your own placeholder image
+/// \param indexPath the index path of the cell
+///
+///
+/// returns:
+/// the placeholder image
+- (UIImage * _Nonnull)avatarImagePlaceHolderAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+/// update the title of the view by assigning a UILabel to navigationItem.titleView
+- (void)updateTitle;
+/// callback after sending text message
+- (void)didSendTextMessage;
+/// callback after sending image message
+- (void)didSendImageMessage;
+/// callback after a gif is sent
+- (void)didSendGifMessage;
+/// callback after a video message is sent
+- (void)didSendVideoMessage;
+/// callback after a location message is sent
+- (void)didSendLocationMessage;
+/// You can override this method to return false in your class to always hide username
+///
+/// returns:
+/// true by default
+- (BOOL)showUserNameOnIncomingMessage SWIFT_WARN_UNUSED_RESULT;
+/// You can override this method to return true in your class to show current user name on outgoing messages
+///
+/// returns:
+/// false by default
+- (BOOL)showUserNameOnOutgoingMessage SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to decide if you want to show outgoing messages on the right side
+///
+/// returns:
+/// true by default
+- (BOOL)alternateSideForOutgoingMessage SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to decide if you want to only show avatar on the first message in a message cluster
+///
+/// returns:
+/// true by default
+- (BOOL)onlyShowAvatarOnFirstMessageInCluster SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the outgoing message text color
+///
+/// returns:
+/// returns HCColorPalette.chatOutMessageContentTextColor by default
+- (UIColor * _Nonnull)outGoingMessageContentTextColor SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the incoming message text color
+///
+/// returns:
+/// return HCColorPalette.chatInMessageContentTextColor by default
+- (UIColor * _Nonnull)incomingMessageContentTextColor SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the outgoing message bubble color
+///
+/// returns:
+/// return HCColorPalette.chatOutMessageBubbleColor by default
+- (UIColor * _Nonnull)outGoingMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the incoming message bubble color
+///
+/// returns:
+/// return HCColorPalette.chatInMessageBubbleColor by default
+- (UIColor * _Nonnull)incomingMessageBubbleColor SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the username color
+///
+/// returns:
+/// return HCColorPalette.chatUserNamelTextColor by default
+- (UIColor * _Nonnull)chatUsernameColor SWIFT_WARN_UNUSED_RESULT;
+/// You can overwrite this method to change the username label left margin
+///
+/// returns:
+/// return HCColorPalette.chatUserNameLeftMargin by default
+- (CGFloat)usernameLeftMargin SWIFT_WARN_UNUSED_RESULT;
+/// The text attributes for message text content. You can override this function to style message text attributes
+/// \param out true if the message is sent by the current user
+///
+///
+/// returns:
+/// message text attributes
+- (NSDictionary<NSAttributedStringKey, id> * _Nonnull)messagingCellAttributesWithIsOutGoingMessage:(BOOL)out SWIFT_WARN_UNUSED_RESULT;
+/// The text attributes for system message content. You can override this function to style system message differently
+///
+/// returns:
+/// system text attributes
+- (NSDictionary<NSAttributedStringKey, id> * _Nonnull)systemMessagingCellAttributes SWIFT_WARN_UNUSED_RESULT;
+/// The text attributes for links inside the message content. You can override this function to style the text differently
+/// \param out true if the message is sent by the current user
+///
+///
+/// returns:
+/// link text attributes
+- (NSDictionary<NSString *, id> * _Nonnull)linkTextAttributesWithIsOutGoingMessage:(BOOL)out SWIFT_WARN_UNUSED_RESULT;
+/// Image attachment on a message is tapped
+/// \param imageAttachment the image attachment
+///
+- (void)messageImageTappedWithAttachment:(AFImageAttachment * _Nonnull)imageAttachment indexPath:(NSIndexPath * _Nullable)indexPath;
+/// Video attachment on a message is tapped
+/// \param videoAttachment the video attachment
+///
+- (void)messageVideoTappedWithAttachment:(AFVideoAttachment * _Nonnull)videoAttachment indexPath:(NSIndexPath * _Nullable)indexPath;
+/// Location attachment on message is tapped
+/// \param locationAttachment the location attachment
+///
+- (void)messageLocationTappedWithAttachment:(AFLocationAttachment * _Nonnull)locationAttachment indexPath:(NSIndexPath * _Nullable)indexPath;
 /// Link inside a chat cell is tapped
 /// \param cell cell which contains the link
 ///
@@ -1177,7 +1281,12 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 /// \param cell the cell that contains the attachment
 ///
 - (void)attachmentTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+/// Triggered when attachment is tapped
+/// \param attachment the attachment which is tapped
+///
+- (void)didTapAttachment:(AFAttachment * _Nonnull)attachment indexPath:(NSIndexPath * _Nullable)indexPath;
 - (void)reportButtonTappedInCell:(HCChatTableViewCell * _Nonnull)cell;
+- (void)showThankYouReportingAlert;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
@@ -1194,6 +1303,13 @@ SWIFT_CLASS("_TtC12AppFriendsUI24HCBaseChatViewController")
 
 
 
+@interface HCBaseChatViewController (SWIFT_EXTENSION(AppFriendsUI))
+- (void)showProgress:(float)progress message:(NSString * _Nonnull)message;
+- (void)showLoading:(NSString * _Nullable)message;
+- (void)showErrorWithMessage:(NSString * _Nullable)message;
+- (void)showSuccessWithMessage:(NSString * _Nullable)message;
+- (void)hideHUD;
+@end
 
 
 
