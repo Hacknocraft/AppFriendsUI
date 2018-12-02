@@ -1,0 +1,11 @@
+framework module AppFriendsUI {
+  umbrella header "AppFriendsUI.h"
+
+  export *
+  module * { export * }
+}
+
+module AppFriendsUI.Swift {
+    header "AppFriendsUI-Swift.h"
+    requires objc
+}
