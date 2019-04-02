@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
 
 # 1
-s.platform = :ios, '9.0'
-s.ios.deployment_target = '9.0'
+s.platform = :ios, '10.0'
+s.ios.deployment_target = '10.0'
 s.name = "AppFriendsUI"
 s.summary = "UI components for AppFriends."
 s.requires_arc = true
 
 # 2
-s.version = "2.3.9"
+s.version = "2.4.0"
 
 # 3
 s.license = { :type => "MIT" }
@@ -24,8 +24,8 @@ s.vendored_frameworks = "AppFriendsUI.framework"
 s.source = { :git => "https://github.com/Hacknocraft/AppFriendsUI.git", :tag => s.version.to_s}
 
 # 7
-s.dependency 'JGProgressHUD', '~> 1.4'
-s.dependency 'AppFriendsCore, '~> 2.2.3'
-s.dependency 'AlamofireImage', '~> 3.3'
+s.dependency 'JGProgressHUD', '~> 2.0.3'
+s.dependency 'AppFriendsCore, '~> 2.3.0'
+s.dependency 'AlamofireImage', '~> 3.5.2'
 
 end
