@@ -17,21 +17,21 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.5.2</string>
+	<string>3.5.3</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>17B80</string>
+	<string>17B102</string>
 	<key>DTPlatformVersion</key>
 	<string>13.2</string>
 	<key>DTSDKBuild</key>
-	<string>17B80</string>
+	<string>17B102</string>
 	<key>DTXcode</key>
-	<string>1120</string>
+	<string>1130</string>
 	<key>DTXcodeBuild</key>
-	<string>11B52</string>
+	<string>11C29</string>
 	<key>MinimumOSVersion</key>
 	<string>10.0</string>
 	<key>UIDeviceFamily</key>
