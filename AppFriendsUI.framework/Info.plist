@@ -23,13 +23,13 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>19A339</string>
+	<string>18E182</string>
 	<key>DTSDKBuild</key>
-	<string>19A339</string>
+	<string>18E182</string>
 	<key>DTXcode</key>
-	<string>1300</string>
+	<string>1251</string>
 	<key>DTXcodeBuild</key>
-	<string>13A233</string>
+	<string>12E507</string>
 	<key>MinimumOSVersion</key>
 	<string>12.0</string>
 </dict>
